@@ -30,6 +30,17 @@ vi.mock("./config", () => ({
   maskKey: mocks.maskKey,
 }));
 
+// The audit includes the sibling-hermes-home drift check, which on Windows
+// enumerates WSL distros and walks `\\wsl$\<distro>\home` over UNC. That
+// costs seconds on a cold module graph and can push the first test past
+// Vitest's 5s default timeout under full-suite load. The drift logic itself
+// is covered against synthetic sibling homes in
+// tests/sibling-hermes-home-drift.test.ts, so this file only needs the
+// check to be inert.
+vi.mock("./wsl-detection", () => ({
+  findSiblingHermesHomes: () => [],
+}));
+
 vi.mock("./utils", async () => {
   const actual = await vi.importActual<typeof import("./utils")>("./utils");
   return {

@@ -1935,7 +1935,18 @@ export function useDashboardChatTransport({
         if (!resolvedCommand) return targetSessionId;
         const key = `${targetSessionId}\n${dashboardProvider}\n${model}`;
         let slashResponse: SlashExecResponse | null = null;
-        if (appliedModelRef.current !== key) {
+        // The remembered key is only a command-deduplication cache; it is not
+        // proof of the Agent's current model. An automatic Agent-side fallback
+        // (e.g. openai-codex/gpt-6-luna -> deepseek/deepseek-flash) leaves the
+        // key naming the user's selection while the live model has moved on.
+        // Re-run /model when the live state no longer matches the selection,
+        // not only when the cached key differs.
+        const liveDrifted = !dashboardModelMatches(
+          dashboardProvider,
+          model,
+          before,
+        );
+        if (appliedModelRef.current !== key || liveDrifted) {
           slashResponse = await client.request<SlashExecResponse>(
             "slash.exec",
             {

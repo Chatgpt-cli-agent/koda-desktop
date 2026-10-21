@@ -2353,6 +2353,164 @@ describe("useDashboardChatTransport subagent roster", () => {
   });
 });
 
+describe("useDashboardChatTransport applied-model cache drift (issue #1034)", () => {
+  beforeEach(() => {
+    dashboardMock.close.mockClear();
+    dashboardMock.connect.mockClear();
+    dashboardMock.instances.length = 0;
+    dashboardMock.onEvent = null;
+    dashboardMock.request.mockReset();
+    Object.defineProperty(window, "hermesAPI", {
+      configurable: true,
+      value: {
+        freshDashboardWsUrl: vi.fn(async () => "ws://fresh-dashboard"),
+        recordSessionContinuation: vi.fn(async () => true),
+        recordSessionLocalError: vi.fn(async () => true),
+        startDashboard: vi.fn(async () => ({
+          connection: { wsUrl: "ws://127.0.0.1:12345" },
+          running: true,
+        })),
+      },
+    });
+  });
+
+  // The remembered applied-model key is a command-deduplication cache, not
+  // proof of the Agent's live model. An automatic Agent-side fallback leaves
+  // that key naming the user's selection while the live model has moved on,
+  // so the next send must re-run /model instead of trusting the cache.
+  // @lat: [[model-selection#Tests#Applied-model cache drift re-issues the switch]]
+  it("re-runs /model when the Agent fell back to a different model", async () => {
+    let liveModel = "bad-model";
+    let liveProvider = "bad-provider";
+    let slashExecs = 0;
+    dashboardMock.request.mockImplementation(async (method) => {
+      if (method === "session.create")
+        return { session_id: "live", stored_session_id: "stored" };
+      if (method === "model.options")
+        return { model: liveModel, provider: liveProvider, providers: [] };
+      if (method === "slash.exec") {
+        slashExecs += 1;
+        // The switch takes effect: the Agent now reports the selected model.
+        liveModel = "bad-model";
+        liveProvider = "bad-provider";
+        return { output: "switched" };
+      }
+      return {};
+    });
+    const api: HarnessApi = {};
+    render(<Harness api={api} />);
+
+    await act(async () => {
+      await api.send?.("first");
+    });
+    expect(slashExecs).toBe(1);
+
+    // The Agent silently falls back to a different provider/model.
+    liveModel = "fallback-model";
+    liveProvider = "fallback-provider";
+
+    await act(async () => {
+      api.activeTurnRef!.current = { ...activeRecoveryTurn };
+      await api.send?.("second");
+    });
+
+    // The stale cache must not suppress the switch: exactly one new
+    // slash.exec runs for the second send.
+    expect(slashExecs).toBe(2);
+    const methods = dashboardMock.request.mock.calls.map(([method]) => method);
+    expect(methods.filter((method) => method === "slash.exec")).toHaveLength(2);
+    // The prompt is submitted only after the model is verified again.
+    expect(methods.slice(-4)).toEqual([
+      "model.options",
+      "slash.exec",
+      "model.options",
+      "prompt.submit",
+    ]);
+    expect(dashboardMock.request).toHaveBeenLastCalledWith("prompt.submit", {
+      session_id: "live",
+      text: "second",
+    });
+  });
+
+  // @lat: [[model-selection#Tests#A refused model switch blocks the prompt]]
+  it("does not submit the prompt when the re-run /model is refused", async () => {
+    let liveModel = "bad-model";
+    let liveProvider = "bad-provider";
+    dashboardMock.request.mockImplementation(async (method) => {
+      if (method === "session.create")
+        return { session_id: "live", stored_session_id: "stored" };
+      if (method === "model.options")
+        return { model: liveModel, provider: liveProvider, providers: [] };
+      if (method === "slash.exec") {
+        // The Agent refuses the switch and stays on the fallback model.
+        return { warning: "model not available" };
+      }
+      return {};
+    });
+    const api: HarnessApi = {};
+    render(<Harness api={api} />);
+
+    await act(async () => {
+      await api.send?.("first");
+    });
+
+    liveModel = "fallback-model";
+    liveProvider = "fallback-provider";
+
+    let failed = false;
+    await act(async () => {
+      api.activeTurnRef!.current = { ...activeRecoveryTurn };
+      try {
+        await api.send?.("second");
+      } catch {
+        failed = true;
+      }
+    });
+    expect(failed).toBe(false);
+
+    // A refused switch surfaces as a failed turn rather than a thrown error.
+    const methods = dashboardMock.request.mock.calls.map(([method]) => method);
+    // The refused switch must not be followed by a prompt submission.
+    expect(methods.slice(-3)).toEqual([
+      "model.options",
+      "slash.exec",
+      "model.options",
+    ]);
+    expect(methods.filter((method) => method === "prompt.submit")).toHaveLength(
+      1,
+    );
+    expect(
+      api.messages!.some((message) => "error" in message && !!message.error),
+    ).toBe(true);
+  });
+
+  // @lat: [[model-selection#Tests#A matching live model issues no second command]]
+  it("does not re-run /model when the live model still matches the selection", async () => {
+    let slashExecs = 0;
+    dashboardMock.request.mockImplementation(async (method) => {
+      if (method === "session.create")
+        return { session_id: "live", stored_session_id: "stored" };
+      if (method === "model.options")
+        return { model: "bad-model", provider: "bad-provider", providers: [] };
+      if (method === "slash.exec") {
+        slashExecs += 1;
+        return { output: "switched" };
+      }
+      return {};
+    });
+    const api: HarnessApi = {};
+    render(<Harness api={api} />);
+
+    await act(async () => {
+      await api.send?.("first");
+      await api.send?.("second");
+    });
+
+    // No drift: the cache still holds, so no second /model is issued.
+    expect(slashExecs).toBe(1);
+  });
+});
+
 // @lat: [[model-context#Tests#Native cumulative counters and legacy deltas]]
 it("deduplicates native runtime counters while preserving context, legacy deltas and reset boundaries", () => {
   const snapshots = new Map<string, Partial<UsageState>>();

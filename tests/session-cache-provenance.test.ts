@@ -1,7 +1,14 @@
 // @vitest-environment node
 import Database from "better-sqlite3";
 import { DatabaseSync } from "node:sqlite";
-import { mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "fs";
+import {
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from "fs";
 import { join } from "path";
 import { afterEach, expect, it, vi } from "vitest";
 
@@ -78,7 +85,15 @@ function seed(
   name = "state.db",
 ): Database.Database {
   mkdirSync(join(home(profile), "desktop"), { recursive: true });
-  const db = new Database(join(home(profile), name));
+  const path = join(home(profile), name);
+  // On Windows a state DB path is a symlink to its generation, so the file
+  // generation at that path can be swapped while a handle on the old one
+  // stays open. See `replaceFileGeneration`.
+  const generation =
+    process.platform === "win32" && name === "state.db"
+      ? `${path}.generation`
+      : path;
+  const db = new Database(generation);
   opened.push(db);
   db.exec(`CREATE TABLE sessions (id TEXT PRIMARY KEY, source TEXT DEFAULT 'desktop', started_at INTEGER DEFAULT 100, message_count INTEGER DEFAULT 1, model TEXT DEFAULT 'test', title TEXT, archived INTEGER DEFAULT 0);
     CREATE TABLE messages (id INTEGER PRIMARY KEY, session_id TEXT, role TEXT, content TEXT, timestamp INTEGER);`);
@@ -86,6 +101,7 @@ function seed(
     id,
     "Ping-pong strategy",
   );
+  if (generation !== path) symlinkSync(generation, path, "file");
   return db;
 }
 function legacy(profile = "default"): string {
@@ -106,6 +122,29 @@ function legacy(profile = "default"): string {
   });
   writeFileSync(cachePath(profile), text);
   return text;
+}
+
+/**
+ * Swap the file generation at `dbPath` for the database at `replacementPath`.
+ *
+ * On POSIX this is a plain rename over the old file, which replaces the
+ * directory entry with a new inode while any handle on the old generation
+ * stays valid. Windows refuses both `rename` and `unlink` over a file that
+ * another handle still holds open (`EPERM`/`EBUSY`), so there the path is
+ * modelled as a symlink that is re-pointed at the replacement: the path then
+ * resolves to the replacement's inode, the identity
+ * ([[src/main/db.ts#stateDbFileIdentity]]) changes, and the handle on the old
+ * generation keeps reading the old rows — the same observable behaviour the
+ * provenance stamp is built to detect.
+ */
+function replaceFileGeneration(dbPath: string, replacementPath: string): void {
+  if (process.platform !== "win32") {
+    renameSync(replacementPath, dbPath);
+    return;
+  }
+  const next = `${dbPath}.next`;
+  symlinkSync(replacementPath, next, "file");
+  renameSync(next, dbPath);
 }
 afterEach(() => {
   vi.restoreAllMocks();
@@ -163,7 +202,10 @@ it("reopens a cached SQLite handle when the file at its path is replaced", () =>
   const replacement = seed("default", "api-new-generation", "replacement.db");
   replacement.close();
   opened.pop();
-  renameSync(join(testHome, "replacement.db"), join(testHome, "state.db"));
+  replaceFileGeneration(
+    join(testHome, "state.db"),
+    join(testHome, "replacement.db"),
+  );
   expect(listCachedSessions()).toEqual([]);
   expect(syncSessionCache().map((row) => row.id)).toEqual([
     "api-new-generation",
@@ -189,9 +231,9 @@ it("never stamps old rows with a file generation replaced during the query", () 
     return {
       all: (...parameters: unknown[]) => {
         const rows = statement.all(...parameters);
-        renameSync(
-          join(testHome, "replacement.db"),
+        replaceFileGeneration(
           join(testHome, "state.db"),
+          join(testHome, "replacement.db"),
         );
         return rows;
       },

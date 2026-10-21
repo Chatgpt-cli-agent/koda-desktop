@@ -257,7 +257,10 @@ describe("Cron SSH fallback", () => {
       "http://127.0.0.1:18642/api/cron/jobs?profile=default",
       expect.any(Object),
     );
-  });
+    // The cold `cronjobs` import pulls in `ssh-remote`, which takes over a
+    // second to transform on a cold module graph. Under full-suite load that
+    // can outrun Vitest's 5s default, so this test carries its own budget.
+  }, 15000);
 
   it("lists dashboard cron jobs through the authenticated dashboard request in direct remote mode", async () => {
     connModeRef.mode = "remote";

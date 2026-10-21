@@ -91,3 +91,27 @@ A selected model replaces the local default without inheriting another providerâ
 ### Remote credential boundary
 
 Remote and SSH selections remain usable without local provider secrets. Missing remote model selections cannot be filled from an unrelated local default.
+
+## Applied-model cache drift after Agent fallback
+
+The `/model` command is issued at most once per session-and-selection, but the remembered key is only a command-deduplication cache â€” it is not proof of the Agent's current model.
+
+[[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#dashboardModelMatches]] compares the live `model.options` reply against the user's selection. Before, an Agent-side fallback (for example `openai-codex/gpt-6-luna` falling back to `deepseek/deepseek-flash`) left the cached key naming the user's selection while the live model had moved on. The next turn then skipped `/model` entirely and validated the fallback value as though it were the post-switch value, so the send either ran on the wrong model or was refused outright.
+
+The switch is re-issued whenever the live model no longer matches the selection, not only when the cached key differs. The live reply is then re-read and must match before the prompt is submitted; a refused switch raises the existing error and clears the cached key, so no prompt is sent against an unverified model.
+
+## Tests
+
+The dashboard transport's model-switch regressions verify that a stale applied-model cache cannot suppress a required `/model`, and that an unverified model never carries a prompt.
+
+### Applied-model cache drift re-issues the switch
+
+A fallback on the Agent side must not suppress the next `/model`. The transport re-issues the switch when the live model has drifted from the selection, and the prompt is submitted only after the live model matches again.
+
+### A refused model switch blocks the prompt
+
+When the re-issued `/model` is refused, the turn is failed with that warning and no prompt is submitted, so the message is never sent against an unverified model.
+
+### A matching live model issues no second command
+
+When the live model still matches the user's selection, the cached key still holds and no second `/model` command is issued.

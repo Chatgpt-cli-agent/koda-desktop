@@ -8,6 +8,7 @@ import {
   type Mock,
 } from "vitest";
 import { EventEmitter } from "events";
+import { tmpdir } from "os";
 import type { ConnectionConfig } from "../src/main/config";
 
 const transport = vi.hoisted(() => ({
@@ -19,9 +20,12 @@ const transport = vi.hoisted(() => ({
 }));
 
 vi.mock("../src/main/installer", () => ({
-  HERMES_HOME: "/tmp/approval-test",
-  HERMES_PYTHON: "/usr/bin/true",
-  HERMES_REPO: "/tmp",
+  // The gateway spawns `HERMES_PYTHON` with `cwd: HERMES_REPO` and refuses to
+  // start unless both exist on disk, so these must be real paths on every
+  // platform — a hardcoded "/usr/bin/true" never resolves on Windows.
+  HERMES_HOME: tmpdir(),
+  HERMES_PYTHON: process.execPath,
+  HERMES_REPO: tmpdir(),
   hermesCliArgs: () => [],
   getEnhancedPath: () => "",
 }));

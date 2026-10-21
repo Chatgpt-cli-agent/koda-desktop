@@ -22,6 +22,24 @@ function home(): string {
   homes.push(path);
   return path;
 }
+
+/**
+ * The discovery script runs on the remote POSIX host over SSH, where
+ * `os.path.expanduser("~")` resolves through `$HOME`. On Windows the
+ * interpreter derives the home directory from `USERPROFILE` and ignores
+ * `HOME`, so point both at the fixture root to reproduce the remote layout.
+ */
+function remoteEnv(
+  root: string,
+  overrides: Record<string, string> = {},
+): NodeJS.ProcessEnv {
+  return {
+    ...process.env,
+    HOME: root,
+    USERPROFILE: root,
+    ...overrides,
+  };
+}
 function plugin(
   root: string,
   name: string,
@@ -73,7 +91,7 @@ describe("external memory provider directory discovery", () => {
             profile: "work",
             active: "recall-memory-hermes",
           }),
-          env: { ...process.env, HOME: root, HERMES_HOME: "" },
+          env: remoteEnv(root, { HERMES_HOME: "" }),
           encoding: "utf8",
         }),
       ),
@@ -153,7 +171,7 @@ describe("external memory provider directory discovery", () => {
       JSON.parse(
         execFileSync("python3", ["-c", memoryProviderDiscoveryScript()], {
           input: JSON.stringify({ profile, active: "graphnosis" }),
-          env: { ...process.env, HOME: root, HERMES_HOME: "" },
+          env: remoteEnv(root, { HERMES_HOME: "" }),
           encoding: "utf8",
         }),
       );
@@ -203,11 +221,9 @@ describe("external memory provider directory discovery", () => {
       expect(() =>
         execFileSync("python3", ["-c", memoryProviderDiscoveryScript()], {
           input: JSON.stringify({ profile: "work" }),
-          env: {
-            ...process.env,
-            HOME: root,
+          env: remoteEnv(root, {
             HERMES_HOME: kind === "custom-home" ? join(root, "managed") : "",
-          },
+          }),
           stdio: ["pipe", "pipe", "pipe"],
         }),
       ).toThrow(/Memory provider discovery is unavailable/);
