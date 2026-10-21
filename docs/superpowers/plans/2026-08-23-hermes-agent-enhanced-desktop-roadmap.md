@@ -1,4 +1,4 @@
-# Hermes Agent Enhanced Desktop Roadmap
+# Koda Agent Enhanced Desktop Roadmap
 
 **Status:** In progress
 
@@ -12,13 +12,13 @@
 
 ## Goal
 
-Track the missing Hermes Agent desktop capabilities that should be implemented in hermes-desktop while keeping this repository an independent, enhanced client for a system-installed Hermes Agent.
+Track the missing Koda Agent desktop capabilities that should be implemented in hermes-desktop while keeping this repository an independent, enhanced client for a system-installed Koda Agent.
 
 ## Product boundary
 
-Hermes Agent owns agent execution, gateway protocols, bot behavior, routines, cron execution, voice services, messaging integrations, and agent-side plugins. hermes-desktop owns native windows, orchestration, presentation, local integrations, and user workflows.
+Koda Agent owns agent execution, gateway protocols, bot behavior, routines, cron execution, voice services, messaging integrations, and agent-side plugins. hermes-desktop owns native windows, orchestration, presentation, local integrations, and user workflows.
 
-The desktop must consume Agent capabilities instead of copying Agent backend logic. The desktop app and Hermes Agent continue to use independent update channels.
+The desktop must consume Agent capabilities instead of copying Agent backend logic. The desktop app and Koda Agent continue to use independent update channels.
 
 ## How to use this tracker
 
@@ -69,11 +69,11 @@ These capabilities are present today and should be extended through their existi
 
 - [ ] Every session is addressed by `{ connectionId, profile, sessionId }`.
 - [ ] Agent features are enabled through advertised capabilities, not scattered version checks.
-- [ ] Secrets remain in the Electron main process or Hermes Agent; renderer APIs expose bounded state only.
+- [ ] Secrets remain in the Electron main process or Koda Agent; renderer APIs expose bounded state only.
 - [ ] Local, Remote, SSH, Docker, and cloud routes share one typed connection contract.
 - [ ] Built-in and external contributions use one command and pane registry.
 - [ ] Secondary windows reuse the normal chat/session state and submission path.
-- [ ] Hermes Agent remains the authority for bots, routines, cron, webhooks, and voice execution.
+- [ ] Koda Agent remains the authority for bots, routines, cron, webhooks, and voice execution.
 - [ ] Older supported Agent installations continue to provide the current desktop experience.
 - [ ] New dependencies are added only where the native platform and current dependencies cannot provide the feature.
 
@@ -123,7 +123,7 @@ R1 creates the identities and extension seams required by every later feature.
 
 ### M1 — Multi-gateway Connections registry
 
-**Outcome:** Multiple local and remote Hermes machines can remain connected, and each chat is permanently routed to the correct machine and profile.
+**Outcome:** Multiple local and remote Koda machines can remain connected, and each chat is permanently routed to the correct machine and profile.
 
 #### Data and migration
 
@@ -256,12 +256,12 @@ R2 surfaces substantial Agent output and multi-agent collaboration in the deskto
 
 ### M4 — Bot Mode
 
-**Outcome:** Users can operate Hermes Agent bots, rooms, routines, and handoffs from the standalone desktop across multiple machines.
+**Outcome:** Users can operate Koda Agent bots, rooms, routines, and handoffs from the standalone desktop across multiple machines.
 
 #### Agent contract
 
 - [ ] Inventory the current Bot Mode RPC, event, REST, plugin, and routine contracts.
-- [ ] Keep bot execution, routing, rooms, and routine state authoritative in Hermes Agent.
+- [ ] Keep bot execution, routing, rooms, and routine state authoritative in Koda Agent.
 - [ ] Define capability-gated desktop adapters for supported Agent versions.
 - [ ] Document fallback behavior when Bot Mode is unavailable.
 
@@ -477,8 +477,8 @@ R4 improves control of active turns, voice conversations, and recurring work.
 - [ ] Expose Agent-owned persistent cron memory and execution context.
 - [ ] Link scheduled jobs to bots and routines.
 - [ ] Add run history, output, duration, retry, duplicate, pause, and test-run actions.
-- [ ] Add signed outbound webhook configuration through Hermes Agent.
-- [ ] Keep webhook secrets, signature generation, retries, and delivery in Hermes Agent.
+- [ ] Add signed outbound webhook configuration through Koda Agent.
+- [ ] Keep webhook secrets, signature generation, retries, and delivery in Koda Agent.
 - [ ] Gate fields and actions by the selected connection's capabilities.
 
 #### Verification
@@ -506,7 +506,7 @@ R5 opens the proven contribution seam to trusted plugins and completes cross-pla
 
 ### M10 — External plugin SDK
 
-**Outcome:** Trusted plugins can extend the desktop and their Hermes Agent backend without changing core desktop files.
+**Outcome:** Trusted plugins can extend the desktop and their Koda Agent backend without changing core desktop files.
 
 #### Plugin lifecycle
 
@@ -606,7 +606,7 @@ Each release train must satisfy these checks before merging into a stable releas
 - [ ] Focused unit and integration tests pass.
 - [ ] Main/preload IPC contract tests pass.
 - [ ] Local, direct Remote, SSH, and Docker smoke paths pass where applicable.
-- [ ] Compatibility checks pass against the oldest supported and latest recommended Hermes Agent.
+- [ ] Compatibility checks pass against the oldest supported and latest recommended Koda Agent.
 - [ ] Critical Playwright flows pass in a packaged build.
 - [ ] No renderer exposure of credentials, cookies, webhook secrets, PTY handles, or unrestricted filesystem operations.
 - [ ] User-visible changes have release notes and upgrade guidance.
@@ -621,7 +621,7 @@ Run this before beginning each release train so the roadmap does not implement a
 - [ ] Record the inspected release/tag/commit and date below.
 - [ ] Compare capability contracts before comparing UI implementation.
 - [ ] Update this roadmap when upstream removes, renames, or supersedes a feature.
-- [ ] Prefer the current Hermes Agent public contract over copying upstream desktop internals.
+- [ ] Prefer the current Koda Agent public contract over copying upstream desktop internals.
 
 | Inspected on | Upstream release/tag/commit                                  | Roadmap impact  |
 | ------------ | ------------------------------------------------------------ | --------------- |
@@ -629,7 +629,7 @@ Run this before beginning each release train so the roadmap does not implement a
 
 ## Upstream behavioral references
 
-These paths are behavioral references in the sibling Hermes Agent checkout, not code-copy requirements.
+These paths are behavioral references in the sibling Koda Agent checkout, not code-copy requirements.
 
 - `../hermes-agent/apps/desktop/electron/connection-config.ts`
 - `../hermes-agent/apps/desktop/src/contrib/plugin.ts`

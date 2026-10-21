@@ -197,7 +197,7 @@ export default {
   matrixHomeserver: "خادم Matrix",
   matrixHomeHint: "مثال: https://matrix.org",
   matrixUserId: "معرف مستخدم Matrix",
-  matrixUserHint: "مثال: @hermes:matrix.org",
+  matrixUserHint: "مثال: @koda:matrix.org",
   matrixAccessToken: "رمز وصول Matrix",
   matrixTokenHint: "رمز الوصول لتسجيل الدخول إلى Matrix",
   mattermostUrl: "رابط Mattermost",

@@ -1,4 +1,8 @@
 provider: github
-owner: fathah
+# Koda's own releases, never upstream's. An upstream release would install
+# an upstream build straight over this install — reintroducing the old brand
+# and identity. Upstream still reaches Koda the safe way: merge upstream
+# into this repo, then cut a Koda release from the result.
+owner: Chatgpt-cli-agent
 repo: hermes-desktop
-updaterCacheDirName: hermes-desktop-updater
+updaterCacheDirName: koda-desktop-updater

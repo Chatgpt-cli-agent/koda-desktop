@@ -1,25 +1,25 @@
 # Generated from this template by scripts/generate-winget-manifests.mjs.
-PackageIdentifier: NousResearch.HermesDesktop
-PackageVersion: { { VERSION } }
+PackageIdentifier: Chatgpt-cli-agent.KodaDesktop
+PackageVersion: {{VERSION}}
 PackageLocale: en-US
-Publisher: Nous Research
-PublisherUrl: https://github.com/fathah/hermes-desktop
-PublisherSupportUrl: https://github.com/fathah/hermes-desktop/issues
-PackageName: Hermes One
-PackageUrl: https://github.com/fathah/hermes-desktop
+Publisher: Koda
+PublisherUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop
+PublisherSupportUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop/issues
+PackageName: Koda
+PackageUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop
 License: MIT
-LicenseUrl: https://github.com/fathah/hermes-desktop/blob/main/LICENSE
+LicenseUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE
 ShortDescription: Self-improving AI assistant desktop app
 Description: |-
-  Hermes One is a native desktop app for installing, configuring, and chatting
-  with Hermes Agent — a self-improving AI assistant with tool use, multi-platform
-  messaging, and a closed learning loop.
+  Koda is a native desktop app for installing, configuring, and chatting
+  with the Koda Agent — a self-improving AI assistant with tool use,
+  multi-platform messaging, and a closed learning loop.
 Tags:
 - ai
 - agent
 - desktop
 - electron
 - llm
-ReleaseNotesUrl: { { RELEASE_NOTES_URL } }
+ReleaseNotesUrl: {{RELEASE_NOTES_URL}}
 ManifestType: defaultLocale
 ManifestVersion: 1.12.0

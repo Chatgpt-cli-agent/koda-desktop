@@ -1,6 +1,6 @@
 # Remote profiles
 
-Agents lists and creates profiles on the selected Hermes dashboard while Desktop keeps profile selection and late UI work scoped to that connection.
+Agents lists and creates profiles on the selected Koda dashboard while Desktop keeps profile selection and late UI work scoped to that connection.
 
 ## Remote profiles
 
@@ -10,7 +10,7 @@ Remote profile operations use the dashboard's authenticated profile routes with 
 
 ### Desktop selection
 
-Remote selection is a desktop preference owned by connection id and dashboard URL. It neither invokes the local Hermes CLI nor changes the server's sticky default profile.
+Remote selection is a desktop preference owned by connection id and dashboard URL. It neither invokes the local Koda CLI nor changes the server's sticky default profile.
 
 [[src/main/remote-profile-selection.ts#getRemoteSelectedProfile]] restores the saved selection from `desktop.json`. If the server no longer lists that name, no profile is marked active and status metadata stays unknown; the list read does not rewrite the selection. [[src/main/remote-profile-selection.ts#setRemoteSelectedProfile]] preserves other preferences. Local and SSH selection retain their existing persisted active-profile behavior and gateway startup.
 

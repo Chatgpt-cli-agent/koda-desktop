@@ -150,7 +150,7 @@ export default {
   matrixHomeserver: "Homeserver Matrix",
   matrixHomeHint: "ex: https://matrix.org",
   matrixUserId: "ID de Utilizador Matrix",
-  matrixUserHint: "ex: @hermes:matrix.org",
+  matrixUserHint: "ex: @koda:matrix.org",
   matrixAccessToken: "Token de Acesso Matrix",
   matrixTokenHint: "Token de acesso para início de sessão Matrix",
   mattermostUrl: "URL do Mattermost",

@@ -87,7 +87,7 @@ function shutdownStatus(): DashboardStatus {
   return {
     supported: true,
     running: false,
-    error: "Hermes Desktop is shutting down.",
+    error: "Koda is shutting down.",
   };
 }
 
@@ -97,7 +97,7 @@ function stoppedStartupStatus(): DashboardStatus {
     : {
         supported: true,
         running: false,
-        error: "Hermes dashboard startup was stopped.",
+        error: "Koda dashboard startup was stopped.",
       };
 }
 
@@ -134,7 +134,7 @@ function inactiveSshDashboardStatus(
     supported: true,
     running: false,
     error:
-      "Select this SSH connection before starting its dashboard; Hermes Desktop uses one SSH tunnel at a time.",
+      "Select this SSH connection before starting its dashboard; Koda uses one SSH tunnel at a time.",
   };
 }
 
@@ -215,11 +215,11 @@ async function sshDashboardConnectionFromConfig(
   // null when the remote can't run the dashboard (no Node / no web dist) —
   // the caller then falls back to legacy over the gateway /v1 tunnel.
   const dash = await sshEnsureDashboard(config.ssh, profile);
-  if (shutdownStarted) throw new Error("Hermes Desktop is shutting down.");
+  if (shutdownStarted) throw new Error("Koda is shutting down.");
   if (!dash) return null;
 
   await ensureSshTunnel({ ...config.ssh, remotePort: dash.port });
-  if (shutdownStarted) throw new Error("Hermes Desktop is shutting down.");
+  if (shutdownStarted) throw new Error("Koda is shutting down.");
   return sshDashboardConnectionFromTunnel(
     config,
     getSshTunnelUrl(),
@@ -239,10 +239,10 @@ function getManagedDashboard(profile?: string): ManagedDashboard | undefined {
 
 function unsupportedReasonForLocalSpawn(): string | undefined {
   if (!existsSync(HERMES_REPO)) {
-    return `Hermes repo not found at ${HERMES_REPO}.`;
+    return `Koda repo not found at ${HERMES_REPO}.`;
   }
   if (!existsSync(HERMES_PYTHON)) {
-    return `Hermes Python environment not found at ${HERMES_PYTHON}.`;
+    return `Koda Python environment not found at ${HERMES_PYTHON}.`;
   }
   return undefined;
 }
@@ -339,7 +339,7 @@ function requestJson(
     req.setTimeout(timeoutMs, () => {
       req.destroy(
         new Error(
-          `Timed out connecting to Hermes dashboard after ${timeoutMs}ms`,
+          `Timed out connecting to Koda dashboard after ${timeoutMs}ms`,
         ),
       );
     });
@@ -387,7 +387,7 @@ export function probeDashboardWebSocket(
         const body = Buffer.concat(chunks).toString("utf8").trim();
         finish(
           new Error(
-            `Hermes dashboard chat WebSocket is unavailable (${res.statusCode}${
+            `Koda dashboard chat WebSocket is unavailable (${res.statusCode}${
               body ? `: ${body.slice(0, 160)}` : ""
             })`,
           ),
@@ -398,7 +398,7 @@ export function probeDashboardWebSocket(
     req.setTimeout(timeoutMs, () => {
       finish(
         new Error(
-          `Timed out connecting to Hermes dashboard chat WebSocket after ${timeoutMs}ms`,
+          `Timed out connecting to Koda dashboard chat WebSocket after ${timeoutMs}ms`,
         ),
       );
     });
@@ -414,7 +414,7 @@ async function waitForDashboardReady(
   const deadline = Date.now() + timeoutMs;
   let lastError: unknown;
   while (Date.now() < deadline) {
-    if (shutdownStarted) throw new Error("Hermes Desktop is shutting down.");
+    if (shutdownStarted) throw new Error("Koda is shutting down.");
     signal?.throwIfAborted();
     try {
       await requestJson(
@@ -435,7 +435,7 @@ async function waitForDashboardReady(
     lastError instanceof Error
       ? lastError.message
       : "dashboard did not respond";
-  throw new Error(`Timed out waiting for Hermes dashboard: ${message}`);
+  throw new Error(`Timed out waiting for Koda dashboard: ${message}`);
 }
 
 function dashboardStatusRequiresOAuth(status: unknown): boolean {
@@ -569,7 +569,7 @@ async function getSshDashboardStatusForConfig(
       supported: true,
       running: false,
       error:
-        "SSH dashboard transport needs an active tunnel and API_SERVER_KEY on the remote Hermes host.",
+        "SSH dashboard transport needs an active tunnel and API_SERVER_KEY on the remote Koda host.",
     };
   }
 
@@ -584,7 +584,7 @@ async function getSshDashboardStatusForConfig(
         running: false,
         connection,
         error:
-          "SSH dashboard requires OAuth browser authentication. Token-based dashboard over SSH is supported now; OAuth ticket flow is not wired in Hermes One yet.",
+          "SSH dashboard requires OAuth browser authentication. Token-based dashboard over SSH is supported now; OAuth ticket flow is not wired in Koda yet.",
       };
     }
 
@@ -800,7 +800,7 @@ async function startLocalDashboard(
   proc.once("exit", (code, signal) => {
     if (dashboards.get(key)?.proc === proc) dashboards.delete(key);
     controller.abort(
-      new Error(`Hermes dashboard exited during startup (${signal || code}).`),
+      new Error(`Koda dashboard exited during startup (${signal || code}).`),
     );
   });
 
@@ -810,7 +810,7 @@ async function startLocalDashboard(
       hasPrebuiltWebDist ? 45_000 : 180_000,
       controller.signal,
     );
-    if (shutdownStarted) throw new Error("Hermes Desktop is shutting down.");
+    if (shutdownStarted) throw new Error("Koda is shutting down.");
     await probeDashboardWebSocket(connection, 5_000, controller.signal);
   } catch (err) {
     if (dashboards.get(key)?.proc === proc) dashboards.delete(key);
@@ -837,7 +837,7 @@ async function startLocalDashboard(
       error:
         controller.signal.reason instanceof Error
           ? controller.signal.reason.message
-          : "Hermes dashboard exited during startup.",
+          : "Koda dashboard exited during startup.",
     };
   return { supported: true, running: true, connection, logPath };
 }

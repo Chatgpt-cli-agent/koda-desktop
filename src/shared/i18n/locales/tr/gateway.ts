@@ -13,9 +13,8 @@ export default {
   stopFailed: "Geçit durdurulamadı.",
   startExited: "Geçit başlatıldı, ancak hazır hale gelmeden önce tekrar durdu.",
   checkLog: "Geçit günlüğünü kontrol edin:",
-  gatewayHint: "Hermes'i Telegram, Discord, Slack ve diğer platformlara bağlar",
-  subtitle:
-    "Hermes Ajanının bağlanabileceği mesajlaşma platformlarını yönetin.",
+  gatewayHint: "Koda'i Telegram, Discord, Slack ve diğer platformlara bağlar",
+  subtitle: "Koda Ajanının bağlanabileceği mesajlaşma platformlarını yönetin.",
   refreshTooltip: "Platform durumunu yenile",
   refresh: "Yenile",
   configHint:

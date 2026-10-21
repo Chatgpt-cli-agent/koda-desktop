@@ -119,11 +119,11 @@ The default profile's Local API uses its explicitly configured `platforms.api_se
 
 ### Externally managed gateway controls
 
-Hermes One never claims to stop a multiplex gateway owned by a service or other process; its Stop action reports that the gateway must be managed by its owner.
+Koda Cloud never claims to stop a multiplex gateway owned by a service or other process; its Stop action reports that the gateway must be managed by its owner.
 
 ### Externally managed API keys
 
-An API key cannot be rotated in Hermes One while another process owns the live default gateway, because that process would keep using its old key until its own supervisor restarts it.
+An API key cannot be rotated in Koda Cloud while another process owns the live default gateway, because that process would keep using its old key until its own supervisor restarts it.
 
 ### Equivalent gateway home paths
 

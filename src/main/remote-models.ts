@@ -306,7 +306,7 @@ export async function remoteSetModelConfig(
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error(
-    `Remote Hermes dashboard did not switch to ${provider}/${model}; active model is ${last?.provider || "unknown"}/${last?.model || "unknown"}`,
+    `Remote Koda dashboard did not switch to ${provider}/${model}; active model is ${last?.provider || "unknown"}/${last?.model || "unknown"}`,
   );
 }
 
@@ -323,7 +323,7 @@ export async function remoteAddModel(
     timeoutMs: REMOTE_MODEL_LIBRARY_TIMEOUT_MS,
   });
   const saved = normalizeRemoteSavedModel(response, 0);
-  if (!saved) throw new Error("Remote Hermes returned an invalid model row.");
+  if (!saved) throw new Error("Remote Koda returned an invalid model row.");
   return saved;
 }
 

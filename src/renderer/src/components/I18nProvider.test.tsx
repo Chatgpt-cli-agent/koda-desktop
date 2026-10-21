@@ -66,9 +66,7 @@ describe("I18nProvider", () => {
       );
     });
 
-    expect(
-      await screen.findByText("Welcome to Hermes One"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Welcome to Koda")).toBeInTheDocument();
   });
 
   it("renders Spanish translations after switching locale", async () => {
@@ -85,7 +83,7 @@ describe("I18nProvider", () => {
     });
 
     expect(setLocale).toHaveBeenLastCalledWith("es");
-    expect(await screen.findByText("Bienvenido a Hermes")).toBeInTheDocument();
+    expect(await screen.findByText("Bienvenido a Koda")).toBeInTheDocument();
   });
 
   it("does not overwrite the main-process locale with the startup fallback", async () => {
@@ -111,7 +109,7 @@ describe("I18nProvider", () => {
     });
 
     expect(setLocale).toHaveBeenLastCalledWith("es");
-    expect(await screen.findByText("Bienvenido a Hermes")).toBeInTheDocument();
+    expect(await screen.findByText("Bienvenido a Koda")).toBeInTheDocument();
   });
 
   // @lat: [[rtl-chat#Persian locale#Persisted Persian startup]]
@@ -129,6 +127,6 @@ describe("I18nProvider", () => {
     expect(document.documentElement).toHaveAttribute("dir", "rtl");
     expect(document.documentElement).toHaveAttribute("lang", "fa");
     expect(localStorage.getItem("hermes-locale")).toBe("fa");
-    expect(screen.getByText("Welcome to Hermes One")).toBeInTheDocument();
+    expect(screen.getByText("Welcome to Koda")).toBeInTheDocument();
   });
 });

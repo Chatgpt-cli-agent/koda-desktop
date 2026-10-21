@@ -3,7 +3,7 @@ import { useI18n } from "../../components/useI18n";
 import type { ClarifyMessage } from "./types";
 
 /**
- * Sentinel answer for "skip — let Hermes decide". Mirrors the gateway's
+ * Sentinel answer for "skip — let the agent decide". Mirrors the gateway's
  * autonomous-proceed convention: an empty answer tells the agent to choose a
  * reasonable default rather than block.
  */

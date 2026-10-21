@@ -1,14 +1,14 @@
-appId: com.nousresearch.hermes
-# productName is now space-free so the Linux .deb installs to
-# /opt/HermesOne/hermes-agent instead of `/opt/Hermes One/hermes-agent`.
+appId: com.koda.desktop
+# productName is space-free so the Linux .deb installs to
+# /opt/Koda/koda-desktop instead of `/opt/Koda One/koda-desktop`.
 # The previous path crashed Chromium's zygote on launch because
 # argv[0] containing whitespace is forwarded verbatim into execvp and
 # fails with EINVAL (SIGTRAP). See issue #877.
 #
-# The user-facing display name "Hermes One" is restored through
+# The user-facing display name "Koda" is restored through
 # `linux.desktop.entry.Name`, `nsis.shortcutName`, `nsis.uninstallDisplayName`,
 # and `mac.extendInfo.CFBundleDisplayName` so end users see no change.
-productName: HermesOne
+productName: Koda
 directories:
   buildResources: build
 files:
@@ -22,7 +22,7 @@ asarUnpack:
   - resources/**
   - node_modules/better-sqlite3/prebuilds/*.node
 win:
-  executableName: hermes-agent
+  executableName: koda
   target:
     - nsis
     - portable
@@ -32,14 +32,16 @@ nsis:
   artifactName: ${name}-${version}-setup.${ext}
   # Restore user-facing installer / shortcut name now that productName is
   # space-free.
-  shortcutName: Hermes One
-  uninstallDisplayName: Hermes One
+  shortcutName: Koda
+  uninstallDisplayName: Koda
   createDesktopShortcut: always
   oneClick: true
   perMachine: false
 mac:
-  # Keep the existing bundle/executable name used by updates and release checks.
-  executableName: Hermes One
+  # The bundle is "Koda.app" and the binary inside it is "Koda". The
+  # auto-updater resolves a release by artifact name, and the artifact names
+  # come from package.json's `name` — koda-desktop, not hermes-desktop.
+  executableName: Koda
   artifactName: ${name}-${version}-${arch}-${os}.${ext}
   icon: build/icon.icns
   entitlements: build/entitlements.mac.plist
@@ -49,7 +51,7 @@ mac:
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-    - CFBundleDisplayName: Hermes One
+    - CFBundleDisplayName: Koda
   hardenedRuntime: true
   gatekeeperAssess: false
   notarize: true
@@ -62,19 +64,18 @@ linux:
     - deb
     - rpm
   maintainer: electronjs.org
-  vendor: Nous Research
+  vendor: Koda
   category: Utility
-  synopsis: Self-improving AI assistant desktop app
+  synopsis: Koda autonomous AI agent desktop app
   description: >-
-    Hermes One is a native desktop app for installing, configuring, and chatting
-    with Hermes Agent — a self-improving AI assistant with tool use, multi-platform
-    messaging, and a closed learning loop.
+    Koda is an autonomous AI agent desktop application powered by the Koda Agent
+    execution harness.
   # Override the user-facing .desktop display name (default would now be
-  # "HermesOne" since productName is space-free). See issue #877.
+  # "Koda" since productName is space-free). See issue #877.
   desktop:
     entry:
-      Name: Hermes One
-      Comment: Hermes One — self-improving AI assistant desktop app
+      Name: Koda
+      Comment: Koda — autonomous AI agent desktop app
 appImage:
   artifactName: ${name}-${version}-${arch}.${ext}
 # Keep Electron Builder's default DEB/RPM hooks: they install compatible
@@ -84,5 +85,10 @@ rpm:
 npmRebuild: false
 publish:
   provider: github
-  owner: fathah
+  # The auto-updater feed is Koda's OWN releases, never upstream's. If it
+  # pointed at fathah/hermes-desktop, an upstream release would install a
+  # upstream build straight over this install — reintroducing the old
+  # brand and identity. Upstream still reaches Koda the safe way: merge
+  # upstream into this repo, then cut a Koda release from the result.
+  owner: Chatgpt-cli-agent
   repo: hermes-desktop

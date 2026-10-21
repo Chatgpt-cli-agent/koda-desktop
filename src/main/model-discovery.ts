@@ -145,7 +145,7 @@ async function discoverOAuthModels(provider: string): Promise<string[]> {
  * stored in `auth.json`, and return the IDs of models whose prompt +
  * completion pricing are both zero — i.e. the free tier. Issue #367
  * found that a free-subscription user picking the default Nous model
- * (Hermes-4-405B) gets a billing error. Surfacing free models in the
+ * (the engine-4-405B) gets a billing error. Surfacing free models in the
  * autocomplete makes the right choice discoverable.
  *
  * Returns [] on any failure (no token, no inference_base_url, HTTP

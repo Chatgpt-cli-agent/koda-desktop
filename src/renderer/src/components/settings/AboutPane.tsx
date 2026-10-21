@@ -14,7 +14,7 @@ import {
 import { useI18n } from "../useI18n";
 import BrandLogo from "../common/BrandLogo";
 import { Toggle } from "../common/Toggle";
-import hermesIcon from "../../assets/hermes-icon.svg";
+import kodaIcon from "../../assets/koda/koda-icon.svg";
 import pythonLogo from "../../assets/logos/python.svg";
 import openaiLogo from "../../assets/logos/openai.svg";
 import { ConfigHealth } from "../../screens/Settings/ConfigHealth";
@@ -22,7 +22,7 @@ import { useSettings } from "./SettingsDataContext";
 
 /**
  * About & Updates. Two clearly-separated cards for the two distinct update
- * channels: the **Hermes Agent** (Python engine) and **Hermes Desktop** (this
+ * channels: the **Koda Agent** (Python engine) and **Koda Desktop** (this
  * Electron app). They ship independently, so each owns its own update action.
  */
 export default function AboutPane({
@@ -80,7 +80,7 @@ export default function AboutPane({
         showStatus={showHealthStatus}
       />
 
-      {/* ── Hermes Agent (engine) ─────────────────────────────── */}
+      {/* ── Koda Agent (engine) ─────────────────────────────── */}
       <section className="settings-card">
         <header className="settings-card-head">
           <span className="settings-card-icon">
@@ -88,7 +88,7 @@ export default function AboutPane({
           </span>
           <div className="settings-card-headtext">
             <div className="settings-card-title">
-              {t("settings.sections.hermesAgent")}
+              {t("settings.sections.kodaAgent")}
             </div>
             <div className="settings-card-sub">
               {t("settings.agentSubtitle")}
@@ -157,7 +157,7 @@ export default function AboutPane({
           </div>
 
           {engineHasUpdate && (
-            <div className="settings-hermes-update-badge">
+            <div className="settings-koda-update-badge">
               {parsedVersion?.updateInfo ||
                 `Desktop API v${agentCapabilities?.desktopContract ?? 0} is behind recommended v${agentCapabilities?.recommendedDesktopContract}.`}
             </div>
@@ -173,7 +173,7 @@ export default function AboutPane({
                   canUpdateEngine
                     ? undefined
                     : agentCapabilities?.updateCommand ||
-                      "Update this Hermes Agent on its remote host."
+                      "Update this Koda on its remote host."
                 }
               >
                 {updating ? (
@@ -215,33 +215,33 @@ export default function AboutPane({
           </div>
 
           {updating && agentUpdateProgress && (
-            <div className="settings-hermes-result" role="status">
+            <div className="settings-koda-result" role="status">
               <strong>{agentUpdateProgress.title}</strong>
               <div>{agentUpdateProgress.detail}</div>
             </div>
           )}
           {updateResult && (
             <div
-              className={`settings-hermes-result ${updateResultType || "error"}`}
+              className={`settings-koda-result ${updateResultType || "error"}`}
             >
               {updateResult}
             </div>
           )}
           {doctorOutput && (
-            <pre className="settings-hermes-doctor">{doctorOutput}</pre>
+            <pre className="settings-koda-doctor">{doctorOutput}</pre>
           )}
           {dumpOutput && (
-            <pre className="settings-hermes-doctor">{dumpOutput}</pre>
+            <pre className="settings-koda-doctor">{dumpOutput}</pre>
           )}
         </div>
       </section>
 
-      {/* ── Hermes Desktop (this app) ─────────────────────────── */}
+      {/* ── Koda Desktop (this app) ─────────────────────────── */}
       <section className="settings-card">
         <header className="settings-card-head">
           <span className="settings-card-icon">
             <img
-              src={hermesIcon}
+              src={kodaIcon}
               width={20}
               height={20}
               className="brand-logo brand-logo--match-theme"
@@ -303,7 +303,7 @@ export default function AboutPane({
             </p>
           )}
           {desktopUpdateError && (
-            <div className="settings-hermes-result error">
+            <div className="settings-koda-result error">
               {desktopUpdateError}
             </div>
           )}

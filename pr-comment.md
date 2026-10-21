@@ -38,4 +38,4 @@ For immediate local recovery from the Office lag on macOS:
 rm "$HOME/Library/Application Support/hermes-desktop/disable-gpu.flag"
 ```
 
-Then relaunch Hermes One.
+Then relaunch Koda Desktop.

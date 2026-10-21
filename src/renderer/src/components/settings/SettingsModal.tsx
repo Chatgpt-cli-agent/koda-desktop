@@ -39,7 +39,7 @@ export type SettingsSection =
   | "community"
   | "logs";
 
-type NavGroup = "general" | "hermes";
+type NavGroup = "general" | "koda";
 
 /** Left-nav sections, grouped. Each renders into the right-hand content pane. */
 const SETTINGS_NAV: ReadonlyArray<{
@@ -90,15 +90,15 @@ const SETTINGS_NAV: ReadonlyArray<{
     labelKey: "settings.nav.data",
     Icon: Database,
   },
-  { group: "hermes", id: "about", labelKey: "settings.nav.about", Icon: Info },
+  { group: "koda", id: "about", labelKey: "settings.nav.about", Icon: Info },
   {
-    group: "hermes",
+    group: "koda",
     id: "community",
     labelKey: "settings.nav.community",
     Icon: Users,
   },
   {
-    group: "hermes",
+    group: "koda",
     id: "logs",
     labelKey: "settings.nav.logs",
     Icon: FileText,
@@ -107,14 +107,17 @@ const SETTINGS_NAV: ReadonlyArray<{
 
 const NAV_GROUP_ORDER: { id: NavGroup; labelKey: string }[] = [
   { id: "general", labelKey: "settings.nav.groups.general" },
-  { id: "hermes", labelKey: "settings.nav.groups.hermes" },
+  { id: "koda", labelKey: "settings.nav.groups.koda" },
 ];
 
 /** Map a `/settings <name>` argument (and legacy anchor names) to a nav id. */
 function resolveSection(name?: string): SettingsSection {
   const key = typeof name === "string" ? name.trim().toLowerCase() : "";
-  // Configuration health lives at the top of About & Updates.
-  if (key === "hermesagent" || key === "diagnose") return "about";
+  // Configuration health lives at the top of About & Updates. "hermesagent" is
+  // the pre-rebrand anchor name and stays resolvable so an old bookmark still
+  // lands on the right pane.
+  if (key === "kodaagent" || key === "hermesagent" || key === "diagnose")
+    return "about";
   // Network merged into Connection — keep the old `/settings network` working.
   if (key === "network") return "connection";
   const match = SETTINGS_NAV.find((s) => s.id === key);

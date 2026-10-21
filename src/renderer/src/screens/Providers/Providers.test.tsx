@@ -5,7 +5,7 @@ vi.mock("../../components/useI18n", () => ({
 }));
 vi.mock("../../components/common/BrandLogo", () => ({ default: () => null }));
 vi.mock("../../components/OAuthLoginModal", () => ({ default: () => null }));
-vi.mock("../../components/HermesAccountModal", () => ({ default: () => null }));
+vi.mock("../../components/KodaAccountModal", () => ({ default: () => null }));
 vi.mock("../../components/RegistryBrowserModal", () => ({
   default: () => null,
 }));

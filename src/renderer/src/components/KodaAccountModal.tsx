@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Check, Copy } from "../assets/icons";
 import { useI18n } from "./useI18n";
-import HermesLogo from "./common/HermesLogo";
+import KodaLogo from "./common/KodaLogo";
 import type {
   DeviceCodeInfo,
   HermesAccountUser,
 } from "../../../shared/account";
 
-interface HermesAccountModalProps {
+interface KodaAccountModalProps {
   profile?: string;
   onClose: () => void;
   onSignedIn: (user: HermesAccountUser) => void;
@@ -16,16 +16,16 @@ interface HermesAccountModalProps {
 type Status = "running" | "success" | "error";
 
 /**
- * Drives the Hermes One account device-login (RFC 8628). The main process
+ * Drives the Koda Cloud account device-login (RFC 8628). The main process
  * requests a code, opens the browser to the approval page, and polls for the
  * token; this modal shows the user_code to confirm — with a loader spinning
  * around the brand mark while it waits — and reports the result.
  */
-function HermesAccountModal({
+function KodaAccountModal({
   profile,
   onClose,
   onSignedIn,
-}: HermesAccountModalProps): React.JSX.Element {
+}: KodaAccountModalProps): React.JSX.Element {
   const { t } = useI18n();
   const [status, setStatus] = useState<Status>("running");
   const [error, setError] = useState("");
@@ -102,45 +102,45 @@ function HermesAccountModal({
 
   return (
     <div className="models-modal-overlay" onClick={handleClose}>
-      <div className="hermes-signin-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="koda-signin-modal" onClick={(e) => e.stopPropagation()}>
         <button
-          className="hermes-signin-close"
+          className="koda-signin-close"
           onClick={handleClose}
           aria-label={t("common.close")}
         >
           <X size={18} />
         </button>
 
-        <div className="hermes-signin-emblem">
+        <div className="koda-signin-emblem">
           {status === "running" && (
-            <span className="hermes-signin-ring" aria-hidden="true" />
+            <span className="koda-signin-ring" aria-hidden="true" />
           )}
           {status === "success" ? (
-            <span className="hermes-signin-bolt">
+            <span className="koda-signin-bolt">
               <Check size={26} />
             </span>
           ) : status === "error" ? (
-            <span className="hermes-signin-bolt">
+            <span className="koda-signin-bolt">
               <X size={26} />
             </span>
           ) : (
             // The mark asset is a black tile with padding; clip it to a disc and
             // scale it up so the mark fills the emblem with no surrounding gap.
-            <span className="hermes-signin-mark">
-              <HermesLogo size={92} />
+            <span className="koda-signin-mark">
+              <KodaLogo size={92} />
             </span>
           )}
         </div>
 
-        <h2 className="hermes-signin-title">
+        <h2 className="koda-signin-title">
           {t("providers.hermesAccount.modalTitle")}
         </h2>
-        <p className="hermes-signin-subtitle">{subtitle}</p>
+        <p className="koda-signin-subtitle">{subtitle}</p>
 
         {status === "running" && code && (
           <>
-            <div className="hermes-signin-code">{code.userCode}</div>
-            <button className="hermes-signin-copy" onClick={copyCode}>
+            <div className="koda-signin-code">{code.userCode}</div>
+            <button className="koda-signin-copy" onClick={copyCode}>
               {copied ? <Check size={15} /> : <Copy size={15} />}
               <span>
                 {copied
@@ -151,9 +151,9 @@ function HermesAccountModal({
           </>
         )}
 
-        <div className="hermes-signin-footer">
-          <span className="hermes-signin-footer-status">{footerStatus}</span>
-          <button className="hermes-signin-cancel" onClick={handleClose}>
+        <div className="koda-signin-footer">
+          <span className="koda-signin-footer-status">{footerStatus}</span>
+          <button className="koda-signin-cancel" onClick={handleClose}>
             {status === "running" ? t("common.cancel") : t("common.close")}
           </button>
         </div>
@@ -162,4 +162,4 @@ function HermesAccountModal({
   );
 }
 
-export default HermesAccountModal;
+export default KodaAccountModal;

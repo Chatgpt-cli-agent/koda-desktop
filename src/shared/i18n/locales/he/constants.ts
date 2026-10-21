@@ -156,7 +156,7 @@ export default {
   matrixHomeserver: "שרת בית של Matrix",
   matrixHomeHint: "לדוגמה: https://matrix.org",
   matrixUserId: "מזהה משתמש Matrix",
-  matrixUserHint: "לדוגמה: @hermes:matrix.org",
+  matrixUserHint: "לדוגמה: @koda:matrix.org",
   matrixAccessToken: "אסימון גישה של Matrix",
   matrixTokenHint: "אסימון גישה עבור התחברות ל-Matrix",
   mattermostUrl: "כתובת Mattermost",

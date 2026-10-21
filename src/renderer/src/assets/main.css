@@ -787,7 +787,7 @@ body:has(.shell-vibrant),
 /* ========================================================================
    ONBOARDING HERO (shared) — Welcome / Install / Setup
    A dark, cinematic branded chrome: aurora wash, twinkling starfield, and a
-   Hermes emblem. On the intro screen the emblem draws itself big in the centre,
+   Koda glyph. On the intro screen the emblem draws itself big in the centre,
    then flies up + shrinks into its slot before the eyebrow / title / content
    cascade in. Non-intro screens skip straight to the settled state.
    Driven by <OnboardHero>; phase lives on [data-phase] (draw|settle|done).
@@ -931,7 +931,6 @@ body:has(.shell-vibrant),
   position: relative;
   width: 84px;
   height: 84px;
-  fill: #f2f4fa;
   filter: drop-shadow(0 4px 22px rgba(120, 150, 255, 0.35));
 }
 
@@ -977,40 +976,23 @@ body:has(.shell-vibrant),
 }
 
 .onboard-fly path {
-  fill: #f2f4fa;
+  fill: url(#kodaOnboardGlyphFly);
   fill-opacity: 0;
   stroke: #dfe6ff;
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
 }
 
-.onboard-fp1 {
-  stroke-width: 13;
+/* The Koda glyph is a single path in a 286-unit viewBox, so the draw
+   animation is one continuous stroke rather than the old four-part sequence.
+   The stroke width is scaled to the new viewBox (3.6/286 keeps the same
+   relative weight the old 13/1031 had). */
+.onboard-glyph {
+  stroke-width: 3.6;
   animation:
     onboardDraw 1.05s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both,
     onboardFill 0.7s ease 1.15s both,
     onboardStrokeOut 0.5s ease 1.5s both;
-}
-.onboard-fp2 {
-  stroke-width: 13;
-  animation:
-    onboardDraw 1.05s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both,
-    onboardFill 0.7s ease 1.25s both,
-    onboardStrokeOut 0.5s ease 1.6s both;
-}
-.onboard-fp3 {
-  stroke-width: 11;
-  animation:
-    onboardDraw 1.05s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both,
-    onboardFill 0.7s ease 1.4s both,
-    onboardStrokeOut 0.5s ease 1.75s both;
-}
-.onboard-fp4 {
-  stroke-width: 11;
-  animation:
-    onboardDraw 1.05s cubic-bezier(0.4, 0, 0.2, 1) 0.75s both,
-    onboardFill 0.7s ease 1.5s both,
-    onboardStrokeOut 0.5s ease 1.85s both;
 }
 
 /* ---- Eyebrow + title ---- */
@@ -5012,18 +4994,12 @@ body:has(.shell-vibrant),
   margin-bottom: 4px;
 }
 
-/* The wordmark SVG ships with a black fill; recolour it to white via masking so
-   it reads on the black circle, regardless of the source artwork's colours. */
+/* The Koda mark carries its own magenta→cyan gradient, so it is drawn as an
+   image rather than masked — masking would flatten it to a single colour. */
 .chat-empty-logo {
-  width: 52px;
-  height: 40px;
-  background-color: #fff;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
 }
 
 .chat-empty-text {
@@ -9374,7 +9350,7 @@ body:has(.shell-vibrant),
 }
 
 /* Signed-in identity card: avatar · name/email/status · sign-out. */
-.hermes-account-card {
+.koda-account-card {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -9384,7 +9360,7 @@ body:has(.shell-vibrant),
   border-radius: var(--radius-lg);
 }
 
-.hermes-account-avatar {
+.koda-account-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -9392,7 +9368,7 @@ body:has(.shell-vibrant),
   flex-shrink: 0;
 }
 
-.hermes-account-avatar-letter {
+.koda-account-avatar-letter {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9402,7 +9378,7 @@ body:has(.shell-vibrant),
   background: linear-gradient(135deg, var(--accent-hover), var(--accent));
 }
 
-.hermes-account-who {
+.koda-account-who {
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -9411,7 +9387,7 @@ body:has(.shell-vibrant),
   margin-right: auto;
 }
 
-.hermes-account-name {
+.koda-account-name {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
@@ -9420,7 +9396,7 @@ body:has(.shell-vibrant),
   white-space: nowrap;
 }
 
-.hermes-account-email {
+.koda-account-email {
   font-size: 12px;
   color: var(--text-muted);
   overflow: hidden;
@@ -9428,7 +9404,7 @@ body:has(.shell-vibrant),
   white-space: nowrap;
 }
 
-.hermes-account-state {
+.koda-account-state {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -9438,7 +9414,7 @@ body:has(.shell-vibrant),
   color: var(--success);
 }
 
-.hermes-account-dot {
+.koda-account-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -9447,14 +9423,14 @@ body:has(.shell-vibrant),
 }
 
 /* Status as two icon chips: Connected (green) + Sync on (neutral). */
-.hermes-account-chips {
+.koda-account-chips {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   margin-top: 6px;
 }
-.hermes-account-chip {
+.koda-account-chip {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -9465,10 +9441,10 @@ body:has(.shell-vibrant),
   color: var(--text-secondary);
   background: color-mix(in srgb, var(--text-primary) 8%, transparent);
 }
-.hermes-account-chip svg {
+.koda-account-chip svg {
   flex-shrink: 0;
 }
-.hermes-account-chip.is-connected {
+.koda-account-chip.is-connected {
   color: var(--success);
   background: color-mix(in srgb, var(--success) 15%, transparent);
 }
@@ -9476,7 +9452,7 @@ body:has(.shell-vibrant),
 /* Sign-in modal — device-login (RFC 8628) with a loader spinning around the
    brand mark while awaiting browser approval. Uses .models-modal-overlay for
    the backdrop. Theme-aware; matches the dark mock in the default theme. */
-.hermes-signin-modal {
+.koda-signin-modal {
   position: relative;
   width: 440px;
   max-width: 92vw;
@@ -9489,7 +9465,7 @@ body:has(.shell-vibrant),
   text-align: center;
 }
 
-.hermes-signin-close {
+.koda-signin-close {
   position: absolute;
   top: 14px;
   right: 14px;
@@ -9504,12 +9480,12 @@ body:has(.shell-vibrant),
   cursor: pointer;
   border-radius: 8px;
 }
-.hermes-signin-close:hover {
+.koda-signin-close:hover {
   color: var(--text-primary);
   background: var(--bg-hover);
 }
 
-.hermes-signin-emblem {
+.koda-signin-emblem {
   position: relative;
   width: 84px;
   height: 84px;
@@ -9521,27 +9497,27 @@ body:has(.shell-vibrant),
   border: 1.5px solid var(--border-bright);
 }
 /* The spinning bright arc; the faint full ring is the emblem's own border. */
-.hermes-signin-ring {
+.koda-signin-ring {
   position: absolute;
   inset: -1.5px;
   border-radius: 9999px;
   border: 1.5px solid transparent;
   border-top-color: var(--text-primary);
-  animation: hermes-signin-spin 0.9s linear infinite;
+  animation: koda-signin-spin 0.9s linear infinite;
 }
-@keyframes hermes-signin-spin {
+@keyframes koda-signin-spin {
   to {
     transform: rotate(360deg);
   }
 }
 /* Success / error glyphs, tinted to the foreground colour. */
-.hermes-signin-bolt {
+.koda-signin-bolt {
   display: flex;
   color: var(--text-primary);
 }
 /* The brand mark clipped to a disc; the logo is sized larger than this box so
    the asset's built-in padding is cropped and the mark fills the emblem. */
-.hermes-signin-mark {
+.koda-signin-mark {
   width: 76px;
   height: 76px;
   border-radius: 9999px;
@@ -9550,18 +9526,18 @@ body:has(.shell-vibrant),
   align-items: center;
   justify-content: center;
 }
-.hermes-signin-mark img {
+.koda-signin-mark img {
   border-radius: 0;
 }
 
-.hermes-signin-title {
+.koda-signin-title {
   margin: 24px 0 0;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--text-primary);
 }
-.hermes-signin-subtitle {
+.koda-signin-subtitle {
   margin: 10px auto 0;
   max-width: 300px;
   font-size: 14px;
@@ -9569,7 +9545,7 @@ body:has(.shell-vibrant),
   color: var(--text-muted);
 }
 
-.hermes-signin-code {
+.koda-signin-code {
   margin-top: 26px;
   font-size: 38px;
   font-weight: 700;
@@ -9577,7 +9553,7 @@ body:has(.shell-vibrant),
   color: var(--text-primary);
   user-select: all;
 }
-.hermes-signin-copy {
+.koda-signin-copy {
   margin: 16px auto 0;
   display: inline-flex;
   align-items: center;
@@ -9588,11 +9564,11 @@ body:has(.shell-vibrant),
   font-size: 14px;
   cursor: pointer;
 }
-.hermes-signin-copy:hover {
+.koda-signin-copy:hover {
   color: var(--text-primary);
 }
 
-.hermes-signin-footer {
+.koda-signin-footer {
   margin: 30px -32px 0;
   padding: 16px 24px;
   border-top: 1px solid var(--border);
@@ -9600,11 +9576,11 @@ body:has(.shell-vibrant),
   align-items: center;
   justify-content: space-between;
 }
-.hermes-signin-footer-status {
+.koda-signin-footer-status {
   font-size: 13px;
   color: var(--text-muted);
 }
-.hermes-signin-cancel {
+.koda-signin-cancel {
   border: none;
   background: none;
   color: var(--text-primary);
@@ -9613,7 +9589,7 @@ body:has(.shell-vibrant),
   cursor: pointer;
   padding: 4px 8px;
 }
-.hermes-signin-cancel:hover {
+.koda-signin-cancel:hover {
   opacity: 0.8;
 }
 
@@ -9707,25 +9683,25 @@ body:has(.shell-vibrant),
   }
 }
 
-.settings-hermes-info {
+.settings-koda-info {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.settings-hermes-row {
+.settings-koda-row {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
 }
 
-.settings-hermes-detail {
+.settings-koda-detail {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.settings-hermes-label {
+.settings-koda-label {
   font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
@@ -9733,18 +9709,18 @@ body:has(.shell-vibrant),
   letter-spacing: 0.5px;
 }
 
-.settings-hermes-value {
+.settings-koda-value {
   font-size: 13px;
   color: var(--text-primary);
 }
 
-.settings-hermes-path {
+.settings-koda-path {
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-secondary);
 }
 
-.settings-hermes-update-badge {
+.settings-koda-update-badge {
   font-size: 12px;
   color: var(--warning);
   background: rgba(245, 158, 11, 0.1);
@@ -9753,23 +9729,23 @@ body:has(.shell-vibrant),
   width: fit-content;
 }
 
-.settings-hermes-actions {
+.settings-koda-actions {
   display: flex;
   gap: 8px;
 }
 
-.settings-hermes-result {
+.settings-koda-result {
   font-size: 12px;
   padding: 6px 10px;
   border-radius: var(--radius);
 }
 
-.settings-hermes-result.success {
+.settings-koda-result.success {
   color: var(--success);
   background: var(--success-bg);
 }
 
-.settings-hermes-result.error {
+.settings-koda-result.error {
   color: var(--error);
   background: var(--error-bg);
 }
@@ -9862,7 +9838,7 @@ body:has(.shell-vibrant),
   gap: 8px;
 }
 
-.settings-hermes-doctor {
+.settings-koda-doctor {
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.5;
@@ -11835,7 +11811,7 @@ body:has(.shell-vibrant),
 }
 
 /* Cards — visually separate distinct concerns within a pane (e.g. the Hermes
-   Agent vs Hermes Desktop update channels in About). */
+   Agent vs Koda Desktop update channels in About). */
 .settings-card {
   display: flex;
   flex-direction: column;
@@ -16511,57 +16487,6 @@ body:has(.shell-vibrant),
   font-size: 12px;
 }
 
-/* ── Follow-us-on-X modal ── */
-.follow-us-modal {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-lg);
-  width: 380px;
-  max-width: 90vw;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-}
-
-.follow-us-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.follow-us-icon-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent-text) 10%, transparent);
-}
-
-.follow-us-x-icon {
-  color: var(--accent-text);
-}
-
-.follow-us-description {
-  font-size: 14px;
-  color: var(--text-secondary);
-  text-align: center;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.follow-us-footer {
-  justify-content: space-between;
-}
-
-.follow-us-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
 .models-toolbar {
   display: flex;
   align-items: center;
@@ -17080,7 +17005,7 @@ body:has(.shell-vibrant),
 .splash-logo {
   position: relative;
   z-index: 1;
-  width: 600px;
+  width: 420px;
   max-width: 60%;
   opacity: 0;
   animation: splashFadeIn 1.1s ease-out forwards;
@@ -18135,11 +18060,10 @@ body:has(.shell-vibrant),
    over each modal's own bg/border/box-shadow without touching their layout. */
 .sidebar-session-delete-modal,
 .sessions-modal,
-.hermes-signin-modal,
+.koda-signin-modal,
 .profile-wallet-modal,
 .profile-wallet-delete-modal,
 .agents-create-modal,
-.follow-us-modal,
 .discover-modal,
 .schedules-modal {
   background: color-mix(in srgb, var(--bg-secondary) 97%, transparent);

@@ -1,7 +1,7 @@
 export default {
   title: "Memory",
   subtitle:
-    "What Hermes remembers about you and your environment across sessions.",
+    "What Koda remembers about you and your environment across sessions.",
   sessions: "Sessions",
   messages: "Messages",
   memories: "Memories",
@@ -22,15 +22,14 @@ export default {
   configuredProvider: "Configured provider",
   noProvidersFound: "No memory providers found in this installation.",
   openProviderWebsite: "Open provider website",
-  noMemoriesYet:
-    "No memories yet. Hermes will save important facts as you chat.",
+  noMemoriesYet: "No memories yet. Koda will save important facts as you chat.",
   noMemoryEntries: "No memory entries yet.",
   noToolsetsFound: "No toolsets found.",
   addManuallyHint: "You can also add memories manually using the button above.",
   userProfileHint:
-    "Tell Hermes about yourself — name, role, preferences, communication style.",
+    "Tell Koda about yourself — name, role, preferences, communication style.",
   providersHint:
-    "Pluggable memory providers give Hermes advanced long-term memory. Built-in memory (above) is always active alongside the selected provider.",
+    "Pluggable memory providers give Koda advanced long-term memory. Built-in memory (above) is always active alongside the selected provider.",
   providersHintActive: "Active: <strong>{{provider}}</strong>",
   providersHintInactive: "No external provider active — using built-in only.",
   enterEnvKey: "Enter {{key}}",

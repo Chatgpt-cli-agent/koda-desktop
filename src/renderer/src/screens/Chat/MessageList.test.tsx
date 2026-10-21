@@ -22,7 +22,7 @@ vi.mock("../../components/useI18n", () => ({
 // Row renderers are exercised by their own tests; stub them so this file
 // tests the windowing/grouping plan only.
 vi.mock("./MessageRow", () => ({
-  HermesAvatar: () => <div data-testid="avatar" />,
+  KodaAvatar: () => <div data-testid="avatar" />,
   MessageRow: ({
     msg,
     isLast,

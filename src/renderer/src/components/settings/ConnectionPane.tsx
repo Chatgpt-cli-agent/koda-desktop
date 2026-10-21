@@ -305,7 +305,7 @@ export default function ConnectionPane(): React.JSX.Element {
                   ? t("settings.remoteOAuthConnected")
                   : t("settings.remoteOAuthHint")}
               </div>
-              <div className="settings-hermes-actions">
+              <div className="settings-koda-actions">
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -383,7 +383,7 @@ export default function ConnectionPane(): React.JSX.Element {
               </div>
             )}
           </div>
-          <div className="settings-hermes-actions">
+          <div className="settings-koda-actions">
             <button
               className="btn btn-secondary"
               onClick={handleTestConnection}
@@ -502,7 +502,7 @@ export default function ConnectionPane(): React.JSX.Element {
               ))}
             </div>
             <div className="settings-field-hint">
-              Auto tries the Hermes dashboard WebSocket through the SSH tunnel
+              Auto tries the Koda dashboard WebSocket through the SSH tunnel
               first, then falls back to legacy SSH chat. Dashboard forces the
               upstream dashboard path; Legacy keeps the older SSH transport.
             </div>
@@ -516,7 +516,7 @@ export default function ConnectionPane(): React.JSX.Element {
               </div>
             )}
           </div>
-          <div className="settings-hermes-actions">
+          <div className="settings-koda-actions">
             <button
               className="btn btn-secondary"
               onClick={handleTestConnection}

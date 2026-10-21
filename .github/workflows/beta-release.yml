@@ -316,7 +316,7 @@ jobs:
             .readdirSync(artifactsDir)
             .filter(
               (name) =>
-                name.startsWith(`hermes-desktop-${version}-`) &&
+                name.startsWith(`koda-desktop-${version}-`) &&
                 name.endsWith("-mac.zip"),
             )
             .sort((a, b) => {
@@ -371,7 +371,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
-          name: Hermes Desktop ${{ needs.prepare.outputs.tag }} (beta)
+          name: Koda Desktop ${{ needs.prepare.outputs.tag }} (beta)
           prerelease: true
           generate_release_notes: true
           files: |

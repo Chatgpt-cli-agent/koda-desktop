@@ -1,4 +1,4 @@
-// Isolated visual fixture: real React screen, synthetic IPC data, no Hermes launch.
+// Isolated visual fixture: real React screen, synthetic IPC data, no the engine launch.
 import { createRoot } from "react-dom/client";
 import BotGroups from "../../src/renderer/src/screens/BotGroups/BotGroups";
 import { I18nProvider } from "../../src/renderer/src/components/I18nProvider";

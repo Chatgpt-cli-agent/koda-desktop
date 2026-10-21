@@ -1,4 +1,4 @@
-/** Presentation contract for Hermes groups protocol v2. Hermes owns all execution. */
+/** Presentation contract for the engine's groups protocol v2. the engine owns all execution. */
 import { PROFILE_NAME_RE } from "./profile-name";
 
 export interface BotGroupMember {
@@ -209,7 +209,7 @@ export function validateBotGroupRequest(
     const payload = object(params.payload, ["text", "thread_id"]);
     text(payload.text, "text", 32000);
     if (new TextEncoder().encode(payload.text).byteLength > 65536)
-      throw new Error("Message exceeds the Hermes 64 KiB UTF-8 limit.");
+      throw new Error("Message exceeds the Koda 64 KiB UTF-8 limit.");
     identifier(payload.thread_id, "thread_id");
   }
   if (operation === "approve") {

@@ -1,7 +1,7 @@
 # Remote Access Lab
 
-This lab creates a disposable remote Hermes target for the sandboxed Hermes One instance without
-touching the normal Hermes One worktree, config, or database.
+This lab creates a disposable remote Koda target for the sandboxed Koda Desktop instance without
+touching the normal Koda Desktop worktree, config, or database.
 
 ## Shape
 
@@ -9,12 +9,12 @@ touching the normal Hermes One worktree, config, or database.
 - Containers are named `hermes-two-remote-lab-*`.
 - The desktop connects to one URL: `http://127.0.0.1:19080`.
 - A small nginx proxy routes:
-  - `/api/*` and `/api/ws` to the Hermes dashboard service in the agent container.
+  - `/api/*` and `/api/ws` to the Koda dashboard service in the agent container.
   - `/v1/*` to the OpenAI-compatible API server in the same agent container.
 - One disposable token is used for both:
   - `X-Hermes-Session-Token` dashboard auth.
   - `Authorization: Bearer ...` legacy API auth.
-- The Hermes Agent image is built from the bundled checkout at
+- The Koda Agent image is built from the bundled checkout at
   `.sandbox/hermes-home/hermes-agent` into `hermes-two-remote-lab-agent:local`,
   because the public `nousresearch/hermes-agent:latest` image can lag the
   bundled dashboard auth contract.
@@ -26,7 +26,7 @@ touching the normal Hermes One worktree, config, or database.
   should not rely on access to connecting-host resources.
 - Remote-generated images should be copied into `/opt/data/images` and surfaced
   as `MEDIA:/opt/data/images/<file>.png` when possible. That path is under the
-  Hermes home media roots exposed by the upstream dashboard `/api/media`
+  Koda home media roots exposed by the upstream dashboard `/api/media`
   endpoint.
 - If the copied config has an `OPENROUTER_API_KEY`, the lab pins
   `auxiliary.vision` to OpenRouter with `google/gemini-3-flash-preview`. This
@@ -38,7 +38,7 @@ touching the normal Hermes One worktree, config, or database.
 Run from the separate development worktree:
 
 ```powershell
-cd C:\Users\pmos6\Documents\Claude\Projects\Hermes-Desktop-reconcile
+cd C:\Users\pmos6\Documents\Claude\Projects\Koda-Desktop-reconcile
 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\remote-lab.ps1 init
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\remote-lab.ps1 up
@@ -75,12 +75,12 @@ wsl --shutdown
 
 Then reopen Docker Desktop and retry `scripts\remote-lab.ps1 up`.
 
-The first `up` may take several minutes because Docker builds the local Hermes
+The first `up` may take several minutes because Docker builds the local Koda
 Agent image. Later starts reuse the image cache.
 
-## Hermes One Sandbox Settings
+## Koda Desktop Sandbox Settings
 
-After `configure-desktop`, the sandboxed Hermes One instance is set to:
+After `configure-desktop`, the sandboxed Koda Desktop instance is set to:
 
 - Connection mode: Remote
 - Remote URL: `http://127.0.0.1:19080`

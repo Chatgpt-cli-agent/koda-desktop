@@ -1,10 +1,10 @@
 /**
  * Session title policy shared by main (state.db writes) and the renderer
- * (optimistic UI). Mirrors Hermes Agent: unique non-NULL titles, 100-char
+ * (optimistic UI). Mirrors Koda Agent: unique non-NULL titles, 100-char
  * max, whitespace collapsed.
  */
 
-/** Hermes Agent caps session titles at 100 characters (schema + CLI). */
+/** Koda Agent caps session titles at 100 characters (schema + CLI). */
 export const MAX_SESSION_TITLE_LENGTH = 100;
 
 /** Trim and collapse internal whitespace so UI and DB agree on the title. */

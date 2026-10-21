@@ -24,7 +24,7 @@ For local connections, [[src/main/model-discovery.ts#getModelContextWindow]] con
 
 An explicit `default` query reads both the root model library and root config, even when the Dashboard process runs from a named profile. Omitted or `current` queries retain that process's profile.
 
-The compatibility handler uses upstream's context-local Hermes home override for every explicit profile, including `default`, and resets it after successful or failed config reads. [[tests/hermes-agent-compat-profiles.test.ts]] executes the injected handlers with separate root and named-profile files to verify matching library/config scope, endpoint-aware writes, and recovery after a read failure.
+The compatibility handler uses upstream's context-local Koda home override for every explicit profile, including `default`, and resets it after successful or failed config reads. [[tests/hermes-agent-compat-profiles.test.ts]] executes the injected handlers with separate root and named-profile files to verify matching library/config scope, endpoint-aware writes, and recovery after a read failure.
 
 ## Occupancy estimate when the provider omits usage
 

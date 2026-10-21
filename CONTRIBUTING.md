@@ -1,6 +1,6 @@
-# Contributing to Hermes Desktop
+# Contributing to Koda Desktop
 
-Thanks for your interest in contributing to Hermes Desktop! Whether it's a bug fix, a new feature, improved docs, or just a typo — every contribution helps.
+Thanks for your interest in contributing to Koda Desktop! Whether it's a bug fix, a new feature, improved docs, or just a typo — every contribution helps.
 
 ## Languages
 
@@ -62,7 +62,7 @@ A maintainer will review your PR and may request changes. Once approved, it will
 
 ## Reporting Bugs
 
-Found a bug? [Open an issue](https://github.com/fathah/hermes-desktop/issues/new) with:
+Found a bug? [Open an issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new) with:
 
 - A clear title and description.
 - Steps to reproduce the issue.
@@ -71,7 +71,7 @@ Found a bug? [Open an issue](https://github.com/fathah/hermes-desktop/issues/new
 
 ## Requesting Features
 
-Have an idea? [Open an issue](https://github.com/fathah/hermes-desktop/issues/new) and describe:
+Have an idea? [Open an issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new) and describe:
 
 - The problem you're trying to solve.
 - How you'd like it to work.
@@ -80,7 +80,7 @@ Have an idea? [Open an issue](https://github.com/fathah/hermes-desktop/issues/ne
 ## Project Structure
 
 ```text
-src/main/                Electron main process, IPC handlers, Hermes integration
+src/main/                Electron main process, IPC handlers, Koda integration
 src/preload/             Secure renderer bridge
 src/renderer/src/        React app and UI components
 resources/               App icons and packaged assets
@@ -97,7 +97,7 @@ build/                   Packaging resources
 ## Community
 
 - Join the [Nous Research Discord](https://discord.gg/NousResearch) to chat with other contributors.
-- Check the [documentation](https://hermes-agent.nousresearch.com/docs/) for more context on how Hermes works.
+- Check the [documentation](https://hermes-agent.nousresearch.com/docs/) for more context on how Koda works.
 
 ## License
 

@@ -444,7 +444,7 @@ describe("Cron SSH fallback", () => {
     sshTunnelUrlRef.value = "http://example.com";
     dashboardRequestMock.mockReset();
     dashboardRequestMock.mockImplementation(async () => {
-      throw new Error("Remote Hermes dashboard token is not configured.");
+      throw new Error("Remote Koda dashboard token is not configured.");
     });
     const fetchSpy = vi.fn(async (target: string) => {
       if (target === "http://example.com/api/cron/jobs?profile=default") {
@@ -472,7 +472,7 @@ describe("Cron SSH fallback", () => {
       connAuthRef.mode = mode;
       dashboardRequestMock.mockReset();
       dashboardRequestMock.mockRejectedValue(
-        new Error("Remote Hermes dashboard token is not configured."),
+        new Error("Remote Koda dashboard token is not configured."),
       );
       const fetchSpy = vi.fn().mockResolvedValue({
         ok: true,
@@ -797,7 +797,7 @@ describe("testRemoteConnection URL probe", () => {
     // Capture the URL handed to http.request by the health probe.
     // Reported in #266: stale code path was building
     // `http://host/v1/health` from a user-supplied `http://host/v1`,
-    // which 404s and produces the "Cannot reach remote Hermes" splash.
+    // which 404s and produces the "Cannot reach remote the engine" splash.
     const capturedTargets: string[] = [];
     const reqSpy = vi
       .spyOn(http, "request")

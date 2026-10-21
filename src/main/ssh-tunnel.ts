@@ -32,7 +32,7 @@ export function beginSshTunnelShutdown(): void {
 }
 
 function assertTunnelAdmission(): void {
-  if (shutdownStarted) throw new Error("Hermes Desktop is shutting down.");
+  if (shutdownStarted) throw new Error("Koda is shutting down.");
 }
 
 function assertTunnelStartCurrent(generation: number): void {

@@ -36,6 +36,25 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # The app is Koda. Upstream can still merge in, and a merge can bring
+      # the old brand back with it — this turns that into a build failure
+      # instead of a silent regression.
+      - name: Brand ratchet
+        run: npm run check:brand
+
+      # The brand ratchet only sees a standalone capital-H "Hermes". The
+      # engine's technical spellings — `hermes-agent`, `~/.hermes`,
+      # `HERMES_HOME`, `hermesone.org` — are contracts, and a rename of one
+      # breaks the engine without breaking the build.
+      - name: Contract ratchet
+        run: npm run check:contracts
+
+      # A translation key that does not exist renders as its own raw path in
+      # the UI. Renaming one without renaming its consumer is silent, so it
+      # is a build failure here instead.
+      - name: Translation key ratchet
+        run: npm run check:i18n
+
       - name: Install fish for SSH command regression tests
         run: sudo apt-get update && sudo apt-get install -y fish
 

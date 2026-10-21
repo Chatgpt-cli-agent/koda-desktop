@@ -389,7 +389,7 @@ export const ChatInput = forwardRef<ChatInputHandle, ChatInputProps>(
         case "tools":
           return "Tools & skills";
         case "agent":
-          return "Hermes Agent";
+          return "Koda";
       }
     }
 

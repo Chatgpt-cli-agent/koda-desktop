@@ -171,7 +171,7 @@ describe("Legacy APIs preserved (backward compat)", () => {
     "checkInstall",
     "startInstall",
     "onInstallProgress",
-    // Hermes engine
+    // the engine
     "getHermesVersion",
     "refreshHermesVersion",
     "runHermesDoctor",

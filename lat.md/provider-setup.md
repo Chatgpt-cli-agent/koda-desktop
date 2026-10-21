@@ -28,11 +28,11 @@ Actual setup cards write their own credential and native provider to temporary d
 
 Discovery without the selected profile's matching OpenCode key reports no-key and makes no HTTP request, even when an unrelated key or another profile's valid key exists.
 
-## Hermes One is the first-priority provider
+## Koda Cloud is the first-priority provider
 
-**Hermes One Inference** (`https://inference.hermesone.org/v1`) is Hermes One's own OpenAI-compatible gateway, listed **first** in `PROVIDERS.setup`, `PROVIDER_CARDS`, and the `SETTINGS_SECTIONS` "LLM Providers" items — so it leads the Add-provider picker.
+**Koda Cloud Inference** (`https://inference.hermesone.org/v1`) is Koda Cloud's own OpenAI-compatible gateway, listed **first** in `PROVIDERS.setup`, `PROVIDER_CARDS`, and the `SETTINGS_SECTIONS` "LLM Providers" items — so it leads the picker.
 
-It is not a canonical agent provider, so it routes through `custom` + `base_url` exactly like the `openai` card, with its key stored/host-derived as `HERMESONE_API_KEY` (`inference.hermesone.org` → `HERMESONE_API_KEY` in [[src/shared/url-key-map.ts]], and `hermesone` in `OPENAI_COMPAT_PROVIDERS`). It appears in `OPENAI_COMPATIBLE_BASE_URLS` so `displayProviderFromConfig` reverse-maps it back to the Hermes One card on reload, and its logo (`detectBrand` → `hermesone`, the `hermes-icon.svg` mark) shows in the grids. Users get a key from the console's Credits → API keys.
+It is not a canonical agent provider, so it routes through `custom` + `base_url` exactly like the `openai` card, with its key stored/host-derived as `HERMESONE_API_KEY` (`inference.hermesone.org` → `HERMESONE_API_KEY` in [[src/shared/url-key-map.ts]], and `hermesone` in `OPENAI_COMPAT_PROVIDERS`). It appears in `OPENAI_COMPATIBLE_BASE_URLS` so `displayProviderFromConfig` reverse-maps it back to the Koda Cloud card on reload, and its logo (`detectBrand` → `hermesone`, the `hermes-icon.svg` mark) shows in the grids. Users get a key from the console's Credits → API keys.
 
 ## Top grid mirrors the agent's native providers
 
@@ -96,11 +96,11 @@ The `SETTINGS_SECTIONS` "LLM Providers" section no longer renders a static key c
 
 [[src/renderer/src/components/ProviderKeysSection.tsx#ProviderKeysSection]] renders the configured cards + an Add tile; Add opens a searchable picker modal (logo per provider) → a per-provider config modal (key input with show/hide, **Remove provider**). It's a presentation layer over the same `env` state + `handleChange`/`handleBlur`/`handleRemove` handlers in [[src/renderer/src/screens/Providers/Providers.tsx]], so persistence is unchanged (`setEnv`); removing clears the env var.
 
-Card and picker titles show the **plain provider name** ("Hermes One"), not the FieldDef's "… API Key" label — the section is a list of providers, and suffix-stripping the label isn't locale-safe. [[src/renderer/src/constants.ts#providerNameForEnvKey]] derives the display brand from the env key (via `providerRouteForEnvKey` + `displayBrandFromConfig`) and returns its `PROVIDERS.labels` entry, falling back to the FieldDef label for brandless keys; the picker search matches both the name and the full label. A test asserts every LLM-section key resolves to a name (`tests/constants.test.ts`).
+Card and picker titles show the **plain provider name** ("Koda Cloud"), not the FieldDef's "… API Key" label — the section is a list of providers, and suffix-stripping the label isn't locale-safe. [[src/renderer/src/constants.ts#providerNameForEnvKey]] derives the display brand from the env key (via `providerRouteForEnvKey` + `displayBrandFromConfig`) and returns its `PROVIDERS.labels` entry, falling back to the FieldDef label for brandless keys; the picker search matches both the name and the full label. A test asserts every LLM-section key resolves to a name (`tests/constants.test.ts`).
 
 ### Branded config modal
 
-The per-provider config modal (a keyed brand like Hermes One, not the custom flow) leads with the **provider logo tile + name + a verification pill** in the header, replacing the old key-icon-prefixed title.
+The per-provider config modal (a keyed brand like Koda Cloud, not the custom flow) leads with the **provider logo tile + name + a verification pill** in the header, replacing the old key-icon-prefixed title.
 
 The pill's text/tone comes from the same live discovery the models list uses, lifted out of the body: `ProviderModelsManager` takes `showStatus={false}` and reports `{tone,text}` + the saved-model count up via `onStatusChange`/`onModelCountChange`, so there's one discovery hook and no duplicate status line.
 
@@ -108,7 +108,7 @@ The **API key** shows as a masked preview (`maskKeyPreview` — leading scheme s
 
 Visually the modal is **stroke-free**: the logo tile, status pill, API-key field, model chips, and the add/more pills are all differentiated by fill/elevation (`--bg-elevated`/`--bg-hover`), not borders — only the header/footer keep a hairline divider for structure. Chip and control fonts are small (11–13px).
 
-The cards and picker are **ordered by display priority**, not the FieldDef declaration order (which groups providers by when they were added, surfacing niche endpoints like AIML API near the top). [[src/renderer/src/constants.ts#providerKeyRank]] ranks each env key: `PROVIDER_KEY_ORDER` front-loads the well-known providers (Hermes One first), unlisted keys keep their FieldDef order in the middle, and `PROVIDER_KEY_DEMOTED` (AIML API) sinks to the end. `ProviderKeysSection` sorts `keyItems` with a **stable** sort on the rank, so both the configured cards and the Add-provider picker share the ordering. A test pins Hermes One first and AIML last.
+The cards and picker are **ordered by display priority**, not the FieldDef declaration order (which groups providers by when they were added, surfacing niche endpoints like AIML API near the top). [[src/renderer/src/constants.ts#providerKeyRank]] ranks each env key: `PROVIDER_KEY_ORDER` front-loads the well-known providers (Koda Cloud first), unlisted keys keep their FieldDef order in the middle, and `PROVIDER_KEY_DEMOTED` (AIML API) sinks to the end. `ProviderKeysSection` sorts `keyItems` with a **stable** sort on the rank, so both the configured cards and the Add-provider picker share the ordering. A test pins Koda Cloud first and AIML last.
 
 The section is rendered **standalone, above the credential pool** rather than in the `SETTINGS_SECTIONS.map` position — it's the primary surface for configuring providers and the models the top active-model selector picks from, so it sits before the advanced multi-key pool. The map skips the `constants.sectionLlmProviders` entry (an inline title check returning null); other `SETTINGS_SECTIONS` (non-LLM) still render inline in place, after the pool.
 
@@ -146,9 +146,9 @@ CLI launch uses the same normalized endpoint match, skips saved labels without c
 
 ### Adding a curated partner provider
 
-Sponsor/partner providers (and Hermes One itself) are OpenAI-compatible custom endpoints under the hood but are presented **first-class** — curated in-app, exactly like `hermesone`, with their own host-derived key and branding.
+Sponsor/partner providers (and Koda Cloud itself) are OpenAI-compatible custom endpoints under the hood but are presented **first-class** — curated in-app, exactly like `hermesone`, with their own host-derived key and branding.
 
-To add one, mirror the Hermes One entries: a card in `PROVIDERS.setup` + `PROVIDER_CARDS` + a base URL in `OPENAI_COMPATIBLE_BASE_URLS` ([[src/renderer/src/constants.ts]]), a `URL_KEY_MAP` entry giving it a dedicated `<PARTNER>_API_KEY` in [[src/shared/url-key-map.ts]], and a `detectBrand` rule + logo in [[src/renderer/src/components/common/BrandLogo.tsx]].
+To add one, mirror the Koda Cloud entries: a card in `PROVIDERS.setup` + `PROVIDER_CARDS` + a base URL in `OPENAI_COMPATIBLE_BASE_URLS` ([[src/renderer/src/constants.ts]]), a `URL_KEY_MAP` entry giving it a dedicated `<PARTNER>_API_KEY` in [[src/shared/url-key-map.ts]], and a `detectBrand` rule + logo in [[src/renderer/src/components/common/BrandLogo.tsx]].
 
 ## Agent config sync for named providers
 
@@ -156,7 +156,7 @@ Named OpenAI-compatible providers sync both ways between the desktop and the age
 
 The agent reads two user-config shapes (`hermes-agent/hermes_cli/providers.py`): the `providers:` dict (`{slug: {name, base_url, key_env, transport}}`, resolved by `resolve_user_provider`) and the legacy `custom_providers:` list. [[src/main/agent-config-providers.ts]] is the bridge: it parses and text-edits those blocks with offset/line splicing (like `config.ts`), so user comments and unrelated keys survive round-trips.
 
-The agent's config scaffold writes an inline empty dict (`providers: {}`), which the line-based block parser can't index — the upsert rewrites that line into block form instead of appending (a second `providers:` key would make the YAML ambiguous; this miss silently disabled the Hermes One mirror on real configs). Any other unparseable flow-dict form is left untouched rather than risking a duplicate key.
+The agent's config scaffold writes an inline empty dict (`providers: {}`), which the line-based block parser can't index — the upsert rewrites that line into block form instead of appending (a second `providers:` key would make the YAML ambiguous; this miss silently disabled the Koda Cloud mirror on real configs). Any other unparseable flow-dict form is left untouched rather than risking a duplicate key.
 
 Sync is read-repair plus write-mirroring, all in the main process — the renderer needed no changes:
 
@@ -195,9 +195,9 @@ Removing a provider in the desktop also deletes its `providers:` entry, so it st
 
 ### First-party brands mirror as user providers
 
-A keyed Hermes One is mirrored into config.yaml as `providers: hermesone:` ([[src/main/agent-config-providers.ts#mirrorFirstPartyAgentProviders]], run on every model-library / provider-list read) — without creating a custom card, since the brand owns a dedicated key card.
+A keyed Koda Cloud is mirrored into config.yaml as `providers: hermesone:` ([[src/main/agent-config-providers.ts#mirrorFirstPartyAgentProviders]], run on every model-library / provider-list read) — without creating a custom card, since the brand owns a dedicated key card.
 
-This exists because desktop models on `inference.hermesone.org` are saved as bare `custom` + base URL, and the agent resolves `/model … --provider custom` against the **session's current** base URL — a session sitting on another provider (e.g. Nous) would send the Hermes One model to the wrong endpoint (the hermesone-swift → Nous-proxy 404). The named entry gives the switch a slug that always carries the right URL and `HERMESONE_API_KEY`; the dashboard transport's [[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#resolveDashboardProviderForModel]] correspondingly matches **any** gateway provider row by base URL (named user providers included, not just `custom:*` rows) before ever falling back to bare `custom`.
+This exists because desktop models on `inference.hermesone.org` are saved as bare `custom` + base URL, and the agent resolves `/model … --provider custom` against the **session's current** base URL — a session sitting on another provider (e.g. Nous) would send the Koda Cloud model to the wrong endpoint (the hermesone-swift → Nous-proxy 404). The named entry gives the switch a slug that always carries the right URL and `HERMESONE_API_KEY`; the dashboard transport's [[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#resolveDashboardProviderForModel]] correspondingly matches **any** gateway provider row by base URL (named user providers included, not just `custom:*` rows) before ever falling back to bare `custom`.
 
 After a named provider switch, the agent may report the live provider as `custom` or `custom:<slug>`. [[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#dashboardModelMatches]] accepts that alias only when the model ID matches exactly and the requested named provider's row is marked `is_current`; a row that merely lists the model cannot validate the switch. [[tests/dashboard-chat-transport.test.ts]] covers both current-row acceptance and rejection when another provider owns the live selection.
 
@@ -247,13 +247,13 @@ The Local/Remote preset chips are also branded: each renders the same `BrandLogo
 
 ## MiniMax OAuth discovery fallback
 
-When live OAuth discovery is unavailable, MiniMax keeps a usable model list aligned with Hermes Agent’s curated OAuth choices.
+When live OAuth discovery is unavailable, MiniMax keeps a usable model list aligned with Koda Agent’s curated OAuth choices.
 
 [[src/main/model-discovery.ts#discoverProviderModels]] falls back to `MiniMax-M3`, `MiniMax-M2.7`, and `MiniMax-M2.7-highspeed` if the Python query fails. Regression coverage preserves all three entries; successful live discovery still takes precedence.
 
 ## Novita provider preset
 
-Novita is available as a remote OpenAI-compatible preset, with a dedicated API-key field and the same endpoint used by Hermes Agent.
+Novita is available as a remote OpenAI-compatible preset, with a dedicated API-key field and the same endpoint used by Koda Agent.
 
 The desktop stores the model as `custom` at `https://api.novita.ai/openai/v1`. Setup, the configured-provider picker, installer readiness, and runtime key lookup use `NOVITA_API_KEY`; provider branding identifies the endpoint as NovitaAI. The shared URL mapping is covered alongside the other supported commercial endpoints.
 
@@ -261,7 +261,7 @@ The desktop stores the model as `custom` at `https://api.novita.ai/openai/v1`. S
 
 Cheaper Inference is available as a remote OpenAI-compatible preset, with a dedicated API-key field. Each model costs 15–60% less than the list price of its lab.
 
-The desktop stores the model as `custom` at `https://api.cheaperinference.com/v1`. Setup, the provider picker, installer readiness and key lookup use `CHEAPERINFERENCE_API_KEY`. Hermes Agent derives the same name from the endpoint host. The shared URL mapping is covered alongside the other supported commercial endpoints.
+The desktop stores the model as `custom` at `https://api.cheaperinference.com/v1`. Setup, the provider picker, installer readiness and key lookup use `CHEAPERINFERENCE_API_KEY`. Koda Agent derives the same name from the endpoint host. The shared URL mapping is covered alongside the other supported commercial endpoints.
 
 ### Credential host boundary
 
@@ -305,7 +305,7 @@ Routing updates and credential removal address direct task children only, preser
 
 Requesty is available as a remote OpenAI-compatible preset, with a dedicated API-key field. It is an LLM gateway that serves many vendors behind one key.
 
-The desktop stores the model as `custom` at `https://router.requesty.ai/v1` because Hermes Agent has no native `requesty` provider id. Setup, the configured-provider picker, installer readiness, and runtime key lookup use `REQUESTY_API_KEY`, which matches the key the agent host-derives from `router.requesty.ai`. Model ids use the `vendor/model` form, for example `openai/gpt-4o-mini`. Regional endpoints such as `https://router.eu.requesty.ai/v1` map to the same key.
+The desktop stores the model as `custom` at `https://router.requesty.ai/v1` because Koda Agent has no native `requesty` provider id. Setup, the configured-provider picker, installer readiness, and runtime key lookup use `REQUESTY_API_KEY`, which matches the key the agent host-derives from `router.requesty.ai`. Model ids use the `vendor/model` form, for example `openai/gpt-4o-mini`. Regional endpoints such as `https://router.eu.requesty.ai/v1` map to the same key.
 
 ### Credential host boundary
 
@@ -327,7 +327,7 @@ API Route is an optional paid OpenAI-compatible gateway preset, with a dedicated
 
 Select **Local / OpenAI-Compatible** during setup, then **API Route** under remote APIs. Get a key from https://www.api-route.com/api-keys, paste it, fetch models and select a chat model available to your account. The preset uses https://global.api-route.com/v1 and stores models as `custom` with that base URL. Model IDs are preserved. Pricing and setup are at https://www.api-route.com/pricing and https://www.api-route.com/docs/quickstart.
 
-The key is stored as `API_ROUTE_API_KEY`, matching Hermes Agent's hostname-derived variable (the hyphen in `api-route` becomes an underscore). The existing CLI path forwards the selected endpoint's resolved key to this variable and the legacy `OPENAI_API_KEY` slot; no native agent provider id is required.
+The key is stored as `API_ROUTE_API_KEY`, matching Koda Agent's hostname-derived variable (the hyphen in `api-route` becomes an underscore). The existing CLI path forwards the selected endpoint's resolved key to this variable and the legacy `OPENAI_API_KEY` slot; no native agent provider id is required.
 
 ### Credential host boundary
 

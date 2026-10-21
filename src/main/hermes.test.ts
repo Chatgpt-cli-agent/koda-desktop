@@ -221,19 +221,19 @@ describe("local gateway status", () => {
       expect(isExternallyManagedMultiplexGateway("scout")).toBe(false);
       expect(() =>
         assertLocalGatewayKeyMutationAllowed("API_SERVER_KEY", "default"),
-      ).toThrow("managed outside Hermes One");
+      ).toThrow("managed outside Koda");
       expect(() =>
         assertLocalGatewayKeyMutationAllowed("api_server.token", "default"),
-      ).toThrow("managed outside Hermes One");
+      ).toThrow("managed outside Koda");
       expect(() =>
         assertLocalGatewayKeyMutationAllowed("api_server.extra.key", "default"),
-      ).toThrow("managed outside Hermes One");
+      ).toThrow("managed outside Koda");
       expect(() =>
         assertLocalGatewayKeyMutationAllowed(
           "platforms.api_server.extra.key",
           "default",
         ),
-      ).toThrow("managed outside Hermes One");
+      ).toThrow("managed outside Koda");
       expect(() =>
         assertLocalGatewayKeyMutationAllowed("model.default", "default"),
       ).not.toThrow();
@@ -568,7 +568,7 @@ describe("transcribeAudio API route", () => {
     };
   }
 
-  it("posts desktop recordings to the Hermes audio endpoint", async () => {
+  it("posts desktop recordings to the Koda audio endpoint", async () => {
     await expect(
       transcribeAudio(new Uint8Array([1, 2, 3]), "audio/webm", "default"),
     ).resolves.toBe("transcribed");

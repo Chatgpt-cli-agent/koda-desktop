@@ -8,7 +8,7 @@ import {
 } from "./messaging-platforms";
 
 describe("messaging platform catalog", () => {
-  it("points platform docs to Hermes Agent setup docs", () => {
+  it("points platform docs to Koda setup docs", () => {
     const expectedSlugs: Record<string, string> = {
       api_server: "open-webui",
       bluebubbles: "bluebubbles",

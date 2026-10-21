@@ -50,7 +50,7 @@ describe("remote Hermes metadata", () => {
     ).resolves.toBe("/opt/data");
     await expect(
       remoteGetHermesVersion({ remoteUrl: url, apiKey: "token" }),
-    ).resolves.toContain("Hermes Agent v0.16.0 (2026.6.5)");
+    ).resolves.toContain("Koda v0.16.0 (2026.6.5)");
   });
 
   it("falls back to raw gateway health when dashboard metadata is absent", async () => {
@@ -75,7 +75,7 @@ describe("remote Hermes metadata", () => {
     ).resolves.toBe("");
     await expect(
       remoteGetHermesVersion({ remoteUrl: url, apiKey: "server-key" }),
-    ).resolves.toBe("Hermes Agent v0.8.0");
+    ).resolves.toBe("Koda v0.8.0");
     expect(requests).toContainEqual({
       url: "/health",
       authorization: "Bearer server-key",

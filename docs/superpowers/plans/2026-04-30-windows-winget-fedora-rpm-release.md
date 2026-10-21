@@ -70,8 +70,8 @@ linux:
   category: Utility
   synopsis: Self-improving AI assistant desktop app
   description: |
-    Hermes Desktop is a native desktop app for installing, configuring, and chatting
-    with Hermes Agent — a self-improving AI assistant with tool use, multi-platform
+    Koda Desktop is a native desktop app for installing, configuring, and chatting
+    with Koda Agent — a self-improving AI assistant with tool use, multi-platform
     messaging, and a closed learning loop.
 appImage:
   artifactName: ${name}-${version}.${ext}
@@ -224,7 +224,7 @@ Contents:
 ```yaml
 # Generated from this template by scripts/generate-winget-manifests.mjs.
 # Placeholders ({{...}}) are replaced at build time. Do not edit the generated copy in dist/.
-PackageIdentifier: NousResearch.HermesDesktop
+PackageIdentifier: Chatgpt-cli-agent.KodaDesktop
 PackageVersion: { { VERSION } }
 InstallerLocale: en-US
 InstallerType: nullsoft
@@ -246,20 +246,20 @@ Contents:
 
 ```yaml
 # Generated from this template by scripts/generate-winget-manifests.mjs.
-PackageIdentifier: NousResearch.HermesDesktop
+PackageIdentifier: Chatgpt-cli-agent.KodaDesktop
 PackageVersion: { { VERSION } }
 PackageLocale: en-US
 Publisher: Nous Research
 PublisherUrl: https://github.com/fathah/hermes-desktop
 PublisherSupportUrl: https://github.com/fathah/hermes-desktop/issues
-PackageName: Hermes Agent
+PackageName: Koda Agent
 PackageUrl: https://github.com/fathah/hermes-desktop
 License: MIT
 LicenseUrl: https://github.com/fathah/hermes-desktop/blob/main/LICENSE
 ShortDescription: Self-improving AI assistant desktop app
 Description: |-
-  Hermes Desktop is a native desktop app for installing, configuring, and chatting
-  with Hermes Agent — a self-improving AI assistant with tool use, multi-platform
+  Koda Desktop is a native desktop app for installing, configuring, and chatting
+  with Koda Agent — a self-improving AI assistant with tool use, multi-platform
   messaging, and a closed learning loop.
 Tags:
   - ai
@@ -278,7 +278,7 @@ Contents:
 
 ```yaml
 # Generated from this template by scripts/generate-winget-manifests.mjs.
-PackageIdentifier: NousResearch.HermesDesktop
+PackageIdentifier: Chatgpt-cli-agent.KodaDesktop
 PackageVersion: { { VERSION } }
 DefaultLocale: en-US
 ManifestType: version
@@ -370,12 +370,14 @@ describe("generateWingetManifests", () => {
       "9.9.9",
     );
     expect(
-      existsSync(join(outDir, "NousResearch.HermesDesktop.installer.yaml")),
+      existsSync(join(outDir, "Chatgpt-cli-agent.KodaDesktop.installer.yaml")),
     ).toBe(true);
     expect(
-      existsSync(join(outDir, "NousResearch.HermesDesktop.locale.en-US.yaml")),
+      existsSync(
+        join(outDir, "Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml"),
+      ),
     ).toBe(true);
-    expect(existsSync(join(outDir, "NousResearch.HermesDesktop.yaml"))).toBe(
+    expect(existsSync(join(outDir, "Chatgpt-cli-agent.KodaDesktop.yaml"))).toBe(
       true,
     );
   });
@@ -404,7 +406,7 @@ describe("generateWingetManifests", () => {
       "NousResearch",
       "HermesDesktop",
       "9.9.9",
-      "NousResearch.HermesDesktop.installer.yaml",
+      "Chatgpt-cli-agent.KodaDesktop.installer.yaml",
     );
     const content = readFileSync(outFile, "utf-8");
     expect(content).toContain("Version: 9.9.9");
@@ -440,7 +442,7 @@ describe("generateWingetManifests", () => {
       "NousResearch",
       "HermesDesktop",
       "9.9.9",
-      "NousResearch.HermesDesktop.locale.en-US.yaml",
+      "Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml",
     );
     const content = readFileSync(outFile, "utf-8");
     expect(content).toContain(
@@ -494,7 +496,7 @@ Contents:
 //
 // Fills the YAML templates in build/winget/ with the current version,
 // installer URL, and SHA256 of the NSIS installer in dist/, and writes
-// the result under dist/winget/manifests/n/NousResearch/HermesDesktop/<version>/.
+// the result under dist/winget/manifests/c/Chatgpt-cli-agent/KodaDesktop/<version>/.
 //
 // Run from CLI: VERSION=0.2.3 PUBLISH_OWNER=fathah node scripts/generate-winget-manifests.mjs
 // Or import as ESM and call generateWingetManifests({ rootDir, version, name, publishOwner }).
@@ -554,12 +556,12 @@ export function generateWingetManifests({
   mkdirSync(outDir, { recursive: true });
 
   const files = [
-    ["Installer.template.yaml", "NousResearch.HermesDesktop.installer.yaml"],
+    ["Installer.template.yaml", "Chatgpt-cli-agent.KodaDesktop.installer.yaml"],
     [
       "Locale.en-US.template.yaml",
-      "NousResearch.HermesDesktop.locale.en-US.yaml",
+      "Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml",
     ],
-    ["Version.template.yaml", "NousResearch.HermesDesktop.yaml"],
+    ["Version.template.yaml", "Chatgpt-cli-agent.KodaDesktop.yaml"],
   ];
 
   for (const [tmplName, outName] of files) {
@@ -857,7 +859,7 @@ publish:
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ needs.prepare.outputs.tag }}
-        name: Hermes Desktop ${{ needs.prepare.outputs.tag }}
+        name: Koda Desktop ${{ needs.prepare.outputs.tag }}
         generate_release_notes: true
         files: artifacts/*
 ```
@@ -891,7 +893,7 @@ publish:
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ needs.prepare.outputs.tag }}
-        name: Hermes Desktop ${{ needs.prepare.outputs.tag }}
+        name: Koda Desktop ${{ needs.prepare.outputs.tag }}
         generate_release_notes: true
         files: |
           artifacts/*.dmg
@@ -961,7 +963,7 @@ Download the latest build from the [Releases](https://github.com/fathah/hermes-d
 > **macOS users:** The app is not code-signed or notarized. macOS will block it on first launch. To fix this, run the following after installing:
 >
 > ```bash
-> xattr -cr "/Applications/Hermes Agent.app"
+> xattr -cr "/Applications/Koda Agent.app"
 > ```
 >
 > Or right-click the app → **Open** → click **Open** in the confirmation dialog.
@@ -987,7 +989,7 @@ Download the latest build from the [Releases](https://github.com/fathah/hermes-d
 Once the manifest has been accepted into [`microsoft/winget-pkgs`](https://github.com/microsoft/winget-pkgs), you can install with:
 
 ```powershell
-winget install NousResearch.HermesDesktop
+winget install Chatgpt-cli-agent.KodaDesktop
 ```
 ````
 
@@ -1008,7 +1010,7 @@ sudo dnf install ./hermes-desktop-<version>.rpm
 > **macOS users:** The app is not code-signed or notarized. macOS will block it on first launch. To fix this, run the following after installing:
 >
 > ```bash
-> xattr -cr "/Applications/Hermes Agent.app"
+> xattr -cr "/Applications/Koda Agent.app"
 > ```
 >
 > Or right-click the app → **Open** → click **Open** in the confirmation dialog.
@@ -1117,7 +1119,7 @@ Fix the issue, commit on the branch, push, and re-trigger. Do not proceed to PR 
 
 - [ ] **Step 1: Download the artifact**
 
-Run: `gh run download <run-id> -n winget-manifests-0.2.3 -D /tmp/winget-check && ls -la /tmp/winget-check/manifests/n/NousResearch/HermesDesktop/0.2.3/`
+Run: `gh run download <run-id> -n winget-manifests-0.2.3 -D /tmp/winget-check && ls -la /tmp/winget-check/manifests/c/Chatgpt-cli-agent/KodaDesktop/0.2.3/`
 
 (Replace `0.2.3` with the actual `version` from `package.json` if it changed.)
 
@@ -1125,7 +1127,7 @@ Expected: three `.yaml` files listed.
 
 - [ ] **Step 2: Visually inspect**
 
-Run: `cat /tmp/winget-check/manifests/n/NousResearch/HermesDesktop/0.2.3/*.yaml`
+Run: `cat /tmp/winget-check/manifests/c/Chatgpt-cli-agent/KodaDesktop/0.2.3/*.yaml`
 
 Expected:
 

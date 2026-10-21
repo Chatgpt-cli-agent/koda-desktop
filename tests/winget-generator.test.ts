@@ -45,33 +45,25 @@ describe("generateWingetManifests", () => {
     const distDir = join(TEST_DIR, "dist");
     mkdirSync(distDir, { recursive: true });
     writeFileSync(
-      join(distDir, "hermes-desktop-9.9.9-setup.exe"),
+      join(distDir, "koda-desktop-9.9.9-setup.exe"),
       "fake-installer-bytes",
     );
 
-    generateWingetManifests({
+    const { outDir } = generateWingetManifests({
       rootDir: TEST_DIR,
       version: "9.9.9",
-      name: "hermes-desktop",
-      publishOwner: "fathah",
+      name: "koda-desktop",
+      publishOwner: "Chatgpt-cli-agent",
     });
-
-    const outDir = join(
-      distDir,
-      "winget",
-      "manifests",
-      "n",
-      "NousResearch",
-      "HermesDesktop",
-      "9.9.9",
-    );
     expect(
-      existsSync(join(outDir, "NousResearch.HermesDesktop.installer.yaml")),
+      existsSync(join(outDir, "Chatgpt-cli-agent.KodaDesktop.installer.yaml")),
     ).toBe(true);
     expect(
-      existsSync(join(outDir, "NousResearch.HermesDesktop.locale.en-US.yaml")),
+      existsSync(
+        join(outDir, "Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml"),
+      ),
     ).toBe(true);
-    expect(existsSync(join(outDir, "NousResearch.HermesDesktop.yaml"))).toBe(
+    expect(existsSync(join(outDir, "Chatgpt-cli-agent.KodaDesktop.yaml"))).toBe(
       true,
     );
   });
@@ -81,31 +73,25 @@ describe("generateWingetManifests", () => {
     const distDir = join(TEST_DIR, "dist");
     mkdirSync(distDir, { recursive: true });
     writeFileSync(
-      join(distDir, "hermes-desktop-9.9.9-setup.exe"),
+      join(distDir, "koda-desktop-9.9.9-setup.exe"),
       "fake-installer-bytes",
     );
 
-    generateWingetManifests({
+    const { outDir } = generateWingetManifests({
       rootDir: TEST_DIR,
       version: "9.9.9",
-      name: "hermes-desktop",
-      publishOwner: "fathah",
+      name: "koda-desktop",
+      publishOwner: "Chatgpt-cli-agent",
     });
 
     const outFile = join(
-      distDir,
-      "winget",
-      "manifests",
-      "n",
-      "NousResearch",
-      "HermesDesktop",
-      "9.9.9",
-      "NousResearch.HermesDesktop.installer.yaml",
+      outDir,
+      "Chatgpt-cli-agent.KodaDesktop.installer.yaml",
     );
     const content = readFileSync(outFile, "utf-8");
     expect(content).toContain("Version: 9.9.9");
     expect(content).toContain(
-      "Url: https://github.com/fathah/hermes-desktop/releases/download/v9.9.9/hermes-desktop-9.9.9-setup.exe",
+      "Url: https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/download/v9.9.9/koda-desktop-9.9.9-setup.exe",
     );
     expect(content).toMatch(/Sha: [A-F0-9]{64}/);
     expect(content).toMatch(/Date: \d{4}-\d{2}-\d{2}/);
@@ -117,30 +103,24 @@ describe("generateWingetManifests", () => {
     const distDir = join(TEST_DIR, "dist");
     mkdirSync(distDir, { recursive: true });
     writeFileSync(
-      join(distDir, "hermes-desktop-9.9.9-setup.exe"),
+      join(distDir, "koda-desktop-9.9.9-setup.exe"),
       "fake-installer-bytes",
     );
 
-    generateWingetManifests({
+    const { outDir } = generateWingetManifests({
       rootDir: TEST_DIR,
       version: "9.9.9",
-      name: "hermes-desktop",
-      publishOwner: "fathah",
+      name: "koda-desktop",
+      publishOwner: "Chatgpt-cli-agent",
     });
 
     const outFile = join(
-      distDir,
-      "winget",
-      "manifests",
-      "n",
-      "NousResearch",
-      "HermesDesktop",
-      "9.9.9",
-      "NousResearch.HermesDesktop.locale.en-US.yaml",
+      outDir,
+      "Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml",
     );
     const content = readFileSync(outFile, "utf-8");
     expect(content).toContain(
-      "Notes: https://github.com/fathah/hermes-desktop/releases/tag/v9.9.9",
+      "Notes: https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/tag/v9.9.9",
     );
     expect(content).not.toContain("{{");
   });
@@ -153,8 +133,8 @@ describe("generateWingetManifests", () => {
       generateWingetManifests({
         rootDir: TEST_DIR,
         version: "9.9.9",
-        name: "hermes-desktop",
-        publishOwner: "fathah",
+        name: "koda-desktop",
+        publishOwner: "Chatgpt-cli-agent",
       }),
     ).toThrow(/installer not found/i);
   });
@@ -164,7 +144,7 @@ describe("generateWingetManifests", () => {
     const distDir = join(TEST_DIR, "dist");
     mkdirSync(distDir, { recursive: true });
     writeFileSync(
-      join(distDir, "hermes-desktop-9.9.9-setup.exe"),
+      join(distDir, "koda-desktop-9.9.9-setup.exe"),
       "fake-installer-bytes",
     );
 
@@ -172,8 +152,8 @@ describe("generateWingetManifests", () => {
       generateWingetManifests({
         rootDir: TEST_DIR,
         version: "9.9.9",
-        name: "hermes-desktop",
-        publishOwner: "fathah",
+        name: "koda-desktop",
+        publishOwner: "Chatgpt-cli-agent",
       }),
     ).toThrow(/templates not found/i);
   });

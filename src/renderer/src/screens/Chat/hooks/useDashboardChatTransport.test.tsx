@@ -1460,7 +1460,7 @@ describe("useDashboardChatTransport unavailable fallback (issue #667)", () => {
   function mockStartDashboard(): ReturnType<typeof vi.fn> {
     const startDashboard = vi.fn(async () => ({
       running: false,
-      error: "Hermes dashboard chat WebSocket is unavailable (404)",
+      error: "Koda dashboard chat WebSocket is unavailable (404)",
     }));
     Object.defineProperty(window, "hermesAPI", {
       configurable: true,

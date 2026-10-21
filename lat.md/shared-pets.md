@@ -1,6 +1,6 @@
 # Shared Pets
 
-Hermes One reads and changes each profile's pet through the same gateway RPCs as the official desktop, so installation and selection are never duplicated in client-owned storage.
+Koda Cloud reads and changes each profile's pet through the same gateway RPCs as the official desktop, so installation and selection are never duplicated in client-owned storage.
 
 ## Profile and connection authority
 
@@ -10,15 +10,15 @@ Every request carries an explicit profile and uses the selected machine's authen
 
 Settings → Pets lists installed pets immediately, merges the online gallery when reachable, and asks the backend for thumbnails.
 
-Selecting, disabling, scaling, renaming, exporting and removing call the upstream `pet.*` RPCs; changes are visible to CLI/TUI/official desktop in the same profile. [[src/renderer/src/components/pet/PetSettings.tsx#PetSettings]] owns this UI, refreshes while open, retries failed thumbnails on later refreshes, and reconnects after a dropped gateway. Generated pets use their existing manifests rather than a new Hermes One format.
+Selecting, disabling, scaling, renaming, exporting and removing call the upstream `pet.*` RPCs; changes are visible to CLI/TUI/official desktop in the same profile. [[src/renderer/src/components/pet/PetSettings.tsx#PetSettings]] owns this UI, refreshes while open, retries failed thumbnails on later refreshes, and reconnects after a dropped gateway. Generated pets use their existing manifests rather than a new Koda Cloud format.
 
 ## Live mascot
 
-[[src/renderer/src/components/pet/FloatingPet.tsx#FloatingPet]] polls pet metadata and refreshes the revisioned sprite when another Hermes surface changes selection.
+[[src/renderer/src/components/pet/FloatingPet.tsx#FloatingPet]] polls pet metadata and refreshes the revisioned sprite when another Koda surface changes selection.
 
-The `pet.changed` event is an immediate hint; focus/poll reconnects a dropped socket, and an in-flight metadata read rechecks after a newer change. [[src/renderer/src/components/pet/PetSprite.tsx#PetSprite]] renders both legacy and current state rows using the gateway's geometry and real frame counts. The displayed run owns activity; legacy and dashboard failures use the failed pose rather than a success wave. Saved drag positions are clamped when the window shrinks. Only drag position is local to this device; profile selection and size remain in shared Hermes config.
+The `pet.changed` event is an immediate hint; focus/poll reconnects a dropped socket, and an in-flight metadata read rechecks after a newer change. [[src/renderer/src/components/pet/PetSprite.tsx#PetSprite]] renders both legacy and current state rows using the gateway's geometry and real frame counts. The displayed run owns activity; legacy and dashboard failures use the failed pose rather than a success wave. Saved drag positions are clamped when the window shrinks. Only drag position is local to this device; profile selection and size remain in shared Koda config.
 
-The mascot is inside the Hermes One window. Official-desktop pop-out, roaming, and pet-generation UI are separate presentation features, not alternate storage formats.
+The mascot is inside the Koda Cloud window. Official-desktop pop-out, roaming, and pet-generation UI are separate presentation features, not alternate storage formats.
 
 ## Connection edit regressions
 

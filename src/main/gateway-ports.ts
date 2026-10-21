@@ -13,7 +13,7 @@ function envPort(name: string, fallback: number): number {
 
 // The default profile keeps the historical port so existing installs and
 // docs (curl examples, etc.) keep working. Sandbox/dev runners can override
-// these via env vars to avoid colliding with a user's running Hermes gateway.
+// these via env vars to avoid colliding with a user's running the engine's gateway.
 export const DEFAULT_API_SERVER_PORT = envPort(
   "HERMES_DESKTOP_DEFAULT_API_PORT",
   8642,

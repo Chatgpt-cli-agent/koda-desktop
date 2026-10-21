@@ -28,7 +28,7 @@ describe("platform packaging identity", () => {
   // @lat: [[desktop-updates#Desktop Updates#Stable and beta release channels#Platform package identity]]
   it("retains the macOS bundle name used by release verification", () => {
     const app = new AppInfo(packager, undefined, config.mac);
-    expect(`${app.productFilename}.app`).toBe("Hermes One.app");
+    expect(`${app.productFilename}.app`).toBe("Koda.app");
     const verifier = readFileSync(
       join(root, "scripts/verify-native-module-architecture.sh"),
       "utf8",
@@ -39,7 +39,7 @@ describe("platform packaging identity", () => {
   it("keeps the Linux install path space-free and delegates package setup to the builder", () => {
     const app = new AppInfo(packager, undefined, config.linux);
     const installPath = `${installPrefix}/${app.sanitizedProductName}`;
-    expect(installPath).toBe("/opt/HermesOne");
+    expect(installPath).toBe("/opt/Koda");
     expect(config.deb?.afterInstall).toBeUndefined();
     expect(config.rpm?.afterInstall).toBeUndefined();
   });

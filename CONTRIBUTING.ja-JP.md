@@ -1,6 +1,6 @@
-# Hermes Desktop へのコントリビューション
+# Koda Desktop へのコントリビューション
 
-Hermes Desktop へのコントリビューションに興味を持っていただきありがとうございます！バグ修正、新機能、ドキュメント改善、ちょっとしたタイポ修正まで、どんな貢献も歓迎します。
+Koda Desktop へのコントリビューションに興味を持っていただきありがとうございます！バグ修正、新機能、ドキュメント改善、ちょっとしたタイポ修正まで、どんな貢献も歓迎します。
 
 ## 言語
 
@@ -62,7 +62,7 @@ PR は小さく目的を絞ってください — その方がレビューもマ
 
 ## バグ報告
 
-バグを見つけた場合は、以下の情報を添えて [Issue を作成してください](https://github.com/fathah/hermes-desktop/issues/new)。
+バグを見つけた場合は、以下の情報を添えて [Issue を作成してください](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new)。
 
 - 明確なタイトルと説明
 - 再現手順
@@ -71,7 +71,7 @@ PR は小さく目的を絞ってください — その方がレビューもマ
 
 ## 機能リクエスト
 
-アイデアがある場合は、[Issue を作成して](https://github.com/fathah/hermes-desktop/issues/new)以下を記述してください。
+アイデアがある場合は、[Issue を作成して](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new)以下を記述してください。
 
 - 解決したい問題
 - どのように動作してほしいか
@@ -80,7 +80,7 @@ PR は小さく目的を絞ってください — その方がレビューもマ
 ## プロジェクト構成
 
 ```text
-src/main/                Electron メインプロセス、IPC ハンドラ、Hermes 統合
+src/main/                Electron メインプロセス、IPC ハンドラ、Koda 統合
 src/preload/             セキュアな renderer ブリッジ
 src/renderer/src/        React アプリと UI コンポーネント
 resources/               アプリアイコンとパッケージ用アセット
@@ -97,7 +97,7 @@ build/                   パッケージング用リソース
 ## コミュニティ
 
 - 他のコントリビューターと話すには [Nous Research Discord](https://discord.gg/NousResearch) に参加してください。
-- Hermes の動作についての詳細は[ドキュメント](https://hermes-agent.nousresearch.com/docs/)を参照してください。
+- Koda の動作についての詳細は[ドキュメント](https://hermes-agent.nousresearch.com/docs/)を参照してください。
 
 ## ライセンス
 

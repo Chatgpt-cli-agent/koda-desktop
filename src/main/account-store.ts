@@ -1,4 +1,4 @@
-// @lat: [[hermes-account-login#Account store]]
+// @lat: [[koda-account-login#Account store]]
 import { safeStorage } from "electron";
 import { existsSync, readdirSync, readFileSync, unlinkSync } from "fs";
 import { join } from "path";
@@ -6,7 +6,7 @@ import { isValidProfileName, profileHome, safeWriteFile } from "./utils";
 import { HERMES_HOME } from "./installer";
 import { normalizeApiUrl } from "./api-url";
 
-// Persists the Hermes account session obtained via device login (see
+// Persists the Koda Cloud account session obtained via device login (see
 // hermes-account.ts). The bearer access token is encrypted at rest with the OS
 // keychain via Electron safeStorage — same approach as wallet-store.ts — and
 // never leaves the main process. The renderer only ever sees the public profile.

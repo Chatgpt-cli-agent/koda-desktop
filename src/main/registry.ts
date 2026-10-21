@@ -277,7 +277,7 @@ function buildSpec(
   if (item.version) rows.push({ label: "Version", value: item.version });
   const compat = m?.compatibility;
   if (compat?.hermes) {
-    rows.push({ label: "Requires Hermes", value: compat.hermes, mono: true });
+    rows.push({ label: "Requires Koda", value: compat.hermes, mono: true });
   }
 
   return { description: m?.description || item.description || "", rows };

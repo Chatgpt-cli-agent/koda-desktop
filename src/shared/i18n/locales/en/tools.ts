@@ -106,7 +106,7 @@ export default {
   mcpNoResults: "No MCP servers match your filter.",
   mcpEmptyTitle: "No MCP servers configured",
   mcpEmptyDescription:
-    "Add a custom HTTP or stdio server, or install one from the Hermes MCP catalog.",
+    "Add a custom HTTP or stdio server, or install one from the Koda MCP catalog.",
   mcpLoadFailed: "Failed to load MCP servers.",
   mcpAddFailed: "Failed to add MCP server.",
   mcpRemoveFailed: "Failed to remove MCP server.",
@@ -145,7 +145,7 @@ export default {
   mcpInstalledStatus: "Installed",
   graphnosisMcpTitle: "Graphnosis memory (optional)",
   graphnosisMcpDescription:
-    "Register Graphnosis MCP for this local profile. Requires Node.js and the Graphnosis app running on this machine with cortex unlocked. The relay downloads when Hermes starts it.",
+    "Register Graphnosis MCP for this local profile. Requires Node.js and the Graphnosis app running on this machine with cortex unlocked. The relay downloads when Koda starts it.",
   graphnosisMcpInstall: "Install Graphnosis MCP",
   graphnosisMcpDownload: "Get Graphnosis app",
 } as const;

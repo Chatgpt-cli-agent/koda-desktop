@@ -52,6 +52,6 @@ Because the bar doubles as the drag strip, [[src/renderer/src/screens/Layout/Lay
 
 ## Follow-us modal
 
-A one-time modal prompting the user to follow Hermes on X. Dismissed permanently via localStorage after either button is clicked.
+The one-time "follow us on X" promo was removed with the rebrand, along with its `localStorage` dismissal flag, its styles and its copy.
 
-[[src/renderer/src/components/FollowUsModal.tsx]] stores the dismissal flag in `localStorage` under `hermes-follow-x-dismissed`. Both "Follow" (opens `https://x.com/HermesOneApp` via `openExternal`) and "Not Now" write the flag and close the modal. It renders in [[src/renderer/src/screens/Chat/Chat.tsx]] only when `connectionModeLoaded && readiness.ok`, so it appears after setup is complete. The modal reuses the `.models-modal-overlay` / `.models-modal` pattern for consistent styling.
+It pointed at the upstream project's X account while its own text promised "the latest Koda features" — a promise about an account Koda does not own, and a route for the old brand back into a Koda install. The community pane still carries the same channels, without printing their URLs; see [[koda-rebrand#Surfaces that still point upstream]] for where those links live.

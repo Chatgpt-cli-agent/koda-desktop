@@ -223,7 +223,6 @@ beforeEach(() => {
   editorStore.id = "a";
   editorStore.configs = {};
   localStorage.clear();
-  localStorage.setItem("hermes-follow-x-dismissed", "true");
   gateway.clients.length = 0;
   gateway.request.mockReset();
   vi.stubGlobal(

@@ -1,5 +1,5 @@
 // @vitest-environment node
-// @lat: [[hermes-account-login#Tests]]
+// @lat: [[koda-account-login#Tests]]
 
 import { existsSync, mkdtempSync, rmSync } from "fs";
 import { tmpdir } from "os";
@@ -124,7 +124,7 @@ describe("account store", () => {
     expect(s.findAccountProfile()).toBe("default");
   });
 
-  // @lat: [[hermes-account-login#Tests#Signs out everywhere]]
+  // @lat: [[koda-account-login#Tests#Signs out everywhere]]
   it("clearAllAccounts signs out every profile holding an account", async () => {
     const s = await store();
     // Two sign-ins on different profiles leave two account files.

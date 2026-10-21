@@ -56,7 +56,7 @@ if (HERMES_DESKTOP_USER_DATA_DIR) {
   }
 }
 
-// Resolve the Hermes data directory. Precedence:
+// Resolve the engine's data directory. Precedence:
 //   1. HERMES_HOME env var if set (install.ps1 sets it User-scope on
 //      Windows; users may also override manually for WSL/custom setups).
 //   2. On Windows, probe both candidates and pick whichever already has
@@ -161,7 +161,7 @@ function readHermesHomeOverride(): StoredHermesHomeOverride | null {
   }
 }
 
-/** Persist (when `home` is set) or clear (when "") the Hermes home override. */
+/** Persist (when `home` is set) or clear (when "") the engine's home override. */
 export function setHermesHomeOverride(home: string): void {
   try {
     const file = hermesHomeOverrideFile();
@@ -217,7 +217,7 @@ export const HERMES_ENV_FILE = join(HERMES_HOME, ".env");
 export const HERMES_CONFIG_FILE = join(HERMES_HOME, "config.yaml");
 export const HERMES_AUTH_FILE = join(HERMES_HOME, "auth.json");
 
-/** The Python + hermes-script paths for a Hermes install rooted at `home`,
+/** The Python + hermes-script paths for the engine install rooted at `home`,
  *  in the layout the desktop's own installer produces. */
 function installBinariesFor(home: string): { python: string; script: string } {
   const repo = join(home, "hermes-agent");
@@ -519,7 +519,7 @@ export function inspectInstallTarget(): InstallTargetInfo {
   };
 }
 
-/** True when `dir` is a Hermes home the desktop can drive as-is — it must
+/** True when `dir` is the engine's home the desktop can drive as-is — it must
  *  contain a `hermes-agent` install with the venv binaries in the layout the
  *  desktop expects. A hand-rolled install with a different layout fails here
  *  rather than being silently adopted into a broken state (issue #272). */
@@ -557,7 +557,7 @@ export function checkInstallStatus(): InstallStatus {
   const verified = installed;
 
   // Local/custom providers don't need an API key. OAuth-backed providers
-  // (including credential-pool entries) can be configured through Hermes
+  // (including credential-pool entries) can be configured through the engine
   // auth.json instead of .env, so check those before falling back to keys.
   let mc: { provider: string; model: string; baseUrl: string } | null = null;
   try {
@@ -683,7 +683,7 @@ export function clearVersionCache(): void {
 
 export function runHermesDoctor(): string {
   if (!canInvokeHermesCli()) {
-    return "Hermes is not installed.";
+    return "Koda is not installed.";
   }
   try {
     const output = execFileSync(HERMES_PYTHON, hermesCliArgs(["doctor"]), {
@@ -746,7 +746,7 @@ export async function runClawMigrate(
   onProgress: (progress: InstallProgress) => void,
 ): Promise<void> {
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_SCRIPT)) {
-    throw new Error("Hermes is not installed.");
+    throw new Error("Koda is not installed.");
   }
 
   const openclaw = checkOpenClawExists();
@@ -811,7 +811,7 @@ export async function runHermesUpdate(
   onProgress: (progress: InstallProgress) => void,
 ): Promise<void> {
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_SCRIPT)) {
-    throw new Error("Hermes is not installed. Please install it first.");
+    throw new Error("Koda is not installed. Please install it first.");
   }
 
   let log = "";
@@ -821,7 +821,7 @@ export async function runHermesUpdate(
       operation: "update",
       step: 0,
       totalSteps: 0,
-      title: "Updating Hermes Agent",
+      title: "Updating Koda",
       detail: text.trim().slice(0, 120),
       log,
     });
@@ -902,7 +902,7 @@ const STAGE_MARKERS: { pattern: RegExp; step: number; title: string }[] = [
     pattern:
       /Cloning|cloning|Updating.*repository|Repository|Installing to .*hermes-agent|Downloading PortableGit/i,
     step: 4,
-    title: "Downloading Hermes Agent",
+    title: "Downloading Koda",
   },
   {
     pattern: /Creating virtual|virtual environment|uv venv|\bvenv\b/i,
@@ -957,7 +957,7 @@ export async function runInstall(
     });
   }
 
-  emit("Running official Hermes install script...\n");
+  emit("Running official Koda install script...\n");
 
   if (IS_WINDOWS) {
     return runInstallWindows(emit);
@@ -1048,7 +1048,7 @@ export async function runInstall(
           // If Hermes is actually installed and working, treat as success.
           if (existsSync(HERMES_PYTHON) && existsSync(HERMES_SCRIPT)) {
             emit(
-              "\nInstall script exited with warnings, but Hermes is installed successfully.\n",
+              "\nInstall script exited with warnings, but Koda is installed successfully.\n",
             );
             resolve();
           } else {
@@ -1191,7 +1191,7 @@ async function runInstallWindows(emit: (t: string) => void): Promise<void> {
       // Same tolerance as the bash path: if the binary tree exists, count it.
       if (existsSync(HERMES_PYTHON) && existsSync(HERMES_SCRIPT)) {
         emit(
-          "\nInstall script exited with warnings, but Hermes is installed successfully.\n",
+          "\nInstall script exited with warnings, but Koda is installed successfully.\n",
         );
         resolve();
       } else {
@@ -1223,7 +1223,7 @@ export async function runHermesBackup(
   profile?: string,
 ): Promise<{ success: boolean; path?: string; error?: string }> {
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_SCRIPT)) {
-    return { success: false, error: "Hermes is not installed." };
+    return { success: false, error: "Koda is not installed." };
   }
   const args = hermesCliArgs();
   if (profile && profile !== "default") args.push("-p", profile);
@@ -1284,7 +1284,7 @@ export async function runHermesImport(
   }
 
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_SCRIPT)) {
-    return { success: false, error: "Hermes is not installed." };
+    return { success: false, error: "Koda is not installed." };
   }
   const targetProfile = profile || getActiveProfileNameSync();
   if (!isValidProfileName(targetProfile)) {
@@ -1292,8 +1292,8 @@ export async function runHermesImport(
   }
   const options: MessageBoxOptions = {
     type: "warning",
-    title: "Restore Hermes backup",
-    message: "Restore this Hermes backup?",
+    title: "Restore Koda backup",
+    message: "Restore this Koda backup?",
     detail: `Archive: ${basename(archive.path)}\nLocal profile: "${targetProfile}"\n\nThis replaces configuration, credentials, sessions and other backup contents. Provider backups may also restore files outside this profile.`,
     buttons: ["Cancel", "Restore backup"],
     defaultId: 0,
@@ -1379,7 +1379,7 @@ export function validateImportArchivePath(
 
 export function runHermesDump(): Promise<string> {
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_SCRIPT)) {
-    return Promise.resolve("Hermes is not installed.");
+    return Promise.resolve("Koda is not installed.");
   }
   return new Promise((resolve) => {
     execFile(

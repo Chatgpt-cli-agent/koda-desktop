@@ -4,7 +4,7 @@ import { OrbLoader } from "../../components/OrbLoader";
 import { useI18n } from "../../components/useI18n";
 import { AttachmentChip } from "../../components/AttachmentChip";
 import { ToolGlyph, humanizeToolName } from "../../components/toolMeta";
-import { HermesAvatar, AvatarSpacer } from "./MessageRow";
+import { KodaAvatar, AvatarSpacer } from "./MessageRow";
 import type { AgentAvatarInfo } from "./MessageRow";
 import type {
   Attachment,
@@ -40,7 +40,7 @@ export const ReasoningRow = memo(function ReasoningRow({
       }`}
     >
       {showAvatar ? (
-        <HermesAvatar active={active} agent={agent} />
+        <KodaAvatar active={active} agent={agent} />
       ) : (
         <AvatarSpacer />
       )}
@@ -269,7 +269,7 @@ export const ToolActivityGroup = memo(function ToolActivityGroup({
       }`}
     >
       {showAvatar ? (
-        <HermesAvatar active={active} agent={agent} />
+        <KodaAvatar active={active} agent={agent} />
       ) : (
         <AvatarSpacer />
       )}

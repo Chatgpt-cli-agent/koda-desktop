@@ -191,7 +191,6 @@ async function fixture(transport: "dashboard" | "auto" = "dashboard"): Promise<{
 }
 beforeEach(() => {
   localStorage.clear();
-  localStorage.setItem("hermes-follow-x-dismissed", "true");
   gateway.clients.length = 0;
   gateway.request.mockReset();
   vi.stubGlobal(
@@ -936,7 +935,7 @@ it.each([
             );
           if (outcome === "socket rejection") {
             gateway.clients.at(-1)!.rejectPending = () =>
-              reject(new Error("Hermes dashboard WebSocket closed"));
+              reject(new Error("Koda dashboard WebSocket closed"));
           }
         });
       }
@@ -1172,7 +1171,7 @@ it("keeps the empty chat avatar on its run profile and updates it with that run"
   await waitFor(() => {
     expect(
       view.container.querySelector(".chat-empty .chat-empty-logo"),
-    ).toHaveAttribute("aria-label", "Hermes");
+    ).toHaveAttribute("alt", "Koda");
     expect(
       view.container.querySelector(".chat-empty .profile-avatar-img"),
     ).toBeNull();

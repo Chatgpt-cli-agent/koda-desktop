@@ -57,7 +57,7 @@ describe("Persian locale integration", () => {
     expect(document.documentElement).toHaveAttribute("lang", "fa");
     expect(localStorage.getItem("hermes-locale")).toBe("fa");
     expect(screen.getByTestId("translation-probe")).toHaveTextContent(
-      "ذخیره / Welcome to Hermes One",
+      "ذخیره / Welcome to Koda",
     );
     fireEvent.click(screen.getByRole("button", { name: "فارسی" }));
     fireEvent.click(screen.getByRole("option", { name: "English" }));

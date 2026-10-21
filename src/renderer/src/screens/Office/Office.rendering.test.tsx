@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 // Both production Office components render here. Only the WebGL boundary and
 // asset layers are isolated: this scheduler exposes Canvas's frame-loop contract
-// without a GPU, model downloads, or a real Hermes installation.
+// without a GPU, model downloads, or a real the engine's installation.
 const frames = vi.hoisted(() => ({
   rendered: 0,
   mounts: 0,

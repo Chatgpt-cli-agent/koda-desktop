@@ -22,7 +22,7 @@ describe("shared i18n", () => {
   });
 
   it("returns English text by default", () => {
-    expect(t("welcome.title")).toBe("Welcome to Hermes One");
+    expect(t("welcome.title")).toBe("Welcome to Koda");
   });
 
   it("falls back to the key when an English key is missing", () => {
@@ -30,27 +30,27 @@ describe("shared i18n", () => {
   });
 
   it("returns zh-CN text when available", () => {
-    expect(t("welcome.title", "zh-CN")).toBe("欢迎使用 Hermes");
+    expect(t("welcome.title", "zh-CN")).toBe("欢迎使用 Koda");
   });
 
   it("returns zh-TW text when available", () => {
-    expect(t("welcome.title", "zh-TW")).toBe("歡迎使用 Hermes");
+    expect(t("welcome.title", "zh-TW")).toBe("歡迎使用 Koda");
   });
 
   it("returns es text when available", () => {
-    expect(t("welcome.title", "es")).toBe("Bienvenido a Hermes");
+    expect(t("welcome.title", "es")).toBe("Bienvenido a Koda");
   });
 
   it("returns id text when available", () => {
-    expect(t("welcome.title", "id")).toBe("Selamat datang di Hermes");
+    expect(t("welcome.title", "id")).toBe("Selamat datang di Koda");
   });
 
   it("returns pl text when available", () => {
-    expect(t("welcome.title", "pl")).toBe("Witamy w Hermes");
+    expect(t("welcome.title", "pl")).toBe("Witamy w Koda");
   });
 
   it("returns he text when available", () => {
-    expect(t("welcome.title", "he")).toBe("ברוכים הבאים ל-Hermes");
+    expect(t("welcome.title", "he")).toBe("ברוכים הבאים ל-Koda");
   });
 
   it("reports he as a right-to-left locale", () => {

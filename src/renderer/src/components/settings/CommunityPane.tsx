@@ -4,14 +4,19 @@ import BrandLogo from "../common/BrandLogo";
 import xLogo from "../../assets/logos/twitter.svg";
 import {
   DISCORD_COMMUNITY_URL,
-  HERMES_TELEGRAM_URL,
-  HERMES_WEBSITE_URL,
-  HERMES_X_URL,
+  KODA_TELEGRAM_URL,
+  KODA_WEBSITE_URL,
+  KODA_X_URL,
   KOFI_SUPPORT_URL,
 } from "./settingsHelpers";
 
 /** Community + support links. */
 export default function CommunityPane(): React.JSX.Element {
+  // The link buttons carry the upstream project's channel URLs. They are not
+  // printed anywhere in the UI: the button label is the whole of what a
+  // Koda user sees, so no third-party URL — and no brand inside one — is
+  // ever rendered next to a Koda label. Repoint the constants in
+  // `settingsHelpers.ts` to give Koda its own channels.
   const { t } = useI18n();
 
   const open = (url: string) => () => window.hermesAPI.openExternal(url);
@@ -27,7 +32,6 @@ export default function CommunityPane(): React.JSX.Element {
           type="button"
           className="settings-link is-primary"
           onClick={open(DISCORD_COMMUNITY_URL)}
-          title={DISCORD_COMMUNITY_URL}
         >
           <span className="settings-link-icon">
             <BrandLogo provider="discord" size={18} />
@@ -41,8 +45,7 @@ export default function CommunityPane(): React.JSX.Element {
         <button
           type="button"
           className="settings-link"
-          onClick={open(HERMES_WEBSITE_URL)}
-          title={HERMES_WEBSITE_URL}
+          onClick={open(KODA_WEBSITE_URL)}
         >
           <span className="settings-link-icon">
             <Globe size={18} />
@@ -56,8 +59,7 @@ export default function CommunityPane(): React.JSX.Element {
         <button
           type="button"
           className="settings-link"
-          onClick={open(HERMES_X_URL)}
-          title={HERMES_X_URL}
+          onClick={open(KODA_X_URL)}
         >
           <span className="settings-link-icon">
             <img
@@ -75,8 +77,7 @@ export default function CommunityPane(): React.JSX.Element {
         <button
           type="button"
           className="settings-link"
-          onClick={open(HERMES_TELEGRAM_URL)}
-          title={HERMES_TELEGRAM_URL}
+          onClick={open(KODA_TELEGRAM_URL)}
         >
           <span className="settings-link-icon">
             <BrandLogo provider="telegram" size={18} />

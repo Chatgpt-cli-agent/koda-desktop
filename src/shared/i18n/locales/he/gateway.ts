@@ -12,9 +12,8 @@ export default {
   stopFailed: "לא ניתן היה לעצור את השער.",
   startExited: "השער הופעל, אך נעצר שוב לפני שהספיק להיות מוכן.",
   checkLog: "בדקו את יומן השער:",
-  gatewayHint:
-    "מחבר את Hermes ל-Telegram, ל-Discord, ל-Slack ולפלטפורמות נוספות",
-  subtitle: "ניהול פלטפורמות המסרים שאליהן Hermes Agent יכול להתחבר.",
+  gatewayHint: "מחבר את Koda ל-Telegram, ל-Discord, ל-Slack ולפלטפורמות נוספות",
+  subtitle: "ניהול פלטפורמות המסרים שאליהן Koda יכול להתחבר.",
   refreshTooltip: "רענון מצב הפלטפורמות",
   refresh: "רענון",
   configHint:

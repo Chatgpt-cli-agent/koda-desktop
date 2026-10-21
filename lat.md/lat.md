@@ -1,24 +1,24 @@
 This directory defines the high-level concepts, business logic, and architecture of this project using markdown. It is managed by [lat.md](https://www.npmjs.com/package/lat.md) — a tool that anchors source code to these definitions. Install the `lat` command with `npm i -g lat.md` and run `lat --help`.
 
-> **Hermes One** is a community-maintained project. This desktop app is a wrapper around **Hermes Agent** — it is **not affiliated with, endorsed by, or supported by Nous Research**. "Hermes One" is the name of this community project; "Hermes"/"Hermes Agent" refer to the upstream agent it builds on.
+> **Koda** is a community-maintained project, and this desktop app is its home. It wraps the upstream agent engine, installed from Nous Research's `hermes-agent` package — it is **not affiliated with, endorsed by, or supported by Nous Research**. "Koda" is the product name and "Koda Cloud" is the hosted service behind the account sign-in. The upstream engine's own technical names — `hermes-agent`, `hermes_cli`, `~/.hermes`, `HERMES_*` — are kept exactly, because they are contracts with the engine, the on-disk layout and remote hosts rather than branding. See [[koda-rebrand]].
 
 - [[chat-commands]] — how typed slash commands are routed through the gateway's `slash.exec`/`command.dispatch` pipeline instead of being sent as prompt text.
-- [[bot-groups]] — experimental, local-only Agent group UI over the Hermes-owned groups protocol; no second coordination runtime.
+- [[bot-groups]] — experimental, local-only Agent group UI over the Koda-owned groups protocol; no second coordination runtime.
 - [[chat-input]] — the unified chat composer surface and its theme-aware animated border treatment.
 - [[chat-performance]] — how chat rendering stays responsive through contained transcript rows, batched textarea resizing, and fixed-row slash-command virtualization.
 - [[chat-experience-preferences]] — user-message Markdown plus persisted completion-sound and native multi-language spell-check preferences.
-- [[shared-pets]] — the official Hermes pet gateway contract shared across profiles, gallery selection, sprite rendering, and live activity.
+- [[shared-pets]] — the official Koda pet gateway contract shared across profiles, gallery selection, sprite rendering, and live activity.
 - [[model-context]] — the per-model context-window override that drives the context gauge and the agent's auto-compaction.
 - [[model-selection]] — the session-scoped in-chat model override that switches the model (and provider) for one conversation without touching the global default.
 - [[reasoning-effort]] — the composer's Faster⟷Smarter effort control: a draggable `role="slider"` over six ordered levels that stays open until dismissed and commits one `onChange` per real change.
 - [[web-preview]] — the in-app split-screen webview and the `partition`-based gate that lets only it load remote HTTPS while staying sandboxed.
 - [[code-blocks]] — collapsible long code blocks, and why expansion state is keyed on source position to survive react-markdown's streaming remounts.
 - [[rtl-chat]] — per-block message direction, LTR code isolation, and Persian locale registration with English fallback.
-- [[loading-indicators]] — the thinking-orbs dotted-orb loaders behind every loading state, and the OrbLoader wrapper that pins dark/light from the Hermes theme registry instead of the library's auto-detection.
+- [[loading-indicators]] — the thinking-orbs dotted-orb loaders behind every loading state, and the OrbLoader wrapper that pins dark/light from the Koda theme registry instead of the library's auto-detection.
 - [[window-chrome]] — the browser-style title bar where open-conversation tabs sit on top of the window drag region, clickable while empty space still drags.
 - [[desktop-updates]] — GitHub release checks, startup upgrade button behavior, and the Settings auto-upgrade preference.
 - [[desktop-security]] — verified Unix bootstrap execution and safe rendering of runtime provider names.
-- [[agent-capabilities]] — capability-based compatibility between the independent desktop and system-installed Hermes Agent, including bounded runtime evidence and update gating.
+- [[agent-capabilities]] — capability-based compatibility between the independent desktop and system-installed Koda Agent, including bounded runtime evidence and update gating.
 - [[connections]] — the versioned main-process connection registry, stable active connection identity, and lossless migration from the legacy singleton configuration.
 - [[subagents]] — the in-chat roster of a conversation's delegated children, fed by relayed `subagent.*` events and the `subagent.list` roster.
 - [[session-title-generation]] — Unicode-safe automatic titles for untitled local sessions.
@@ -26,12 +26,13 @@ This directory defines the high-level concepts, business logic, and architecture
 - [[context-folder]] — the per-session linked working folder, persisted in a desktop-owned state.db table so a re-opened conversation restores its folder.
 - [[main-process]] — the Electron main-process entrypoint, app lifecycle modules, and centralized IPC registry.
 - [[remote-dashboard-oauth]] — direct Remote dashboard browser authentication, main-process cookie isolation, and single-use WebSocket ticket handling.
-- [[onboarding]] — the shared cinematic first-run chrome (OnboardHero): aurora backdrop, animated Hermes emblem with the big-centre → fly-up intro, and the Welcome / Install redesign built on it.
+- [[onboarding]] — the shared cinematic first-run chrome (OnboardHero): aurora backdrop, animated Koda emblem with the big-centre → fly-up intro, and the Welcome / Install redesign built on it.
 - [[provider-setup]] — the first-run provider picker; its top grid mirrors the agent's native `CANONICAL_PROVIDERS` while OpenAI-compatible endpoints route through the Local presets.
-- [[hermes-account-login]] — desktop sign-in to a Hermes account via the RFC 8628 device grant; secure token storage, IPC, and the Providers-screen entry point.
+- [[koda-account-login]] — desktop sign-in to a Koda account via the RFC 8628 device grant; secure token storage, IPC, and the Providers-screen entry point.
 - [[agent-sync]] — bidirectional sync of desktop profiles with the signed-in account's cloud agents (persona, memory, color, model/provider) via the backend's `/api/agents`; hash-based per-part conflict handling, no deletion propagation.
 - [[kanban]] — the JIRA-style multi-agent board tab; a thin client over the `hermes kanban` CLI with canonical status columns, an archived toggle, and focus/poll refresh.
-- [[analytics]] — privacy-first, opt-out usage analytics that POST anonymous events to the in-house Hermes analytics service, keyed by a per-install localStorage UUID; replaces the former PostHog integration.
+- [[koda-rebrand]] — the Koda naming policy, which upstream spellings are contracts that must survive, and the brand and translation-key ratchets that keep a merge from undoing the rename.
+- [[analytics]] — privacy-first, opt-out usage analytics that POST anonymous events to the in-house Koda analytics service, keyed by a per-install localStorage UUID; replaces the former PostHog integration.
 - [[speech-playback]] — selected Local speech authority, bounded MiniMax synthesis and shared playback lifecycle.
 - [[speech-playback-tests]] — actual speech IPC and message lifecycle regressions.
 - [[wallet-token-balances]] — profile-scoped Base mainnet wallets with encrypted recovery phrases, and on-chain ERC-20 token balance reads via ethers v6.

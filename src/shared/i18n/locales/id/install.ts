@@ -3,7 +3,7 @@ export default {
   startingInstall: "Memulai instalasi",
   installationComplete: "Instalasi Selesai",
   installationFailed: "Instalasi Gagal",
-  installingHermes: "Menginstal Hermes Agent",
+  installingKoda: "Menginstal Koda",
   installationFailedHint:
     "Instalasi gagal. Coba lagi atau instal melalui terminal.",
   retryInstallation: "Ulangi Instalasi",
@@ -13,22 +13,22 @@ export default {
   waitingToStart: "Menunggu untuk mulai...",
   continueToSetup: "Lanjut ke Setup",
   confirmTitle: "Sebelum memasang",
-  confirmLocationLabel: "Hermes akan dipasang di:",
+  confirmLocationLabel: "Koda akan dipasang di:",
   confirmFresh:
     "Tidak ada pemasangan yang ditemukan di sini — salinan baru akan disiapkan.",
   confirmUpdate:
-    "Ada pemasangan Hermes di sini — akan diperbarui ke versi terbaru.",
+    "Ada pemasangan Koda di sini — akan diperbarui ke versi terbaru.",
   confirmReplace:
-    "Ada folder di sini tetapi bukan pemasangan Hermes yang valid — memasang akan menghapus dan menggantinya.",
+    "Ada folder di sini tetapi bukan pemasangan Koda yang valid — memasang akan menghapus dan menggantinya.",
   confirmNotInherited:
-    "Jika Anda memasang Hermes di tempat lain, atau melalui baris perintah, itu tidak akan dibawa serta.",
-  confirmInstallBtn: "Pasang Hermes",
+    "Jika Anda memasang Koda di tempat lain, atau melalui baris perintah, itu tidak akan dibawa serta.",
+  confirmInstallBtn: "Pasang Koda",
   useExistingBtn: "Gunakan pemasangan yang sudah ada",
   useExistingHint:
-    "Pilih folder yang berisi pemasangan Hermes Anda yang sudah ada (folder yang memuat folder hermes-agent).",
+    "Pilih folder yang berisi pemasangan Koda Anda yang sudah ada (folder yang memuat folder hermes-agent).",
   useExistingInvalid:
-    "Tidak ada pemasangan Hermes yang dapat digunakan di folder itu.",
+    "Tidak ada pemasangan Koda yang dapat digunakan di folder itu.",
   useExistingDone:
-    "Pemasangan yang ada telah diatur — tutup dan buka kembali Hermes untuk menerapkannya.",
-  useExistingQuitBtn: "Keluar dari Hermes",
+    "Pemasangan yang ada telah diatur — tutup dan buka kembali Koda untuk menerapkannya.",
+  useExistingQuitBtn: "Keluar dari Koda",
 } as const;

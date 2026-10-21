@@ -6,11 +6,11 @@ export default {
   empty: "No groups yet.",
   more: "More groups",
   intro:
-    "Collaborate with 2–6 Agents. Hermes owns the shared context and execution.",
+    "Collaborate with 2–6 Agents. Koda owns the shared context and execution.",
   unavailable:
-    "Bot groups need the experimental bridge and a Hermes groups protocol v2 runtime.",
+    "Bot groups need the experimental bridge and a Koda groups protocol v2 runtime.",
   connecting: "Connecting…",
-  noDriver: "Group worker unavailable. Check the Hermes Dashboard.",
+  noDriver: "Group worker unavailable. Check the Koda Dashboard.",
   blocked: "Action required — review the pending request below.",
   working: "Agents are working…",
   ready: "Ready",
@@ -37,5 +37,5 @@ export default {
   turn_failed: "An Agent failed. Check the group status.",
   turn_cancelled: "An Agent turn was cancelled.",
   turn_deferred: "An Agent turn needs attention.",
-  recent: "Showing the latest 500 events. Full history remains in Hermes.",
+  recent: "Showing the latest 500 events. Full history remains in Koda.",
 };

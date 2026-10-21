@@ -1,0 +1,4 @@
+# Prettier reformats `{{PLACEHOLDER}}` in YAML into the flow mapping
+# `{ { PLACEHOLDER } }`. The winget manifest generator substitutes the
+# original spelling, so a formatted template ships literal placeholders.
+build/winget/

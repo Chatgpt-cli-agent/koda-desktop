@@ -12,7 +12,7 @@ function escapeHtml(value: string): string {
 }
 
 /**
- * Export / import a full Hermes backup archive, plus the OpenClaw → Hermes
+ * Export / import a full the engine backup archive, plus the OpenClaw → the engine
  * migration (which imports config, keys, sessions, and skills — a data import,
  * so it lives here rather than under Community).
  */
@@ -43,7 +43,7 @@ export default function DataPane(): React.JSX.Element {
         <div className="settings-field-hint" style={{ marginBottom: 10 }}>
           {t("settings.dataHint")}
         </div>
-        <div className="settings-hermes-actions">
+        <div className="settings-koda-actions">
           <button
             className="btn btn-secondary"
             onClick={handleBackup}
@@ -63,7 +63,7 @@ export default function DataPane(): React.JSX.Element {
         </div>
         {backupResult && (
           <div
-            className={`settings-hermes-result ${backupResult.includes("created") || backupResult.includes("success") ? "success" : "error"}`}
+            className={`settings-koda-result ${backupResult.includes("created") || backupResult.includes("success") ? "success" : "error"}`}
             style={{ marginTop: 8 }}
           >
             {backupResult}
@@ -71,7 +71,7 @@ export default function DataPane(): React.JSX.Element {
         )}
         {importResult && (
           <div
-            className={`settings-hermes-result ${importResult.includes("complete") ? "success" : "error"}`}
+            className={`settings-koda-result ${importResult.includes("complete") ? "success" : "error"}`}
             style={{ marginTop: 8 }}
           >
             {importResult}
@@ -104,13 +104,13 @@ export default function DataPane(): React.JSX.Element {
             </button>
           </div>
           {migrationLog && (
-            <pre className="settings-hermes-doctor" ref={migrationLogRef}>
+            <pre className="settings-koda-doctor" ref={migrationLogRef}>
               {migrationLog}
             </pre>
           )}
           {migrationResult && (
             <div
-              className={`settings-hermes-result ${migrationResultType || "error"}`}
+              className={`settings-koda-result ${migrationResultType || "error"}`}
             >
               {migrationResult}
             </div>
@@ -123,7 +123,7 @@ export default function DataPane(): React.JSX.Element {
             >
               {migrating
                 ? t("settings.migrating")
-                : t("settings.migrateToHermes")}
+                : t("settings.migrateToKoda")}
             </button>
             <button
               className="btn btn-secondary "

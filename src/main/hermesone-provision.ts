@@ -1,4 +1,4 @@
-// @lat: [[hermes-account-login#Hermes One account login#Auto-provisioned inference key and credits]]
+// @lat: [[koda-account-login#Koda Cloud account login#Auto-provisioned inference key and credits]]
 import { hostname } from "os";
 import {
   findAccountProfile,
@@ -9,11 +9,11 @@ import { apiHeaders } from "./hermes-account";
 import { readEnv, setEnvValue } from "./config";
 
 /**
- * Convenience layer over the signed-in Hermes One account: users get model
- * access through Hermes One Inference without hand-copying an API key from the
+ * Convenience layer over the signed-in Koda Cloud account: users get model
+ * access through Koda Cloud Inference without hand-copying an API key from the
  * console. On login (and whenever the Providers screen finds the key missing)
  * the desktop asks the backend to issue a gateway key and stores it as
- * `HERMESONE_API_KEY` — which by itself makes the Hermes One provider card and
+ * `HERMESONE_API_KEY` — which by itself makes the Koda Cloud provider card and
  * active-model picker entry appear, since both are keyed off that env var.
  *
  * The backend endpoints are session-gated and accept the device-login bearer
@@ -89,12 +89,12 @@ async function doEnsure(profile?: string): Promise<EnsureHermesOneKeyResult> {
       },
       // The console's key list shows this name, so the user can tell where
       // the key came from.
-      body: JSON.stringify({ name: `Hermes Desktop (${hostname()})` }),
+      body: JSON.stringify({ name: `Koda (${hostname()})` }),
     });
   } catch (err) {
     return {
       status: "error",
-      error: `Couldn't reach the Hermes One backend: ${(err as Error).message}`,
+      error: `Couldn't reach the Koda backend: ${(err as Error).message}`,
     };
   }
   if (!res.ok) {

@@ -8,25 +8,25 @@ import {
 } from "./ssh-remote";
 import type { SshConfig } from "./ssh-tunnel";
 
-// Docker-backed Hermes installs (issue #432): a valid deployment where the
-// Hermes Agent runs inside a container (Coolify, compose, NAS app stores) and
+// Docker-backed the engine installs (issue #432): a valid deployment where the
+// Koda Agent runs inside a container (Coolify, compose, NAS app stores) and
 // the host has no `hermes` binary and no real `~/.hermes`. Instead of teaching
 // every SSH code path about containers, Desktop provisions the two host-side
 // artifacts the EXISTING SSH machinery already understands:
 //
 //   1. the per-user launcher hook (`~/.config/hermes-desktop/remote-hermes`,
 //      first probe in buildRemoteHermesCmd) — a `docker exec` wrapper that
-//      routes the Hermes CLI into the selected container, and
+//      routes the `hermes` CLI into the selected container, and
 //   2. a `~/.hermes` symlink to the container's mounted data volume, so every
 //      remote file read/write (config, .env, sessions, logs, profiles) sees
-//      the real Hermes home.
+//      the real the engine's home.
 //
 // After provisioning, CLI execution, gateway lifecycle, dashboard ensure, and
 // all file access work unchanged — no container plumbing in the core paths.
 
 export const HERMES_DOCKER_IMAGE = "nousresearch/hermes-agent";
 
-// Mount destination the official image keeps its Hermes home at.
+// Mount destination the official image keeps its the engine's home at.
 export const HERMES_CONTAINER_DATA_DIR = "/opt/data";
 
 // The launcher hook Desktop manages. First entry of the probe list so a
@@ -37,7 +37,7 @@ const MANAGED_LAUNCHER_PATH = REMOTE_HERMES_LAUNCHER_CANDIDATES[0];
 // Marker parsed back during inspection to show which container the hook
 // currently routes to, and to distinguish Desktop-managed hooks from
 // user-authored ones (which provisioning must not overwrite).
-const LAUNCHER_MARKER_PREFIX = "# managed by Hermes Desktop (docker:";
+const LAUNCHER_MARKER_PREFIX = "# managed by Koda (docker:";
 
 // docker container names: [a-zA-Z0-9][a-zA-Z0-9_.-]*. Names reach us from
 // `docker ps` output relayed through the renderer, so validate before
@@ -86,8 +86,8 @@ export function buildDockerLauncherScript(
   return [
     "#!/bin/sh",
     `${LAUNCHER_MARKER_PREFIX}${containerName})`,
-    "# Routes the Hermes CLI into the Docker container running Hermes Agent.",
-    "# Regenerate from Hermes Desktop: Settings -> Connection -> SSH.",
+    "# Routes the Koda CLI into the Docker container running Koda.",
+    "# Regenerate from Koda: Settings -> Connection -> SSH.",
     "set -eu",
     `container=${shellQuote(containerName)}`,
     'tty_args=""',
@@ -253,9 +253,9 @@ export function parseSshHermesTargetInspection(
     dockerContainers,
     selectedDockerContainerName: selected,
     error: selectedContainerMissing
-      ? `Configured Hermes Docker container "${selected}" is not running or is not ${HERMES_DOCKER_IMAGE}`
+      ? `Configured Koda Docker container "${selected}" is not running or is not ${HERMES_DOCKER_IMAGE}`
       : missingDockerHome
-        ? `Hermes Docker container "${selected}" has no host mount for ${HERMES_CONTAINER_DATA_DIR}`
+        ? `Koda Docker container "${selected}" has no host mount for ${HERMES_CONTAINER_DATA_DIR}`
         : undefined,
   };
 }
@@ -331,7 +331,7 @@ data_home = run([
     '{{range .Mounts}}{{if eq .Destination "' + data_dir + '"}}{{.Source}}{{end}}{{end}}',
 ]).stdout.strip()
 if not data_home:
-    fail('Container "%s" has no host mount for %s, so its Hermes home is not reachable over SSH.' % (container, data_dir))
+    fail('Container "%s" has no host mount for %s, so its Koda home is not reachable over SSH.' % (container, data_dir))
 
 # Prefer the official service user and public CLI shim. Current images default
 # docker exec to root; bypassing the shim can leave root-owned state behind.
@@ -349,7 +349,7 @@ for candidate_user in ("hermes", None):
     if cli_path:
         break
 if cli_path is None:
-    fail('Could not find a usable Hermes CLI inside container "%s".' % container)
+    fail('Could not find a usable Koda Agent CLI inside container "%s".' % container)
 
 print(json.dumps({"ok": True, "dataHome": data_home, "execUser": exec_user, "cliPath": cli_path}))
 `.trim();
@@ -365,7 +365,7 @@ print(json.dumps({"ok": True, "dataHome": data_home, "execUser": exec_user, "cli
  *
  * The .env seeding matters for the first connect: Coolify-style deployments
  * often set API_SERVER_KEY / API_SERVER_ENABLED as container env vars only.
- * Without them in the Hermes home .env, the desktop's connect flow generates
+ * Without them in the Koda home .env, the desktop's connect flow generates
  * its own values and restarts the gateway mid-connect — which fails the first
  * attempt on a supervised container. Seeding here (with the container's own
  * key, which never leaves the remote) makes the later connect a no-op.
@@ -434,7 +434,7 @@ version = subprocess.run([launcher, "--version"], check=False, text=True, captur
 if version.returncode != 0:
     fail("Launcher verification failed: " + (version.stderr.strip() or "hermes --version failed"))
 
-# Seed API server settings into the Hermes home .env so the desktop's connect
+# Seed API server settings into the Koda home .env so the desktop's connect
 # flow finds them and does not have to write + restart the gateway mid-connect.
 # Prefer the container's own values; the key never leaves this host.
 env_file = os.path.join(home, ".env")
@@ -463,10 +463,10 @@ if need_key or need_enabled:
     if need_key:
         key = (cenv.get("API_SERVER_KEY") or "").strip()
         if key:
-            warnings.append("Copied the container's API server key into the Hermes .env so the desktop can use it.")
+            warnings.append("Copied the container's API server key into the Koda home .env so the desktop can use it.")
         else:
             key = secrets.token_hex(24)
-            warnings.append("Generated an API server key in the Hermes .env - the gateway restarts once to load it.")
+            warnings.append("Generated an API server key in the Koda home .env - the gateway restarts once to load it.")
         lines.append("API_SERVER_KEY=%s" % key)
     if need_enabled:
         enabled = (cenv.get("API_SERVER_ENABLED") or "").strip().lower()
@@ -477,10 +477,10 @@ if need_key or need_enabled:
                 f.write("\\n")
             f.write("\\n".join(lines) + "\\n")
     except Exception as exc:
-        warnings.append("Could not update the Hermes .env: %s" % exc)
+        warnings.append("Could not update the Koda home .env: %s" % exc)
 
 if not os.path.exists(os.path.join(home, "config.yaml")):
-    warnings.append("No config.yaml in the Hermes home yet - run setup once the connection is saved.")
+    warnings.append("No config.yaml in the Koda home yet - run setup once the connection is saved.")
 
 print(json.dumps({"ok": True, "version": version.stdout.strip(), "warnings": warnings}))
 `.trim();
@@ -557,7 +557,7 @@ export async function sshProvisionDockerTarget(
     );
     if (!version.trim()) {
       return failure(
-        "Launcher was written but the Hermes CLI probe still returned nothing.",
+        "Launcher was written but the Koda CLI probe still returned nothing.",
       );
     }
 

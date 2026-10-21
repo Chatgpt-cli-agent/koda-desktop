@@ -2,7 +2,7 @@ import type { ConnectionConfig } from "./config";
 import { remoteDashboardRequestJson } from "./remote-api";
 import { providerTargetRevision } from "./provider-request-target";
 
-// Token and cost totals a Hermes server has accumulated for one session
+// Token and cost totals the engine's server has accumulated for one session
 // (GET /api/sessions/{id}). A chat opened from history has no live usage
 // events, so these seed its running totals; new turns are added on top.
 

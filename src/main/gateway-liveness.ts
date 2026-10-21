@@ -35,7 +35,7 @@ export function isMultiplexGatewayRunning(
     ) {
       return false;
     }
-    // Hermes Agent records Linux /proc field 22 (ticks since boot). Match
+    // Koda Agent records Linux /proc field 22 (ticks since boot). Match
     // that fingerprint so a dead gateway's PID reused by another process
     // cannot make a stale state record appear online.
     const stat = readFileSync(`/proc/${state.pid}/stat`, "utf-8");

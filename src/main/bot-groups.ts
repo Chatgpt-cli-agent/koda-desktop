@@ -29,7 +29,7 @@ export async function botGroupsRequest(
   const config = getConnectionConfig(connectionId);
   if (config.mode !== "local") {
     const error =
-      "Experimental Bot groups currently require a local Hermes installation. Remote and SSH connections are not supported yet.";
+      "Experimental Bot groups currently require a local Koda installation. Remote and SSH connections are not supported yet.";
     if (operation === "capabilities")
       return { enabled: true, available: false, error };
     throw new Error(error);
@@ -83,7 +83,7 @@ export async function botGroupsRequest(
   } catch {
     // A gateway exception may embed its authenticated WebSocket URL or paths.
     const error =
-      "Hermes could not complete the group request. Check the Dashboard and update to a groups protocol v2 runtime. Refresh before retrying.";
+      "Koda could not complete the group request. Check the Dashboard and update to a groups protocol v2 runtime. Refresh before retrying.";
     if (operation === "capabilities")
       return { enabled: true, available: false, error };
     throw new Error(error);

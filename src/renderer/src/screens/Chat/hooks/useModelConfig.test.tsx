@@ -115,7 +115,7 @@ describe("useModelConfig", () => {
     });
   });
 
-  it("groups a custom Hermes One model under the Hermes One brand while keeping custom routing", async () => {
+  it("groups a custom Koda model under the Koda brand while keeping custom routing", async () => {
     savedModels = [
       {
         id: "hs-swift",
@@ -133,9 +133,7 @@ describe("useModelConfig", () => {
       const groups = JSON.parse(
         screen.getByTestId("groups").textContent || "[]",
       );
-      const hs = groups.find(
-        (g: { label: string }) => g.label === "Hermes One",
-      );
+      const hs = groups.find((g: { label: string }) => g.label === "Koda");
       expect(hs).toBeTruthy();
       // Not lumped under the generic OpenAI-compatible bucket.
       expect(hs.provider).toBe("hermesone");

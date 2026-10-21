@@ -46,7 +46,7 @@ function Install({
 }: InstallProps): React.JSX.Element {
   const { t } = useI18n();
   // Gate the install behind an explicit confirmation so it can't run
-  // silently and surprise a user who already has Hermes installed (#272).
+  // silently and surprise a user who already has the engine installed (#272).
   const [phase, setPhase] = useState<"confirm" | "running">("confirm");
   const [target, setTarget] = useState<InstallTarget | null>(null);
   const [useExistingError, setUseExistingError] = useState<string | null>(null);
@@ -232,7 +232,7 @@ function Install({
     ? t("install.installationComplete")
     : failed
       ? t("install.installationFailed")
-      : t("install.installingHermes");
+      : t("install.installingKoda");
 
   return (
     <OnboardHero eyebrow={eyebrow} title={title} wide>

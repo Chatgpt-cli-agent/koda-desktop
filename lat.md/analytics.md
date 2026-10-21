@@ -1,6 +1,6 @@
 # Analytics
 
-Privacy-first, opt-out usage analytics that report anonymous events to the in-house Hermes analytics service. Replaces the former PostHog integration; no third-party analytics SDK is bundled.
+Privacy-first, opt-out usage analytics that report anonymous events to the in-house Koda analytics service. Replaces the former PostHog integration; no third-party analytics SDK is bundled.
 
 Events are sent directly over `fetch` from the renderer — there is no client library. Each event POSTs to `{VITE_ANALYTICS_BASE_URL}/v1/events` with an `x-api-key: {VITE_ANALYTICS_API_KEY}` header and a JSON body of `{ anonymous_id, event, source: "desktop", properties }`. The base URL and API key are injected at build time from GitHub Actions secrets, so analytics is silently disabled in local and unofficial builds where neither is configured. It is also disabled on the Vite dev server — [[src/renderer/src/utils/analytics.ts#isConfigured]] short-circuits when `import.meta.env.DEV` is true, since the `http://localhost:5173` dev origin isn't allowed by the service's CORS (every request would just fail preflight and spam the console). Packaged builds run `vite build`, so they are unaffected.
 
@@ -22,7 +22,7 @@ Analytics is opt-out: enabled by default when the endpoint is configured, and th
 
 `initAnalytics` runs once at renderer startup from [[src/renderer/src/main.tsx]] and emits an `app_opened` event.
 
-Its properties are `app_version` (the Hermes version from `package.json`, fetched over the `get-app-version` IPC — not the runtime version), `electron_version`, `node_version`, and `platform`.
+Its properties are `app_version` (the Koda version from `package.json`, fetched over the `get-app-version` IPC — not the runtime version), `electron_version`, `node_version`, and `platform`.
 
 Screen navigation is tracked via `captureScreenView` from [[src/renderer/src/App.tsx#App]], and `captureFeatureUsage` records feature-level events. No chat content, prompts, model responses, file paths, or credentials are ever collected.
 

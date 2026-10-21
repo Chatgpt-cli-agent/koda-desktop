@@ -268,7 +268,7 @@ jobs:
       - name: Generate winget manifests
         env:
           VERSION: ${{ needs.prepare.outputs.version }}
-          PUBLISH_OWNER: fathah
+          PUBLISH_OWNER: Chatgpt-cli-agent
         run: node scripts/generate-winget-manifests.mjs
 
       - name: Upload winget manifests artifact
@@ -315,7 +315,7 @@ jobs:
             .readdirSync(artifactsDir)
             .filter(
               (name) =>
-                name.startsWith(`hermes-desktop-${version}-`) &&
+                name.startsWith(`koda-desktop-${version}-`) &&
                 name.endsWith("-mac.zip"),
             )
             .sort((a, b) => {
@@ -368,7 +368,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
-          name: Hermes Desktop ${{ needs.prepare.outputs.tag }}
+          name: Koda Desktop ${{ needs.prepare.outputs.tag }}
           generate_release_notes: true
           files: |
             artifacts/*.dmg
@@ -395,12 +395,20 @@ jobs:
         run: sleep 300
 
       - name: Trigger landing page deploy
+        # The landing page is optional and belongs to Koda, never to upstream:
+        # dispatching into fathah/hermes-landing-page would rebuild upstream's
+        # upstream site from a Koda release. Set the LANDING_PAGE_REPO repository
+        # variable (owner/name) to a Koda landing page to enable this step;
+        # without it the step is skipped rather than failing the release.
         # SITE_DEPLOY_TOKEN is a fine-grained PAT with "Actions: read and write"
-        # on fathah/hermes-landing-page. The default GITHUB_TOKEN cannot dispatch
-        # workflows in another repository.
+        # on that repository. The default GITHUB_TOKEN cannot dispatch workflows
+        # in another repository.
+        if: ${{ vars.LANDING_PAGE_REPO != '' }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.SITE_DEPLOY_TOKEN }}
+          LANDING_PAGE_REPO: ${{ vars.LANDING_PAGE_REPO }}
         run: |
           gh workflow run deploy.yml \
-            --repo fathah/hermes-landing-page \
+            --repo "$LANDING_PAGE_REPO" \
             --ref main

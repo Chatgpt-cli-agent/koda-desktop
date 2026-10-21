@@ -1,9 +1,9 @@
-// @lat: [[hermes-account-login#Device login client]]
+// @lat: [[koda-account-login#Device login client]]
 import { hostname } from "os";
 import { saveAccount, type AccountUser } from "./account-store";
 import { normalizeApiUrl } from "./api-url";
 
-// Signs the desktop app into a Hermes account using the OAuth 2.0 Device
+// Signs the desktop app into a Koda Cloud account using the OAuth 2.0 Device
 // Authorization Grant (RFC 8628) served by hermes-one-backend: request a code,
 // have the user approve it in the browser, then poll until a bearer token can be
 // redeemed. The browser is opened by the IPC layer (mirrors hermes-auth.ts);

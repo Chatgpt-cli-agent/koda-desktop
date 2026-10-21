@@ -1,5 +1,5 @@
 export default {
-  appName: "Hermes One",
+  appName: "Koda",
   continue: "Continuar",
   cancel: "Cancelar",
   retry: "Tentar novamente",

@@ -76,7 +76,7 @@ function failure<T>(err: unknown): KanbanResult<T> {
     return {
       success: false,
       error:
-        "The Kanban API was not found on this Hermes server (is the kanban dashboard plugin enabled?).",
+        "The Kanban API was not found on this Koda server (is the kanban dashboard plugin enabled?).",
     };
   }
   return {

@@ -346,7 +346,7 @@ async function dashboardCronFetch(
         !conn.apiKey?.trim() &&
         conn.remoteAuthMode !== "oauth" &&
         err instanceof Error &&
-        err.message === "Remote Hermes dashboard token is not configured."
+        err.message === "Remote Koda dashboard token is not configured."
       ) {
         return remoteFetch(scopedPath, init, conn, profile);
       }

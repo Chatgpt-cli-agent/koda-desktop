@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// Unit tests for the Hermes One convenience layer: auto-provisioning the
+// Unit tests for the Koda Cloud convenience layer: auto-provisioning the
 // HERMESONE_API_KEY from the signed-in account and reading the credit
 // balance. Account store, env store, and fetch are all faked — no real
 // HERMES_HOME or network.
@@ -57,7 +57,7 @@ describe("hermesone provisioning", () => {
     vi.unstubAllGlobals();
   });
 
-  // @lat: [[hermes-account-login#Hermes One account login#Auto-provisioned inference key and credits#Issues a key only when missing]]
+  // @lat: [[koda-account-login#Koda Cloud account login#Auto-provisioned inference key and credits#Issues a key only when missing]]
   it("keeps an existing HERMESONE_API_KEY without touching the backend", async () => {
     state.env["HERMESONE_API_KEY"] = "hs-live-already";
     const m = await mod();
@@ -77,7 +77,7 @@ describe("hermesone provisioning", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  // @lat: [[hermes-account-login#Hermes One account login#Auto-provisioned inference key and credits#Provisions and persists a fresh key]]
+  // @lat: [[koda-account-login#Koda Cloud account login#Auto-provisioned inference key and credits#Provisions and persists a fresh key]]
   it("issues a key from the backend and persists it to the profile env", async () => {
     fetchMock.mockResolvedValue(
       new Response(JSON.stringify({ key: "hs-live-fresh" }), { status: 200 }),
@@ -95,7 +95,7 @@ describe("hermesone provisioning", () => {
       "Bearer session-token",
     );
     // The console key list shows this name so users know its origin.
-    expect(JSON.parse(String(init.body)).name).toMatch(/^Hermes Desktop /);
+    expect(JSON.parse(String(init.body)).name).toMatch(/^Koda /);
 
     expect(state.envWrites).toEqual([
       { key: "HERMESONE_API_KEY", value: "hs-live-fresh", profile: "coder" },
@@ -110,7 +110,7 @@ describe("hermesone provisioning", () => {
     expect(state.envWrites).toEqual([]);
   });
 
-  // @lat: [[hermes-account-login#Hermes One account login#Auto-provisioned inference key and credits#Single-flight provisioning]]
+  // @lat: [[koda-account-login#Koda Cloud account login#Auto-provisioned inference key and credits#Single-flight provisioning]]
   it("coalesces concurrent ensure calls into one backend key", async () => {
     let resolveFetch!: (r: Response) => void;
     fetchMock.mockReturnValue(
@@ -155,7 +155,7 @@ describe("hermesone provisioning", () => {
     ]);
   });
 
-  // @lat: [[hermes-account-login#Hermes One account login#Auto-provisioned inference key and credits#Credits for the account card]]
+  // @lat: [[koda-account-login#Koda Cloud account login#Auto-provisioned inference key and credits#Credits for the account card]]
   it("fetches the credit balance for the signed-in account", async () => {
     fetchMock.mockResolvedValue(
       new Response(JSON.stringify({ balance: 12.5 }), { status: 200 }),

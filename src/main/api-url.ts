@@ -1,4 +1,4 @@
-// Shared normalization for the Hermes One backend base URL, used both when
+// Shared normalization for the Koda Cloud backend base URL, used both when
 // resolving the endpoint from env (hermes-account.ts) and when reading the URL
 // persisted in account.json (account-store.ts) — so a URL stored as http:// by
 // an earlier login is corrected on read without forcing a re-login.

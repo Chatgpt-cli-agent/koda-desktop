@@ -37,7 +37,7 @@ describe("remote messaging platforms", () => {
     async (mode) => {
       config.remoteAuthMode = mode;
       request.mockRejectedValue(
-        new Error("Remote Hermes dashboard token is not configured."),
+        new Error("Remote Koda dashboard token is not configured."),
       );
       const bare = vi.fn().mockResolvedValue({
         ok: true,

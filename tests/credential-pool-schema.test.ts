@@ -10,7 +10,7 @@ import { tmpdir } from "os";
  * The upstream engine resolver reads `access_token` (not `key`) and
  * needs `auth_type` to distinguish OAuth vs API-key entries inside
  * the same pool. The malformed entry meant the gateway couldn't find
- * the credential — "Hermes is not logged into Nous Portal".
+ * the credential — "the engine is not logged into Nous Portal".
  *
  * The fix: a main-process helper `addCredentialPoolEntry()` that
  * constructs the full canonical shape.

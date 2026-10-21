@@ -3,11 +3,11 @@
 // path is missing.
 //
 // Built deliberately small to avoid pulling js-yaml into the main bundle for
-// a one-line lookup. Hermes config.yaml is plain key: value pairs nested by
+// a one-line lookup. the engine's config.yaml is plain key: value pairs nested by
 // indentation — no anchors, no merge keys, no multi-line scalars in the
 // fields we read. Edge cases we DO handle:
 //
-//  - 2-or-more-space indentation (Hermes always uses 2 today, but any
+//  - 2-or-more-space indentation (the engine always uses 2 today, but any
 //    consistent positive indent works).
 //  - Inline empty maps:  `providers: {}`  → returns "{}"
 //    Inline empty lists: `disabled_toolsets: []` → returns "[]"
@@ -60,7 +60,7 @@ export function getYamlPath(content: string, dottedKey: string): string | null {
       if (colon < 0) continue;
       const rawKey = trimmed.slice(0, colon).trim();
       if (!rawKey) continue;
-      // Quoted keys aren't used in Hermes config but strip the wrapping just
+      // Quoted keys aren't used in the engine's config but strip the wrapping just
       // in case so `"memory": ...` would still match.
       if (stripQuotes(rawKey) !== parts[p]) continue;
 

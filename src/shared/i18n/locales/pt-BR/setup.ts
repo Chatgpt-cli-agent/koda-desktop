@@ -51,7 +51,7 @@ export default {
   saving: "Salvando...",
   apiKeyLabel: "Chave da API {{provider}}",
   noApiKeyRequired:
-    "{{provider}} não requer API key. O Hermes usará sua configuração local de CLI/OAuth.",
+    "{{provider}} não requer API key. O Koda usará sua configuração local de CLI/OAuth.",
   localNoKeyNeeded: "Nenhuma chave de API necessária",
   localLlm: "LLM Local",
   modelBaseUrlPlaceholder: "http://localhost:1234/v1",

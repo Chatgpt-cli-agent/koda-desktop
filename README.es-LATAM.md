@@ -1,16 +1,15 @@
-<img width="100%" alt="HERMES DESKTOP" src="previews/header.webp" />
+<img width="100%" alt="Koda Desktop" src="previews/header.webp" />
 
 <br/>
 <p align="center">
-  <a href="https://x.com/HermesOneApp"><img src="https://img.shields.io/badge/Síguenos-000000?style=for-the-badge&logo=x" alt="Twitter/X"></a>
   <a href="https://discord.gg/HtZNeyJjJ"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://github.com/fathah/hermes-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="Licencia: MIT"></a>
-  <a href="https://hermesone.org/"><img src="https://img.shields.io/badge/Descargar-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
-  <a href="https://github.com/fathah/hermes-desktop/stargazers">
-  <img src="https://img.shields.io/github/stars/fathah/hermes-desktop?style=for-the-badge&color=FFD700&label=Estrellas" alt="Estrellas">
+  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="Licencia: MIT"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img src="https://img.shields.io/badge/Descargar-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/stargazers">
+  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/hermes-desktop?style=for-the-badge&color=FFD700&label=Estrellas" alt="Estrellas">
 </a>
-  <a href="https://github.com/fathah/hermes-desktop/releases/">
-  <img src="https://img.shields.io/github/downloads/fathah/hermes-desktop/total?style=for-the-badge&color=00B496&label=Descargas%20Totales" alt="Descargas">
+  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/">
+  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/hermes-desktop/total?style=for-the-badge&color=00B496&label=Descargas%20Totales" alt="Descargas">
 </a>
   <a href="https://bankr.bot/launches/0xfda75f77a22b4f4b783bbbb21915ef64d149bba3">
   <img src="https://img.shields.io/badge/Token-$HD-purple?style=for-the-badge&logo=ethereum" alt="Token $HD">
@@ -25,20 +24,20 @@
 </p>
 
 <p align="center">
- <a href="https://www.star-history.com/fathah/hermes-desktop">
+ <a href="https://www.star-history.com/Chatgpt-cli-agent/hermes-desktop">
   <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=fathah/hermes-desktop&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=fathah/hermes-desktop" />
-   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=fathah/hermes-desktop" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
+   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
   </picture>
  </a>
 </p>
 
-> **Este proyecto está en desarrollo activo.** Las funciones pueden cambiar y algunas cosas podrían no funcionar perfectamente. Si encuentras un problema o tienes una idea, [abre un issue](https://github.com/fathah/hermes-desktop/issues). ¡Las contribuciones son bienvenidas!
+> **Este proyecto está en desarrollo activo.** Las funciones pueden cambiar y algunas cosas podrían no funcionar perfectamente. Si encuentras un problema o tienes una idea, [abre un issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). ¡Las contribuciones son bienvenidas!
 
-Hermes Desktop es una aplicación nativa de escritorio para instalar, configurar y chatear con [Hermes Agent](https://github.com/NousResearch/hermes-agent) — un asistente de IA con autoaprendizaje, uso de herramientas, mensajería multiplataforma y un ciclo de aprendizaje cerrado.
+Koda Desktop es una aplicación nativa de escritorio para instalar, configurar y chatear con [Koda Agent](https://github.com/NousResearch/hermes-agent) — un asistente de IA con autoaprendizaje, uso de herramientas, mensajería multiplataforma y un ciclo de aprendizaje cerrado.
 
-En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación, configuración de proveedores y uso diario en un solo lugar. Usa el script oficial de instalación de Hermes, guarda los archivos en `~/.hermes` y te da una GUI para chat, sesiones, perfiles, memoria, habilidades, herramientas, tareas programadas, gateways de mensajería y más.
+En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación, configuración de proveedores y uso diario en un solo lugar. Usa el script oficial de instalación de Koda Agent, guarda los archivos en `~/.hermes` y te da una GUI para chat, sesiones, perfiles, memoria, habilidades, herramientas, tareas programadas, gateways de mensajería y más.
 
 ## Patrocinadores
 
@@ -46,11 +45,11 @@ En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación,
     <img src="src/renderer/src/assets/logos/atlascloud.svg" alt="Atlas Cloud" height="100" style="display: block;">
   </a>
 
-> **[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop)** es una plataforma de inferencia de IA full-modal compatible con OpenAI (DeepSeek, Qwen, GLM, Kimi, MiniMax y más). Úsala en Hermes Desktop seleccionando **Atlas Cloud** como tu proveedor — la URL base se configura automáticamente.
+> **[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop)** es una plataforma de inferencia de IA full-modal compatible con OpenAI (DeepSeek, Qwen, GLM, Kimi, MiniMax y más). Úsala en Koda Desktop seleccionando **Atlas Cloud** como tu proveedor — la URL base se configura automáticamente.
 
 ## Instalación
 
-<a href="https://hermesone.org/"><img width="380" alt="Descargar ahora" src="previews/download.webp" /></a>
+<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img width="380" alt="Descargar ahora" src="previews/download.webp" /></a>
 
 ### Windows
 
@@ -64,7 +63,7 @@ En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación,
 > sudo rm /etc/sudoers.d/hermes-install
 > ```
 >
-> Seguimiento en [#109](https://github.com/fathah/hermes-desktop/issues/109).
+> Seguimiento en [#109](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/109).
 
 ### Fedora (RPM)
 
@@ -105,21 +104,21 @@ sudo dnf install ./hermes-desktop-<version>.rpm
 
 ## Funcionalidades
 
-- **Instalación guiada en el primer uso** de Hermes Agent con seguimiento de progreso y resolución de dependencias
-- **Backend local o remoto** — ejecuta Hermes localmente en `127.0.0.1:8642`, o conecta la app a un servidor remoto con URL + clave API
+- **Instalación guiada en el primer uso** de Koda Agent con seguimiento de progreso y resolución de dependencias
+- **Backend local o remoto** — ejecuta Koda localmente en `127.0.0.1:8642`, o conecta la app a un servidor remoto con URL + clave API
 - **Soporte multi-proveedor** — OpenRouter, Anthropic, OpenAI, Google (Gemini), xAI (Grok), Nous Portal, Qwen, MiniMax, Hugging Face, Groq y endpoints compatibles con OpenAI (LM Studio, Atomic Chat, Ollama, vLLM, llama.cpp)
 - **UI de chat con streaming** con SSE, indicadores de progreso de herramientas, renderizado de Markdown y resaltado de sintaxis
 - **Seguimiento de tokens** — conteo en tiempo real de tokens de entrada/salida y costo en el pie del chat, más el comando `/usage`
 - **22 comandos slash** — `/new`, `/clear`, `/fast`, `/web`, `/image`, `/browse`, `/code`, `/shell`, `/usage`, `/help`, `/tools`, `/skills`, `/model`, `/memory`, `/persona`, `/version`, `/compact`, `/compress`, `/undo`, `/retry`, `/debug`, `/status` y más
 - **Gestión de sesiones** — búsqueda de texto completo (SQLite FTS5), historial agrupado por fecha, reanudar y buscar conversaciones
-- **Cambio de perfiles** — crea, elimina y cambia entre entornos Hermes con configuración aislada
+- **Cambio de perfiles** — crea, elimina y cambia entre entornos Koda con configuración aislada
 - **14 conjuntos de herramientas** — web, navegador, terminal, archivos, ejecución de código, visión, generación de imágenes, TTS, habilidades, memoria, búsqueda de sesiones, clarificación, delegación, MoA y planificación de tareas
 - **Sistema de memoria** — ver/editar entradas de memoria, perfil de usuario, seguimiento de capacidad y proveedores de memoria (Honcho, Hindsight, Mem0, RetainDB, Supermemory, ByteRover)
 - **Editor de Persona** — edita y restablece el archivo SOUL.md de personalidad de tu agente
 - **Modelos guardados** — gestión CRUD de configuraciones de modelos por proveedor
 - **Tareas programadas** — constructor de cron jobs (minutos, cada hora, diario, semanal, cron personalizado) con 15 destinos de entrega
 - **16 gateways de mensajería** — Telegram, Discord, Slack, WhatsApp, Signal, Matrix, Mattermost, Email (IMAP/SMTP), SMS (Twilio/Vonage), iMessage (BlueBubbles), DingTalk, Feishu/Lark, WeCom, WeChat (iLink Bot), Webhooks, Home Assistant
-- **Hermes Office (Claw3d)** — interfaz visual 3D con servidor de desarrollo y gestión de adaptadores
+- **Koda Office (Claw3d)** — interfaz visual 3D con servidor de desarrollo y gestión de adaptadores
 - **Backup, importar y diagnóstico** — respaldo/restauración completa y diagnóstico del sistema desde Configuración
 - **Visor de logs** — visualiza logs de gateway y agente directamente desde la pantalla de Configuración
 - **Actualizador automático** — verifica e instala actualizaciones vía electron-updater
@@ -130,11 +129,11 @@ sudo dnf install ./hermes-desktop-<version>.rpm
 
 Al primer lanzamiento, la app:
 
-1. Pregunta si deseas ejecutar Hermes **localmente** o conectarte a un **servidor remoto**.
-2. **Modo local:** verifica si Hermes ya está instalado en `~/.hermes`; si no, ejecuta el instalador oficial con resolución de dependencias (Git, uv, Python 3.11+).
+1. Pregunta si deseas ejecutar Koda **localmente** o conectarte a un **servidor remoto**.
+2. **Modo local:** verifica si Koda ya está instalado en `~/.hermes`; si no, ejecuta el instalador oficial con resolución de dependencias (Git, uv, Python 3.11+).
 3. **Modo remoto:** solicita la URL de la API remota y la clave API, valida la conexión y omite la instalación local.
 4. Solicita un proveedor de API o endpoint de modelo local.
-5. Guarda la configuración del proveedor y las claves API en los archivos de configuración de Hermes.
+5. Guarda la configuración del proveedor y las claves API en los archivos de configuración de Koda.
 6. Lanza el workspace principal una vez completada la configuración.
 
 En modo local, las solicitudes de chat van por `http://127.0.0.1:8642` con streaming SSE. En modo remoto, la app se comunica con tu URL remota configurada con el mismo protocolo de streaming. La app parsea el stream en tiempo real, renderizando progreso de herramientas, contenido Markdown y uso de tokens a medida que llegan.
@@ -145,7 +144,7 @@ En modo local, las solicitudes de chat van por `http://127.0.0.1:8642` con strea
 | ----------------- | -------------------------------------------------------------------------------------------------- |
 | **Chat**          | UI de conversación con streaming, comandos slash, progreso de herramientas y seguimiento de tokens |
 | **Sesiones**      | Navega, busca y reanuda conversaciones pasadas                                                     |
-| **Agentes**       | Crea, elimina y cambia entre perfiles de Hermes                                                    |
+| **Agentes**       | Crea, elimina y cambia entre perfiles de Koda                                                      |
 | **Habilidades**   | Navega, instala y gestiona habilidades incluidas e instaladas                                      |
 | **Modelos**       | Gestiona configuraciones de modelos guardadas por proveedor                                        |
 | **Memoria**       | Ver/editar entradas de memoria, perfil de usuario y configurar proveedores de memoria              |
@@ -195,8 +194,8 @@ Exa Search, Parallel API, Tavily, Firecrawl, FAL.ai (generación de imágenes), 
 ### Requisitos previos
 
 - Node.js y npm
-- Un entorno tipo Unix para el instalador de Hermes
-- Acceso a internet para descargar Hermes en la primera instalación
+- Un entorno tipo Unix para el instalador de Koda
+- Acceso a internet para descargar Koda en la primera instalación
 
 ### Instalar dependencias
 
@@ -241,7 +240,7 @@ npm run build:rpm    # Solo .rpm para Fedora/RHEL
 
 ## Configuración inicial
 
-Cuando la app se abre por primera vez, detectará una instalación existente de Hermes o se ofrecerá a instalarla.
+Cuando la app se abre por primera vez, detectará una instalación existente de Koda o se ofrecerá a instalarla.
 
 Rutas de configuración soportadas en la UI:
 
@@ -258,7 +257,7 @@ Los presets locales incluyen:
 - vLLM
 - llama.cpp
 
-Los archivos de Hermes se gestionan en:
+Los archivos de Koda se gestionan en:
 
 - `~/.hermes`
 - `~/.hermes/.env`
@@ -295,7 +294,7 @@ La salida del helper puede ser un valor único (helpers por clave) o líneas `KE
 
 ### Integración con vault / gestor de secretos (sin TPM requerido)
 
-El proveedor `command` es **agnóstico al vault** — ejecuta el helper que configures y lee su stdout. El helper es lo único que necesita comunicarse con tu almacén de secretos. Si no tienes un keyfile sellado con TPM, cualquiera de estas opciones funciona sin cambios en el código de Hermes:
+El proveedor `command` es **agnóstico al vault** — ejecuta el helper que configures y lee su stdout. El helper es lo único que necesita comunicarse con tu almacén de secretos. Si no tienes un keyfile sellado con TPM, cualquiera de estas opciones funciona sin cambios en el código de Koda:
 
 - **KeePassXC (BD solo con contraseña, sin keyfile):** apunta `secrets.command` a un pequeño script `kpxc-export.sh` que hace `keepassxc-cli ls ~/secrets/hermes.kdbx <<<"$KPXC_PASSWORD"` y vuelca el grupo relevante como dotenv. Pide la contraseña maestra una vez por sesión.
 - **GnuPG con clave solo de contraseña:** `gpg --batch --passphrase-fd 0 --decrypt ~/.keys/api-keys.gpg` funciona directamente como valor de `command`. Pasa la contraseña vía descriptor de archivo o variable de entorno, nunca como argumento.
@@ -305,7 +304,7 @@ El proveedor `command` es **agnóstico al vault** — ejecuta el helper que conf
 - **1Password CLI:** `op read "op://vault/$HERMES_SECRET_KEY/credential"`.
 - **Archivo env plano con permisos gestionados:** `command: "cat ~/.config/hermes/secrets.env"` con `chmod 600` y el archivo propiedad de tu usuario. No tan seguro como un vault, pero mejor que un `.env` legible por todos.
 
-El punto: **cualquier helper que imprima un valor (por clave) o un bloque dotenv (modo lista) en stdout funcionará**, y Hermes impone un timeout de 3 segundos y un límite de 1 MiB de salida al helper. El proveedor no hace suposiciones sobre TPM, FIDO2, tarjetas inteligentes ni keychains de plataforma.
+El punto: **cualquier helper que imprima un valor (por clave) o un bloque dotenv (modo lista) en stdout funcionará**, y Koda impone un timeout de 3 segundos y un límite de 1 MiB de salida al helper. El proveedor no hace suposiciones sobre TPM, FIDO2, tarjetas inteligentes ni keychains de plataforma.
 
 Modelo de seguridad:
 
@@ -330,18 +329,18 @@ Fuente de verdad: [`src/main/secrets/`](src/main/secrets/).
 
 ## Notas
 
-- La app de escritorio depende del proyecto upstream Hermes Agent para el comportamiento del agente y la ejecución de herramientas.
-- El instalador integrado ejecuta el script oficial de instalación de Hermes con `--skip-setup`, luego completa la configuración del proveedor en la GUI.
+- La app de escritorio depende del proyecto upstream Koda Agent para el comportamiento del agente y la ejecución de herramientas.
+- El instalador integrado ejecuta el script oficial de instalación de Koda con `--skip-setup`, luego completa la configuración del proveedor en la GUI.
 - Los proveedores de modelos locales no requieren clave API, pero el servidor compatible debe estar ejecutándose.
 - Las rutas alternativas de registro npm son compatibles para entornos con acceso restringido a internet.
 
 ## Contribuir
 
-¡Las contribuciones son bienvenidas! Consulta la [Guía de contribución](CONTRIBUTING.md) para comenzar. Si no sabes por dónde empezar, mira los [issues abiertos](https://github.com/fathah/hermes-desktop/issues). ¿Encontraste un bug o tienes una solicitud de funcionalidad? [Abre un issue](https://github.com/fathah/hermes-desktop/issues/new).
+¡Las contribuciones son bienvenidas! Consulta la [Guía de contribución](CONTRIBUTING.md) para comenzar. Si no sabes por dónde empezar, mira los [issues abiertos](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). ¿Encontraste un bug o tienes una solicitud de funcionalidad? [Abre un issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new).
 
 ## Proyecto relacionado
 
-Para el agente central, documentación y flujos de trabajo CLI, consulta el repositorio principal de Hermes Agent:
+Para el agente central, documentación y flujos de trabajo CLI, consulta el repositorio principal de Koda Agent:
 
 - https://github.com/NousResearch/hermes-agent
 

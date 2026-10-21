@@ -49,7 +49,7 @@ function restoreFile(file, snapshot) {
   let modelsOriginal;
 
   try {
-    ({ browser, page } = await attach({ titleHint: "Hermes" }));
+    ({ browser, page } = await attach({ titleHint: "Koda" }));
 
     // Phase A - observe HERMES_HOME + engine version.
     const home = await page.evaluate(

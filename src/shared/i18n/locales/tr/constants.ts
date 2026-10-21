@@ -156,7 +156,7 @@ export default {
   matrixHomeserver: "Matrix Sunucusu",
   matrixHomeHint: "örn. https://matrix.org",
   matrixUserId: "Matrix Kullanıcı ID",
-  matrixUserHint: "örn. @hermes:matrix.org",
+  matrixUserHint: "örn. @koda:matrix.org",
   matrixAccessToken: "Matrix Erişim Tokeni",
   matrixTokenHint: "Matrix girişi için erişim tokeni",
   mattermostUrl: "Mattermost URL",

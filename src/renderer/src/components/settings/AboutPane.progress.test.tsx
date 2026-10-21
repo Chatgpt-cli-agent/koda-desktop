@@ -95,9 +95,9 @@ beforeEach(async () => {
       getApiServerKeyStatus: vi.fn(async () => ({ hasKey: true })),
       getAutoUpgradeEnabled: vi.fn(async () => true),
       getHermesHome: vi.fn(async () => "/isolated/test-home"),
-      refreshHermesVersion: vi.fn(async () => "Hermes Agent v1.1.0"),
+      refreshHermesVersion: vi.fn(async () => "Koda v1.1.0"),
       getHermesVersion: vi.fn(
-        async () => "Hermes Agent v1.0.0 Update available: v1.1.0",
+        async () => "Koda v1.0.0 Update available: v1.1.0",
       ),
       getAgentCapabilities: vi.fn(async () => ({
         canUpdate: true,
@@ -230,7 +230,7 @@ it("shows only admitted Agent update phases until the update result completes", 
   expect(screen.getByText("Validating the updated Agent")).toBeInTheDocument();
   expect(screen.queryByText("100%")).not.toBeInTheDocument();
   expect(
-    screen.queryByText("Hermes updated successfully."),
+    screen.queryByText("Koda updated successfully."),
   ).not.toBeInTheDocument();
   act(() =>
     emitAgent({
@@ -245,7 +245,7 @@ it("shows only admitted Agent update phases until the update result completes", 
   await act(async () => {
     resolveAgent({ success: true });
   });
-  expect(screen.getByText("Hermes updated successfully.")).toBeInTheDocument();
+  expect(screen.getByText("Koda updated successfully.")).toBeInTheDocument();
   expect(
     screen.queryByText("Checking dashboard compatibility"),
   ).not.toBeInTheDocument();
@@ -279,7 +279,7 @@ it.each([{ success: true }, { success: false, error: "Old update failure" }])(
     expect(screen.queryByText("Old update failure")).not.toBeInTheDocument();
     expect(screen.queryByText("Old target update")).not.toBeInTheDocument();
     expect(
-      screen.queryByText("Hermes updated successfully."),
+      screen.queryByText("Koda updated successfully."),
     ).not.toBeInTheDocument();
     expect(removeAgent).toHaveBeenCalledOnce();
   },
@@ -396,7 +396,7 @@ it("does not borrow old update phases after About is reopened for a new update",
 it("keeps a cached-ready job while same-config metadata settles but revokes it on a new config epoch", async () => {
   localStorage.setItem(
     "hermes-version-cache:local:work",
-    "Hermes Agent v1.0.0 Update available: v1.1.0",
+    "Koda v1.0.0 Update available: v1.1.0",
   );
   let finishHome!: (home: string) => void;
   vi.mocked(window.hermesAPI.getHermesHome).mockImplementationOnce(
@@ -445,6 +445,6 @@ it("keeps a cached-ready job while same-config metadata settles but revokes it o
   });
   expect(screen.queryByText("Admitted cached update")).not.toBeInTheDocument();
   expect(
-    screen.queryByText("Hermes updated successfully."),
+    screen.queryByText("Koda updated successfully."),
   ).not.toBeInTheDocument();
 });

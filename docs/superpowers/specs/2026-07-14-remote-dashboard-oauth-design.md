@@ -2,13 +2,13 @@
 
 ## Goal
 
-Hermes One will connect directly to OAuth-gated remote Hermes dashboards through browser authentication, cookie-authenticated REST requests, and fresh single-use WebSocket tickets.
+Koda Desktop will connect directly to OAuth-gated remote Koda dashboards through browser authentication, cookie-authenticated REST requests, and fresh single-use WebSocket tickets.
 
 The feature applies only to direct Remote mode. Local and SSH connection behavior remains unchanged.
 
 ## User experience
 
-Hermes One automatically detects the remote gateway authentication mode from the public `GET /api/status` response.
+Koda Desktop automatically detects the remote gateway authentication mode from the public `GET /api/status` response.
 
 - When `auth_required` is false, Settings retains the existing session-token field and token-based connection behavior.
 - When `auth_required` is true, Settings hides the token field and shows remote OAuth state with Sign in and Sign out actions.
@@ -25,7 +25,7 @@ Remote OAuth uses a dedicated persistent Electron session partition named `persi
 
 The partition owns all OAuth browser state and HttpOnly gateway session cookies. Cookies, refresh tokens, and reusable authentication material never enter renderer state, `desktop.json`, IPC return values, logs, or analytics.
 
-The main process opens a sandboxed `BrowserWindow` in this partition and navigates to `<gateway>/login`. It observes successful navigations and polls the partition cookie jar until either a Hermes access cookie or refresh cookie exists. The login window uses context isolation, disables Node integration, enables the Chromium sandbox, and retains web security.
+The main process opens a sandboxed `BrowserWindow` in this partition and navigates to `<gateway>/login`. It observes successful navigations and polls the partition cookie jar until either a Koda access cookie or refresh cookie exists. The login window uses context isolation, disables Node integration, enables the Chromium sandbox, and retains web security.
 
 A focused `src/main/remote-oauth.ts` module owns:
 
@@ -105,7 +105,7 @@ Errors remain specific and actionable:
 - WebSocket rejection requests one new ticket for one retry. A second rejection surfaces the transport error without another fallback or retry loop.
 - Network, TLS, and invalid-URL errors preserve their underlying message while adding remote OAuth operation context.
 
-Sign out removes only cookies applicable to the selected gateway URL. It does not clear unrelated gateway, Hermes account, provider OAuth, web-preview, or default-session cookies.
+Sign out removes only cookies applicable to the selected gateway URL. It does not clear unrelated gateway, Koda account, provider OAuth, web-preview, or default-session cookies.
 
 ## Testing strategy
 
@@ -145,7 +145,7 @@ OAuth selection also suppresses stored Remote bearer headers across the shared m
 
 ## Acceptance criteria
 
-Given a remote URL whose `/api/status` reports `auth_required: true`, Hermes One identifies OAuth mode and offers browser sign-in without requesting a session token.
+Given a remote URL whose `/api/status` reports `auth_required: true`, Koda Desktop identifies OAuth mode and offers browser sign-in without requesting a session token.
 
 After successful sign-in, authenticated dashboard REST calls succeed through the persistent OAuth partition, each WebSocket connection receives a newly minted ticket, and chat connects without local or legacy fallback.
 
@@ -153,6 +153,6 @@ If connection settings change while sign-in is open, completion does not restore
 
 After application restart, a still-valid access or refresh cookie restores the connected state without another interactive login.
 
-After session expiry, Hermes One reports that reauthentication is required and does not expose credentials, start a local gateway, or route chat through another backend.
+After session expiry, Koda Desktop reports that reauthentication is required and does not expose credentials, start a local gateway, or route chat through another backend.
 
 Token-authenticated Remote mode and SSH mode retain their current tested behavior.

@@ -1,5 +1,5 @@
 // @vitest-environment node
-// @lat: [[hermes-account-login#Tests]]
+// @lat: [[koda-account-login#Tests]]
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 

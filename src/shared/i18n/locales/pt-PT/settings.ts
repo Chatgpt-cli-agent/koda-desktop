@@ -1,7 +1,7 @@
 export default {
   title: "Definições",
   sections: {
-    hermesAgent: "Agente Hermes",
+    kodaAgent: "Agente Koda",
     appearance: "Aparência",
     privacy: "Privacidade",
     credentialPool: "Pool de Credenciais",
@@ -9,7 +9,7 @@ export default {
   nav: {
     groups: {
       general: "Geral",
-      hermes: "Hermes One",
+      koda: "Koda Cloud",
     },
     appearance: "Aparência",
     language: "Idioma",
@@ -24,7 +24,7 @@ export default {
   },
   analytics: {
     label: "Enviar análises de utilização anónimas",
-    hint: "Ajuda a melhorar o Hermes ao enviar dados de utilização anónimos e agregados para o serviço de análise do projecto. Pode desactivar a qualquer momento.",
+    hint: "Ajuda a melhorar o Koda ao enviar dados de utilização anónimos e agregados para o serviço de análise do projecto. Pode desactivar a qualquer momento.",
     disclosure: {
       uuid: "Um identificador aleatório por instalação guardado apenas neste dispositivo (sem nome, e-mail ou dados de conta).",
       platform:
@@ -32,7 +32,7 @@ export default {
       navigation:
         "Que ecrãs abre dentro da aplicação (ex.: Conversa, Sessões, Definições). Não é recolhido conteúdo de conversas, prompts, respostas do modelo nem conteúdo de ficheiros.",
       endpoint:
-        "Os dados são enviados para o serviço de análise do Hermes (analytics.hermesone.org). As gravações de sessão e a captura automática de páginas visitadas estão desactivadas.",
+        "Os dados são enviados para o serviço de análise do Koda (analytics.hermesone.org). As gravações de sessão e a captura automática de páginas visitadas estão desactivadas.",
       notCollected:
         "Nunca é recolhido: mensagens de conversa, caminhos de ficheiros, chaves de API, configuração do modelo, credenciais de conta.",
     },
@@ -45,7 +45,7 @@ export default {
   },
   pet: {
     label: "Mascotes",
-    hint: "Partilhadas com o Hermes Agent e a aplicação oficial neste perfil. Escolha uma mascote para a instalar e ativar.",
+    hint: "Partilhadas com o Koda e a aplicação oficial neste perfil. Escolha uma mascote para a instalar e ativar.",
     loading: "A carregar mascotes…",
     enabled: "Mostrar mascote",
     scale: "Tamanho",
@@ -70,7 +70,7 @@ export default {
   },
   notDetected: "Não detectado",
   updatedSuccessfully: "Actualizado com sucesso!",
-  updateSuccess: "Hermes actualizado com sucesso.",
+  updateSuccess: "Koda actualizado com sucesso.",
   updateFailed: "Falha na actualização.",
   version: "v{{version}}",
   proxyPlaceholder: "ex: socks5://127.0.0.1:1080 ou http://proxy:8080",
@@ -92,14 +92,14 @@ export default {
     "Nome do modelo predefinido (deixe em branco para usar o predefinido do fornecedor)",
   customBaseUrlHint: "Endpoint da API compatível com OpenAI",
   poolHint:
-    "Adicione várias chaves de API para o mesmo fornecedor para rotação automática e balanceamento de carga. O Hermes alternará entre elas.",
+    "Adicione várias chaves de API para o mesmo fornecedor para rotação automática e balanceamento de carga. O Koda alternará entre elas.",
   add: "Adicionar",
   remove: "Remover",
   keyLabel: "Chave",
   empty: "(vazio)",
   dataSection: "Dados",
   dataHint:
-    "Exporte ou importe a sua configuração do Hermes, sessões, competências e memória.",
+    "Exporte ou importe a sua configuração do Koda, sessões, competências e memória.",
   backingUp: "A fazer cópia de segurança...",
   exportBackup: "Exportar Cópia de Segurança",
   importing: "A importar...",
@@ -116,10 +116,10 @@ export default {
   debugDump: "Dump de Depuração",
   migrationDetected: "Instalação do OpenClaw Detectada",
   migrationDesc:
-    "Encontrámos o OpenClaw em <code>{{path}}</code>. Pode migrar a sua configuração, chaves de API, sessões e competências para o Hermes.",
+    "Encontrámos o OpenClaw em <code>{{path}}</code>. Pode migrar a sua configuração, chaves de API, sessões e competências para o Koda.",
   migrationDismiss: "Não mostrar novamente",
   migrating: "A migrar...",
-  migrateToHermes: "Migrar para o Hermes",
+  migrateToKoda: "Migrar para o Koda",
   skip: "Ignorar",
   appearanceHint: "Escolha a aparência preferida da interface",
   apiKeyPlaceholder: "Chave da API",
@@ -127,11 +127,11 @@ export default {
   connectionSection: "Ligação",
   modeLocal: "Local",
   modeRemote: "Remoto",
-  modeLocalHint: "A usar o Hermes instalado neste dispositivo",
-  modeRemoteHint: "Ligar a um servidor da API do Hermes na sua rede ou nuvem",
+  modeLocalHint: "A usar o Koda instalado neste dispositivo",
+  modeRemoteHint: "Ligar a um servidor da API do Koda na sua rede ou nuvem",
   remoteUrl: "URL Remoto",
   remoteUrlHint:
-    "O URL do servidor da API do Hermes (deve expor /health e /v1/chat/completions)",
+    "O URL do servidor da API do Koda (deve expor /health e /v1/chat/completions)",
   remoteApiKey: "Chave da API",
   remoteApiKeyHint:
     "Deve coincidir com a API_SERVER_KEY no host remoto. Deixe em branco se o servidor aceitar pedidos não autenticados.",
@@ -140,7 +140,7 @@ export default {
   save: "Guardar",
   serverConfigTitle: "Configuração do Servidor",
   serverConfigHint:
-    "Está ligado a um servidor remoto do Hermes. A selecção de modelos, as chaves de API dos fornecedores e as credenciais são geridas no host remoto em <code>~/.hermes/.env</code> e <code>config.yaml</code>. Edite-os aí e reinicie o servidor.",
+    "Está ligado a um servidor remoto do Koda. A selecção de modelos, as chaves de API dos fornecedores e as credenciais são geridas no host remoto em <code>~/.hermes/.env</code> e <code>config.yaml</code>. Edite-os aí e reinicie o servidor.",
   connectionMode: "Modo",
   switchedToLocal: "Mudou para o modo local",
 } as const;

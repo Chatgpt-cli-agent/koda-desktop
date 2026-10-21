@@ -644,7 +644,7 @@ async function mcpApi<T>(
         conn.remoteAuthMode === "auto" &&
         !conn.apiKey.trim() &&
         err instanceof Error &&
-        err.message === "Remote Hermes dashboard token is not configured."
+        err.message === "Remote Koda dashboard token is not configured."
       ) {
         // The shared boundary resolved auto to token mode before rejecting
         // the absent key. Preserve anonymous access only for that outcome.
@@ -706,12 +706,12 @@ function unsupportedMcpApiMessage(
   feature: "catalog" | "install" | "test",
 ): string {
   if (feature === "catalog") {
-    return "MCP catalog is not available from this Hermes Agent gateway yet. Add a custom MCP server manually.";
+    return "MCP catalog is not available from this Koda gateway yet. Add a custom MCP server manually.";
   }
   if (feature === "install") {
-    return "MCP catalog install is not available from this Hermes Agent gateway yet. Add a custom MCP server manually.";
+    return "MCP catalog install is not available from this Koda gateway yet. Add a custom MCP server manually.";
   }
-  return "MCP server testing is not available from this Hermes Agent gateway yet.";
+  return "MCP server testing is not available from this Koda gateway yet.";
 }
 
 export async function listMcpServers(

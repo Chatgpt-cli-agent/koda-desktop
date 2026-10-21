@@ -54,8 +54,8 @@ const DASHBOARD_SPA_MOUNT_ANCHOR = "mount_spa(app)";
 const MODEL_LIBRARY_COMPAT_SOURCE = `
 
 # --- HERMES_ONE_MODEL_LIBRARY_COMPAT_V1 -------------------------------------
-# Compatibility endpoint installed by Hermes One. Upstream Hermes Agent exposes
-# /api/model/options and /api/model/set, but Hermes One also needs a small
+# Compatibility endpoint installed by the Koda desktop app. The agent engine
+# exposes /api/model/options and /api/model/set, but Koda also needs a small
 # configured-model shortcut library for remote/SSH model pickers. The library is
 # deliberately stored in this agent's HERMES_HOME so remote shortcuts stay on
 # the remote host and survive desktop restarts without changing upstream model
@@ -340,7 +340,7 @@ export function patchDashboardEmbeddedChatSource(
       compatible: true,
       changed: false,
       source,
-      detail: "Dashboard embedded chat is always enabled by this Hermes Agent.",
+      detail: "Dashboard embedded chat is always enabled by this Koda.",
     };
   }
 
@@ -358,8 +358,7 @@ export function patchDashboardEmbeddedChatSource(
       compatible: false,
       changed: false,
       source,
-      detail:
-        "Could not find the Hermes Agent embedded_chat default in web_server.py.",
+      detail: "Could not find the Koda embedded_chat default in web_server.py.",
     };
   }
 
@@ -367,7 +366,7 @@ export function patchDashboardEmbeddedChatSource(
     compatible: true,
     changed: true,
     source: source.replace(EMBEDDED_CHAT_FALSE_RE, "$1True"),
-    detail: "Patched Hermes Agent dashboard embedded_chat default to True.",
+    detail: "Patched Koda dashboard embedded_chat default to True.",
   };
 }
 
@@ -380,8 +379,7 @@ export function patchDashboardModelLibrarySource(
       compatible: false,
       changed: false,
       source,
-      detail:
-        "Could not find Hermes Agent model REST endpoints in web_server.py.",
+      detail: "Could not find Koda model REST endpoints in web_server.py.",
     };
   }
 
@@ -391,7 +389,7 @@ export function patchDashboardModelLibrarySource(
       compatible: true,
       changed: false,
       source,
-      detail: "Hermes One model library endpoint is already installed.",
+      detail: "Koda model library endpoint is already installed.",
     };
   }
 
@@ -400,8 +398,8 @@ export function patchDashboardModelLibrarySource(
     changed: true,
     source: patched,
     detail: withoutExisting.removed
-      ? "Moved Hermes One model library endpoint before the dashboard catch-all route."
-      : "Installed Hermes One model library endpoint.",
+      ? "Moved Koda model library endpoint before the dashboard catch-all route."
+      : "Installed Koda model library endpoint.",
   };
 }
 
@@ -523,7 +521,7 @@ export function ensureLocalDashboardCompatibility(): HermesAgentCompatResult {
       compatible: false,
       applied: false,
       version: HERMES_AGENT_COMPAT_VERSION,
-      detail: "Could not inspect local Hermes Agent dashboard source.",
+      detail: "Could not inspect local Koda dashboard source.",
       path,
       error: err instanceof Error ? err.message : String(err),
     };
@@ -575,7 +573,7 @@ if not path:
         "compatible": False,
         "applied": False,
         "version": version,
-        "detail": "Could not find Hermes Agent hermes_cli/web_server.py on the SSH host.",
+        "detail": "Could not find the Koda Agent hermes_cli/web_server.py on the SSH host.",
     }))
     sys.exit(0)
 with open(path, "r", encoding="utf-8") as f:
@@ -606,7 +604,7 @@ def insert_model_library_compat_block(text):
     return text.rstrip() + "\n" + block + "\n"
 if re.search(r"\b_DASHBOARD_EMBEDDED_CHAT_ENABLED\s*=\s*True\b", source):
     compatible = True
-    details.append("Dashboard embedded chat is always enabled by this Hermes Agent.")
+    details.append("Dashboard embedded chat is always enabled by this Koda Agent.")
 elif re.search(r"\bembedded_chat\s*:\s*bool\s*=\s*True\b", source):
     compatible = True
     details.append("Dashboard embedded chat is already enabled by default.")
@@ -614,10 +612,10 @@ elif re.search(r"(\bembedded_chat\s*:\s*bool\s*=\s*)False\b", source):
     source = re.sub(r"(\bembedded_chat\s*:\s*bool\s*=\s*)False\b", r"\1True", source, count=1)
     changed = True
     compatible = True
-    details.append("Patched Hermes Agent dashboard embedded_chat default to True.")
+    details.append("Patched Koda Agent dashboard embedded_chat default to True.")
 else:
     compatible = False
-    details.append("Could not find the Hermes Agent embedded_chat default in web_server.py.")
+    details.append("Could not find the Koda Agent embedded_chat default in web_server.py.")
 if compatible:
     original_source = source
     source_without_model_library, removed_model_library = remove_model_library_compat_block(source)
@@ -626,14 +624,14 @@ if compatible:
         if source != original_source:
             changed = True
             if removed_model_library:
-                details.append("Moved Hermes One model library endpoint before the dashboard catch-all route.")
+                details.append("Moved the Koda model library endpoint before the dashboard catch-all route.")
             else:
-                details.append("Installed Hermes One model library endpoint.")
+                details.append("Installed the Koda model library endpoint.")
         else:
-            details.append("Hermes One model library endpoint is already installed.")
+            details.append("The Koda model library endpoint is already installed.")
     else:
         compatible = False
-        details.append("Could not find Hermes Agent model REST endpoints in web_server.py.")
+        details.append("Could not find Koda Agent model REST endpoints in web_server.py.")
 if changed and compatible:
     backup_path = path + ".orig"
     tmp_path = path + ".hermes-one-%s.tmp" % os.getpid()
@@ -687,7 +685,7 @@ print(json.dumps({
       compatible: false,
       applied: false,
       version: HERMES_AGENT_COMPAT_VERSION,
-      detail: "Could not apply Hermes Agent compatibility patch over SSH.",
+      detail: "Could not apply Koda compatibility patch over SSH.",
       error: err instanceof Error ? err.message : String(err),
     };
   }
@@ -701,6 +699,6 @@ export function remoteHttpCompatibilityResult(): HermesAgentCompatResult {
     applied: false,
     version: HERMES_AGENT_COMPAT_VERSION,
     detail:
-      "Plain remote HTTP can be probed but not patched by Hermes One. Use SSH mode for deployable compatibility fixes or update the remote Hermes Agent directly.",
+      "Plain remote HTTP can be probed but not patched by Koda. Use SSH mode for deployable compatibility fixes or update the remote Koda directly.",
   };
 }

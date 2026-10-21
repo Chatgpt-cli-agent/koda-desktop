@@ -508,7 +508,7 @@ export interface IpcContext {
   openExternalUrl: (rawUrl: unknown) => void;
 }
 
-const APP_NAME = process.env.HERMES_DESKTOP_APP_NAME?.trim() || "Hermes One";
+const APP_NAME = process.env.HERMES_DESKTOP_APP_NAME?.trim() || "Koda";
 
 type RemoteSessionBridgeConfig = RemoteSessionConfig;
 
@@ -529,7 +529,7 @@ async function getSshDashboardSessionConfig(
   const dash = await sshEnsureDashboard(conn.ssh, profile);
   if (!dash)
     throw new Error(
-      "Hermes dashboard is unavailable on this SSH remote (needs Node + the dashboard web dist).",
+      "Koda dashboard is unavailable on this SSH remote (needs Node + the dashboard web dist).",
     );
   await ensureSshTunnel({ ...conn.ssh, remotePort: dash.port });
   const remoteUrl = getSshTunnelUrl();
@@ -571,7 +571,7 @@ function sessionConnection(connectionId?: unknown): ConnectionConfig {
     connectionId !== getActiveConnection().connectionId
   ) {
     throw new Error(
-      "Select this SSH connection before reading its sessions; Hermes Desktop uses one SSH tunnel at a time.",
+      "Select this SSH connection before reading its sessions; Koda uses one SSH tunnel at a time.",
     );
   }
   return conn;
@@ -937,14 +937,11 @@ export function registerIpcHandlers(context: IpcContext): void {
         return {
           success: false,
           error:
-            "Update this Hermes Agent on its remote host, then reconnect the desktop.",
+            "Update this Koda on its remote host, then reconnect the desktop.",
         };
       }
       if (conn.mode === "ssh" && conn.ssh) {
-        phase(
-          "Updating remote Hermes Agent",
-          "Running hermes update over SSH...",
-        );
+        phase("Updating remote Koda", "Running hermes update over SSH...");
         await sshRunUpdate(conn.ssh);
         phase(
           "Checking dashboard compatibility",
@@ -1933,7 +1930,7 @@ export function registerIpcHandlers(context: IpcContext): void {
       const conn = getConnectionConfig(chatConnectionId);
       if (conn.mode === "ssh" && chatConnectionId !== activeConnectionId) {
         throw new Error(
-          "Select this SSH connection before sending; Hermes Desktop uses one SSH tunnel at a time.",
+          "Select this SSH connection before sending; Koda uses one SSH tunnel at a time.",
         );
       }
       const chatRunKey = `${chatConnectionId}:${chatRunId}`;
@@ -2391,7 +2388,7 @@ export function registerIpcHandlers(context: IpcContext): void {
     // other profiles' gateways running.
     if (!stopGateway(undefined, true)) {
       throw new Error(
-        "This gateway is managed outside Hermes One. Stop it with the Hermes CLI or its service manager.",
+        "This gateway is managed outside Koda. Stop it with the Koda Agent CLI or its service manager.",
       );
     }
     return true;

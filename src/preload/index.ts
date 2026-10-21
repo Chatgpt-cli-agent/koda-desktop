@@ -201,7 +201,7 @@ const hermesAPI = {
     return () => ipcRenderer.removeListener("install-progress", handler);
   },
 
-  // Hermes engine info
+  // the engine info
   getHermesVersion: (profile?: string): Promise<string | null> =>
     ipcRenderer.invoke("get-hermes-version", profile),
   refreshHermesVersion: (profile?: string): Promise<string | null> =>
@@ -262,7 +262,7 @@ const hermesAPI = {
     return () => ipcRenderer.removeListener("oauth-login-progress", handler);
   },
 
-  // Hermes account sign-in (device authorization grant)
+  // Koda Cloud account sign-in (device authorization grant)
   accountLogin: (
     profile?: string,
   ): Promise<{ success: boolean; user?: HermesAccountUser; error?: string }> =>
@@ -289,7 +289,7 @@ const hermesAPI = {
     ipcRenderer.invoke("hermes-account-get", profile),
   accountLogout: (profile?: string): Promise<{ success: boolean }> =>
     ipcRenderer.invoke("hermes-account-logout", profile),
-  // Auto-provision a Hermes One Inference key from the signed-in account
+  // Auto-provision a Koda Cloud Inference key from the signed-in account
   // (no-op when the profile already has one), and read the account's
   // AI-credit balance for the Providers account card.
   ensureHermesOneKey: (profile?: string): Promise<EnsureHermesOneKeyResult> =>
@@ -297,7 +297,7 @@ const hermesAPI = {
   getHermesOneCredits: (): Promise<HermesOneCreditsResult> =>
     ipcRenderer.invoke("hermesone-credits"),
 
-  // Cloud agent sync (profiles ↔ signed-in Hermes One account)
+  // Cloud agent sync (profiles ↔ signed-in Koda Cloud account)
   syncAgents: (target?: ProfileEditorTarget): Promise<AgentSyncResult> =>
     ipcRenderer.invoke("agent-sync-run", target),
   getAgentSyncStatus: (): Promise<AgentSyncStatus> =>

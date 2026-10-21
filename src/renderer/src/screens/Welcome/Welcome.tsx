@@ -1,5 +1,5 @@
 import { useState } from "react";
-import HermesLogo from "../../components/common/HermesLogo";
+import KodaLogo from "../../components/common/KodaLogo";
 import OnboardHero from "../../components/common/OnboardHero";
 import {
   ArrowRight,
@@ -119,7 +119,7 @@ function Welcome({
   if (panel === "remote") {
     return (
       <div className="screen welcome-screen">
-        <HermesLogo size={36} />
+        <KodaLogo size={36} />
         <h1 className="welcome-title" style={{ fontSize: 22 }}>
           {t("welcome.connectRemoteTitle")}
         </h1>
@@ -199,7 +199,7 @@ function Welcome({
   if (panel === "ssh") {
     return (
       <div className="screen welcome-screen">
-        <HermesLogo size={36} />
+        <KodaLogo size={36} />
         <h1 className="welcome-title" style={{ fontSize: 22 }}>
           {t("settings.sshTitle")}
         </h1>
@@ -338,7 +338,7 @@ function Welcome({
   if (error) {
     return (
       <div className="screen welcome-screen">
-        <HermesLogo size={80} />
+        <KodaLogo size={80} />
         <br />
         <h1 className="welcome-title">{t("welcome.installIssueTitle")}</h1>
         <p className="welcome-subtitle">{error}</p>
@@ -403,7 +403,7 @@ function Welcome({
   }
 
   return (
-    <OnboardHero intro eyebrow="HERMES ONE" title={t("welcome.title")}>
+    <OnboardHero intro eyebrow="KODA" title={t("welcome.title")}>
       <p className="onboard-subtitle">{t("welcome.subtitle")}</p>
 
       <div className="onboard-cta-row">

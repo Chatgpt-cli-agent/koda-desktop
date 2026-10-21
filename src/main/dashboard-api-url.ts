@@ -2,7 +2,7 @@ import type { RemoteSessionConfig } from "./remote-sessions";
 
 function normalizeRemoteDashboardBaseUrl(value: string): string {
   const raw = value.trim();
-  if (!raw) throw new Error("Remote Hermes dashboard URL is not configured.");
+  if (!raw) throw new Error("Remote Koda dashboard URL is not configured.");
   const url = new URL(raw);
   url.hash = "";
   url.search = "";

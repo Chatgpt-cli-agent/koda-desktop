@@ -70,47 +70,47 @@ export const DISPLAY_CARS: DisplayCar[] = [
     rotY: Math.PI / 2 - 0.3,
     url: car1GlbUrl,
     tint: "#b03a2e",
-    name: "Hermes S1 Crimson",
+    name: "Koda S1 Crimson",
   },
   {
     pos: [-4, 0, -2.5],
     rotY: Math.PI / 2 + 0.25,
     url: car2GlbUrl,
     tint: "#1f618d",
-    name: "Hermes GT Azure",
+    name: "Koda GT Azure",
   },
   {
     pos: [-4, 0, 2.5],
     rotY: Math.PI / 2 - 0.25,
     url: car1GlbUrl,
     tint: "#e8e8e8",
-    name: "Hermes S1 Pearl",
+    name: "Koda S1 Pearl",
   },
   {
     pos: [-4, 0, 7],
     rotY: Math.PI / 2 + 0.3,
     url: car2GlbUrl,
     tint: "#39414f",
-    name: "Hermes GT Gunmetal",
+    name: "Koda GT Gunmetal",
   },
   {
     pos: [2.5, 0, -6.5],
     rotY: Math.PI / 2,
     url: car2GlbUrl,
     tint: "#ca6f1e",
-    name: "Hermes GT Sunset",
+    name: "Koda GT Sunset",
   },
   {
     pos: [2.5, 0, 6.5],
     rotY: Math.PI / 2,
     url: car1GlbUrl,
     tint: "#239b56",
-    name: "Hermes S1 Emerald",
+    name: "Koda S1 Emerald",
   },
 ];
 
 export const HERO_CAR: ShowroomCar = {
-  name: "Hermes S1 Aurum",
+  name: "Koda S1 Aurum",
   tint: "#d4ac0d",
 };
 /** The hero car's pedestal position in showroom-local coordinates. */

@@ -5,7 +5,7 @@ lat:
 
 # Agent Capability Compatibility
 
-The desktop derives feature availability from Agent evidence so newer UI can coexist with older system-installed Hermes Agent versions.
+The desktop derives feature availability from Agent evidence so newer UI can coexist with older system-installed Koda Agent versions.
 
 ## Capability snapshot
 

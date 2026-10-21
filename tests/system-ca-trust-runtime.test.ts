@@ -284,7 +284,7 @@ it.skipIf(!hasOpenSSL)(
       expect(result.extraCount).toBeGreaterThan(0);
       expect(result.metadata).toMatchObject({
         ok: true,
-        value: "Hermes Agent vfixture",
+        value: "Koda vfixture",
       });
       expect(result.shared).toMatchObject({
         ok: true,

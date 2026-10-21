@@ -1,4 +1,4 @@
-// Shared shapes for the Hermes account (device-login) surface, used across the
+// Shared shapes for the Koda Cloud account (device-login) surface, used across the
 // main process, preload bridge, and renderer.
 
 export interface HermesAccountUser {
@@ -13,7 +13,7 @@ export interface HermesAccount {
   user: HermesAccountUser;
 }
 
-/** Outcome of the auto-provisioned Hermes One Inference key check. */
+/** Outcome of the auto-provisioned Koda Cloud Inference key check. */
 export interface EnsureHermesOneKeyResult {
   status: "created" | "exists" | "signed-out" | "error";
   error?: string;

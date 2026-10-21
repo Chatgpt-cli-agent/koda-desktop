@@ -105,7 +105,7 @@ export default {
     model: "Mostrar o cambiar el modelo actual",
     memory: "Mostrar la memoria del agente",
     persona: "Mostrar la personalidad actual",
-    version: "Mostrar la versión de Hermes",
+    version: "Mostrar la versión de Koda",
   },
   queued: "{{count}} mensaje(s) en cola — se enviará cuando el agente termine",
   queuedCancel: "Quitar de la cola",

@@ -32,7 +32,7 @@ type OrbLoaderProps = Omit<ThinkingOrbProps, "theme" | "size"> & {
  * Theme-aware wrapper around `thinking-orbs`' ThinkingOrb.
  *
  * Two jobs the raw component can't do for us:
- * 1. **Theme.** Hermes theme ids ("dracula", "nord", …) don't match the
+ * 1. **Theme.** the engine's theme ids ("dracula", "nord", …) don't match the
  *    library's auto-detection (it only recognises `data-theme="dark|light"`),
  *    so the orb theme is pinned from the active theme's declared appearance.
  * 2. **Off-preset sizes.** ThinkingOrb ships exactly two designs (20, 64) and

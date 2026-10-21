@@ -43,7 +43,7 @@ export interface SshDockerProvisionResult {
   dataHome: string;
   /** `docker exec` user flag baked into the hook ("" = container default). */
   execUser: string;
-  /** Hermes CLI path inside the container. */
+  /** the `hermes` CLI path inside the container. */
   cliPath: string;
   /** `hermes --version` output through the provisioned launcher. */
   version: string;

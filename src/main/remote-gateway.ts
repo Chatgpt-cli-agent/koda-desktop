@@ -81,7 +81,7 @@ async function gatewayJson<T>(
       !connection.apiKey?.trim() &&
       connection.remoteAuthMode !== "oauth" &&
       error instanceof Error &&
-      error.message === "Remote Hermes dashboard token is not configured."
+      error.message === "Remote Koda dashboard token is not configured."
     ) {
       return anonymousRequest();
     }

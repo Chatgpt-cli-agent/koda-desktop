@@ -120,7 +120,7 @@ describe("custom provider loading", () => {
       },
       {
         provider: "custom",
-        providerLabel: "Hermes One",
+        providerLabel: "Koda",
         baseUrl: "https://inference.hermesone.org/v1",
       },
     ]);
@@ -131,7 +131,7 @@ describe("custom provider loading", () => {
     expect(
       screen.queryByText("http://localhost:9000/v1"),
     ).not.toBeInTheDocument();
-    expect(screen.queryByText("Hermes One")).not.toBeInTheDocument();
+    expect(screen.queryByText("Koda")).not.toBeInTheDocument();
   });
 
   it("handles both reads failing and retries them on a provider change", async () => {

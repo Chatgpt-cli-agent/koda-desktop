@@ -1,6 +1,6 @@
 # Remote Dashboard OAuth
 
-Direct Remote mode detects browser-authenticated Hermes dashboards and connects without exposing OAuth credentials to renderer code.
+Direct Remote mode detects browser-authenticated Koda dashboards and connects without exposing OAuth credentials to renderer code.
 
 ## Authentication selection
 
@@ -80,7 +80,7 @@ Focused tests protect credential isolation, automatic routing, ticket freshness,
 
 ### Cookie session boundary
 
-Session recognition accepts Hermes access or refresh cookie names in every deploy shape — bare, `__Host-` (direct HTTPS), `__Secure-` (path prefix), or `<tenant>_`-prefixed — and keeps cookie-backed requests inside the selected Electron partition.
+Session recognition accepts Koda access or refresh cookie names in every deploy shape — bare, `__Host-` (direct HTTPS), `__Secure-` (path prefix), or `<tenant>_`-prefixed — and keeps cookie-backed requests inside the selected Electron partition.
 
 ### Session token compatibility
 

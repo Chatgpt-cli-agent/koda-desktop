@@ -1,6 +1,6 @@
 # Profile Modal — Handoff
 
-A global, reusable profile detail/settings modal for Hermes Desktop (Electron + React renderer). Built on branch `pr/746`. This doc is a self-contained handoff so another agent can continue the work.
+A global, reusable profile detail/settings modal for Koda Desktop (Electron + React renderer). Built on branch `pr/746`. This doc is a self-contained handoff so another agent can continue the work.
 
 ## What it is
 

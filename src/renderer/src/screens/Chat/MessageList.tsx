@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { HermesAvatar, MessageRow } from "./MessageRow";
+import { KodaAvatar, MessageRow } from "./MessageRow";
 import type { AgentAvatarInfo } from "./MessageRow";
 import { ReasoningRow, ToolActivityGroup } from "./HistoryRow";
 import { ClarifyCard } from "./ClarifyCard";
@@ -70,7 +70,7 @@ function TypingIndicator({
 }): React.JSX.Element {
   return (
     <div className="chat-message chat-message-agent">
-      <HermesAvatar active agent={agentAvatar} />
+      <KodaAvatar active agent={agentAvatar} />
       <div className="chat-bubble chat-bubble-agent">
         {toolProgress ? (
           <div className="chat-tool-progress">{toolProgress}</div>

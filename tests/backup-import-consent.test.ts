@@ -160,7 +160,7 @@ describe("backup import consent", () => {
     rmSync(installer.HERMES_PYTHON);
     expect(await installer.runHermesImport(archive)).toEqual({
       success: false,
-      error: "Hermes is not installed.",
+      error: "Koda is not installed.",
     });
     expect(mocks.showMessageBox).not.toHaveBeenCalled();
     expect(mocks.execFile).not.toHaveBeenCalled();

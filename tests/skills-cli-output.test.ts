@@ -7,7 +7,7 @@ import { classifySkillCliOutput } from "../src/main/skills";
  * failure on stdout. Before this classifier the desktop trusted the 0 exit
  * and reported `{success:true}` — leaving the user with a button that
  * flashed and did nothing. These cases lock the classifier's behaviour
- * against the CLI output captured live on 2026-05-22 (Hermes Agent
+ * against the CLI output captured live on 2026-05-22 (Koda Agent
  * v0.14.0).
  */
 describe("classifySkillCliOutput", () => {

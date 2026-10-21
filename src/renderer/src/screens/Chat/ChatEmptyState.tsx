@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Search, Clock, Mail, Code, ChartLine, Bell } from "lucide-react";
-import titleLine from "../../assets/title-line.svg";
+import kodaMark from "../../assets/koda/koda-icon.svg";
 import { useI18n } from "../../components/useI18n";
 import ProfileAvatar from "../../components/common/ProfileAvatar";
 import type { AgentAvatarInfo } from "./MessageRow";
@@ -68,15 +68,7 @@ export const ChatEmptyState = memo(function ChatEmptyState({
             size={64}
           />
         ) : (
-          <span
-            className="chat-empty-logo"
-            role="img"
-            aria-label="Hermes"
-            style={{
-              maskImage: `url(${titleLine})`,
-              WebkitMaskImage: `url(${titleLine})`,
-            }}
-          />
+          <img className="chat-empty-logo" src={kodaMark} alt="Koda" />
         )}
       </div>
       <div className="chat-empty-text">{t("chat.emptyTitle")}</div>

@@ -1,6 +1,6 @@
 # Cloud agent sync
 
-Syncs desktop profiles (the app's agents) with the signed-in [[hermes-account-login|Hermes One account]]'s cloud agents, bidirectionally, via the backend's `/api/agents` CRUD.
+Syncs desktop profiles (the app's agents) with the signed-in [[koda-account-login|Koda Cloud account]]'s cloud agents, bidirectionally, via the backend's `/api/agents` CRUD.
 
 Phase 1 covers the free parts from the backend's `docs/agent-sync.md`: color, persona (`SOUL.md` ↔ `systemPrompt`), memory (`memories/MEMORY.md` ↔ `memory`), and config basics (`model`/`provider` only — never the whole `config.yaml`, so no secrets leave the device). Skills, automations, and sessions are deferred. Deletions never propagate in either direction. Local profile deletion records a device-side exclusion so the retained cloud copy is not automatically restored.
 
@@ -32,7 +32,7 @@ Parts that failed to push (or were skipped as oversize) keep their old base, so 
 
 Deleting a linked local profile keeps its cloud copy but prevents sync from recreating it on this device. The exclusion follows the cloud id, so renaming either side does not undo deletion.
 
-[[src/main/agent-sync.ts#deleteProfileWithSync]] saves the recorded cloud identity in `cloud-sync-deleted.json` under the default Hermes home before invoking the Agent CLI. The file survives deletion of the named profile and of any account session stored there. It uses atomic file replacement and contains no credentials or profile content. An unreadable or invalid link blocks deletion; an invalid exclusion history blocks sync and linked deletion rather than silently restoring removed profiles.
+[[src/main/agent-sync.ts#deleteProfileWithSync]] saves the recorded cloud identity in `cloud-sync-deleted.json` under the default Koda home before invoking the Agent CLI. The file survives deletion of the named profile and of any account session stored there. It uses atomic file replacement and contains no credentials or profile content. An unreadable or invalid link blocks deletion; an invalid exclusion history blocks sync and linked deletion rather than silently restoring removed profiles.
 
 New link records carry the backend URL and account id, and exclusions honor both. Older links preserve whatever scope they actually recorded: account-only records match that user and exact cloud id; legacy ownerless records exclude only that exact cloud id on this device. No signed-in account is guessed during deletion, which also works offline or while a different account is active. A new cloud id with the same name remains eligible for import. A freshly created local profile cannot automatically relink by name to an excluded cloud copy.
 
@@ -48,7 +48,7 @@ The main process exposes `agent-sync-run`, `agent-sync-status`, and `agent-sync-
 
 The preload bridge surfaces these as `syncAgents`, `getAgentSyncStatus`, `getLinkedAgentId`, and `onAgentSyncUpdated` on `window.hermesAPI`, typed by the shared shapes in [[src/shared/agent-sync.ts]].
 
-[[src/renderer/src/screens/Agents/Agents.tsx]] (sync controls in Local mode only; Remote/SSH profile management has no desktop/cloud sync controls) renders the sync affordance in the header: a signed-out hint pointing at the Providers account card, or a Sync button with the last pass's summary (warnings in the tooltip). It auto-runs one pass per visit when signed in, and reloads the profile list when a pass pull-created profiles. [[src/renderer/src/components/HermesAccountModal.tsx]] kicks off the first sync right after a successful sign-in.
+[[src/renderer/src/screens/Agents/Agents.tsx]] (sync controls in Local mode only; Remote/SSH profile management has no desktop/cloud sync controls) renders the sync affordance in the header: a signed-out hint pointing at the Providers account card, or a Sync button with the last pass's summary (warnings in the tooltip). It auto-runs one pass per visit when signed in, and reloads the profile list when a pass pull-created profiles. [[src/renderer/src/components/KodaAccountModal.tsx]] kicks off the first sync right after a successful sign-in.
 
 Main rejects non-Local sync admission, including stale UI calls. Captured profile authority and Remote capability rules are documented in [[remote-profiles#Remote profiles#Local cloud sync boundary]].
 

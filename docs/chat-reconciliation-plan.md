@@ -3,18 +3,18 @@
 ## 2026-06-06 Direction Correction: Dashboard/WebSocket Timeline
 
 This document originally described a conservative stabilization path for the
-existing Hermes One reconciliation layer. That path is useful as background, but
+existing Koda Desktop reconciliation layer. That path is useful as background, but
 it is not sufficient as the long-term implementation direction.
 
-Manual testing and comparison with Hermes Agent desktop showed that PR540/PR545
-and the current Hermes One implementation still share the same risky shape:
+Manual testing and comparison with Koda Agent desktop showed that PR540/PR545
+and the current Koda Desktop implementation still share the same risky shape:
 
 - live UI rows are assembled from one stream;
 - restored/final rows are assembled from `state.db`;
 - completion then tries to merge two independently-shaped transcripts;
 - edge cases depend on content matching, row splitting, and heuristics.
 
-The corrected target is closer to Hermes Agent desktop:
+The corrected target is closer to Koda Agent desktop:
 
 - use a live dashboard/WebSocket event stream as the active-turn source of
   truth;
@@ -28,9 +28,9 @@ The old reconciliation work should not be expanded into another pile of special
 cases. It should be treated as a compatibility layer while the dashboard
 transport is introduced.
 
-### What Hermes Agent Desktop Does Differently
+### What Koda Agent Desktop Does Differently
 
-The latest Hermes Agent desktop app lives at:
+The latest Koda Agent desktop app lives at:
 
 `apps/desktop` in `NousResearch/hermes-agent`.
 
@@ -118,7 +118,7 @@ The key invariant is boundary flushing:
 - when a final stored transcript is loaded, preserve local errors but otherwise
   prefer the stable stored projection.
 
-This is why Hermes Agent desktop can show:
+This is why Koda Agent desktop can show:
 
 ```text
 thought
@@ -174,7 +174,7 @@ Phase B is implemented in the separate worktree:
 - Preload IPC exposes `dashboardStatus`, `startDashboard`, and `stopDashboard`.
 - A sandbox smoke test confirmed `/api/status` accepts
   `X-Hermes-Session-Token` and that the dashboard command is available in the
-  copied Hermes Agent install.
+  copied Koda Agent install.
 
 Phase C is partially implemented behind an explicit renderer flag:
 
@@ -182,7 +182,7 @@ Phase C is partially implemented behind an explicit renderer flag:
   JSON-RPC WebSocket client and now matches upstream's notification envelope:
   `{"method":"event","params":{type,payload,session_id}}`.
 - `src/renderer/src/screens/Chat/dashboardEventAdapter.ts` reduces ordered
-  dashboard events into Hermes One's existing `ChatMessage[]` shape.
+  dashboard events into Koda Desktop's existing `ChatMessage[]` shape.
 - `src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts` can create
   or resume a dashboard runtime session and submit prompts through
   `prompt.submit`.
@@ -194,7 +194,7 @@ Current limitations before making this the normal sandbox path:
 - attachment submission still falls back to the existing HTTP transport;
 - approval/clarify/sudo/secret events are not yet surfaced;
 - runtime session ID and stored session ID are separated internally, but the
-  surrounding Hermes One navigation/history model still needs a fuller stored
+  surrounding Koda Desktop navigation/history model still needs a fuller stored
   session handoff;
 - live manual testing with the flag enabled has not yet been completed.
 
@@ -252,7 +252,7 @@ Useful upstream changes:
   - background-window streaming stalls;
   - focused-chat unscoped event routing.
 
-Immediate Hermes One adjustments from this refresh:
+Immediate Koda Desktop adjustments from this refresh:
 
 - The compatibility addon must treat `_DASHBOARD_EMBEDDED_CHAT_ENABLED = True`
   as already compatible. It should patch only older engines that still expose
@@ -264,14 +264,14 @@ Immediate Hermes One adjustments from this refresh:
   `/api/model/options`, `model.options`, `model.save_key`, and
   `/api/model/set` instead of direct remote `models.json` editing whenever the
   backend supports them.
-- Remote/SSH pasted attachments should move from Hermes One staging/fallback
+- Remote/SSH pasted attachments should move from Koda Desktop staging/fallback
   behavior to the upstream attach RPCs, especially `image.attach_bytes` and
   `file.attach`.
 - Remote OAuth should be promoted from "unsupported warning" to the upstream
   cookie + `/api/auth/ws-ticket` flow.
 - Connection tests should probe `/api/ws` with the same credential mode the
   renderer will use.
-- We should add a Hermes One test matching upstream's submit recovery:
+- We should add a Koda Desktop test matching upstream's submit recovery:
   `prompt.submit` returns `session not found` -> `session.resume` -> retry
   `prompt.submit` against the recovered live id.
 
@@ -292,7 +292,7 @@ Goal:
 Actions:
 
 - keep the separate worktree and sandbox setup;
-- use the sandboxed `Hermes One` app identity;
+- use the sandboxed `Koda Desktop` app identity;
 - keep config isolation and port isolation;
 - make `/v1/runs` opt-in only;
 - leave current DB refresh/reconciliation tests in place as regression coverage;
@@ -312,7 +312,7 @@ Acceptance criteria:
 
 Goal:
 
-- detect whether the installed Hermes Agent supports dashboard WebSocket mode;
+- detect whether the installed Koda Agent supports dashboard WebSocket mode;
 - do this without replacing the chat path yet.
 
 Main-process additions:
@@ -361,9 +361,9 @@ HERMES_HOME=<profile-or-sandbox-home>
 
 Open questions to answer during this phase:
 
-- Does the Hermes One installed Hermes Agent version always ship
+- Does the Koda Desktop installed Koda Agent version always ship
   `hermes dashboard`?
-- For existing user installs, do we need to update Hermes Agent before the
+- For existing user installs, do we need to update Koda Agent before the
   dashboard path is available?
 - Can remote mode reuse the dashboard WebSocket, or only local mode initially?
 
@@ -378,7 +378,7 @@ Acceptance criteria:
 
 Goal:
 
-- establish a live JSON-RPC WebSocket in the renderer, matching Hermes Agent
+- establish a live JSON-RPC WebSocket in the renderer, matching Koda Agent
   desktop's model.
 
 Renderer additions:
@@ -424,8 +424,8 @@ Goal:
 
 - replace row-by-row live appends with a single active-turn state machine.
 
-Do not migrate all rendering to Hermes Agent desktop's `parts[]` in one jump
-unless it proves simpler. Hermes One can use an intermediate timeline and then
+Do not migrate all rendering to Koda Agent desktop's `parts[]` in one jump
+unless it proves simpler. Koda Desktop can use an intermediate timeline and then
 project to existing `ChatMessage` rows.
 
 Suggested internal model:
@@ -448,7 +448,7 @@ interface ActiveTimelineTurn {
 }
 ```
 
-Boundary rules copied from Hermes Agent desktop:
+Boundary rules copied from Koda Agent desktop:
 
 - `message.delta`: append to `queuedText`, flush on animation/timer;
 - `reasoning.delta`: append to `queuedReasoning`, flush on animation/timer;
@@ -518,7 +518,7 @@ Goal:
 Implementation:
 
 - keep `getSessionMessages(sessionId)` as the stored transcript fetch;
-- replace ad hoc DB row mapping with a normalizer equivalent to Hermes Agent
+- replace ad hoc DB row mapping with a normalizer equivalent to Koda Agent
   desktop's `toChatMessages()`;
 - merge tool-call assistant rows and `role="tool"` rows into one ordered
   assistant turn projection;
@@ -535,7 +535,7 @@ Acceptance criteria:
   - reasoning/thoughts;
   - tool calls;
   - tool results;
-  - errors persisted by Hermes Agent;
+  - errors persisted by Koda Agent;
   - image/file artifacts and attachments;
 - restored session no longer shows duplicated tool-call-only groups after a
   final assistant response.
@@ -564,7 +564,7 @@ Acceptance criteria:
 
 ### Phase H: Manual Test Matrix
 
-Run these in the sandboxed Hermes One instance, with the sandbox home and non-conflicting ports:
+Run these in the sandboxed Koda Desktop instance, with the sandbox home and non-conflicting ports:
 
 - simple no-tool prompt with visible streaming;
 - invalid API key/provider failure;
@@ -584,7 +584,7 @@ Run these in the sandboxed Hermes One instance, with the sandbox home and non-co
 
 ### Phase I: Optional Persistent Local Error Overlay
 
-Dashboard/Hermes Agent may not persist provider setup failures that happen
+Dashboard/Koda Agent may not persist provider setup failures that happen
 before a turn reaches the agent. If we want those local-only errors to survive
 app restart, add a desktop-owned overlay store:
 
@@ -614,7 +614,7 @@ Already done:
 
 - separate worktree for development;
 - sandbox scripts/config/ports;
-- sandbox app identity `Hermes One`;
+- sandbox app identity `Koda Desktop`;
 - local error metadata and rendering;
 - preliminary local-error preservation tests;
 - selected PR545 display pieces for grouped tools/reasoning;
@@ -623,14 +623,14 @@ Already done:
 
 Next recommended phase:
 
-- package the Hermes Agent dashboard compatibility changes as a managed desktop
+- package the Koda Agent dashboard compatibility changes as a managed desktop
   addon/overlay, then wire local, remote HTTP, and SSH deployment/checks through
   that same capability probe.
 
 ## 2026-06-09 Remaining Work After Dashboard Transport Stabilization
 
 The dashboard/WebSocket path, remote HTTP path, and SSH-over-tunnel path are now
-implemented in the sandboxed Hermes One instance and covered by unit/integration tests. Manual live
+implemented in the sandboxed Koda Desktop instance and covered by unit/integration tests. Manual live
 testing has also exercised:
 
 - normal local and remote dashboard chat;
@@ -671,13 +671,13 @@ Current result on 2026-06-11:
 - full suite passed: 102 test files, 1158 tests passed, 3 skipped;
 - TypeScript node and web typechecks passed.
 
-### 2. Hermes Agent Compatibility Addon/Overlay
+### 2. Koda Agent Compatibility Addon/Overlay
 
 Status: first implementation slice complete.
 
-Hermes One currently depends on Hermes Agent dashboard capabilities that may not
+Koda Desktop currently depends on Koda Agent dashboard capabilities that may not
 be present, or may be present but not enabled correctly, in every installed or
-remote Hermes Agent. We should not leave those fixes as manual source edits.
+remote Koda Agent. We should not leave those fixes as manual source edits.
 
 Package them as a desktop-managed compatibility addon/overlay with this shape:
 
@@ -688,8 +688,8 @@ Package them as a desktop-managed compatibility addon/overlay with this shape:
   - configured-model list/CRUD endpoints are available;
   - session list and session message endpoints are available;
 - deploy only the missing compatibility pieces;
-- record the applied addon version on the target Hermes Agent home;
-- support local Hermes Agent install, remote HTTP target when writable/deployable,
+- record the applied addon version on the target Koda Agent home;
+- support local Koda Agent install, remote HTTP target when writable/deployable,
   and SSH target;
 - never modify provider credentials, user sessions, skills, memory, or model
   configuration while applying the addon;
@@ -712,15 +712,15 @@ GET /api/ws upgrade  -> 101 Switching Protocols
 
 If the installed engine does not do that, the addon should either patch/wrap the
 dashboard launch behavior or install a small compatibility module that makes the
-dashboard default compatible with Hermes One.
+dashboard default compatible with Koda Desktop.
 
 Implemented first slice:
 
 - `src/main/hermes-agent-compat.ts` owns a versioned compatibility patch for the
   reproduced embedded-dashboard-chat issue.
-- Local Hermes Agent installs are checked before dashboard launch and after
+- Local Koda Agent installs are checked before dashboard launch and after
   `hermes update`.
-- SSH Hermes Agent targets are checked before dashboard probing/startup and
+- SSH Koda Agent targets are checked before dashboard probing/startup and
   after `hermes update` over SSH.
 - The patch is intentionally narrow: it changes only the
   `embedded_chat: bool = False` default in `hermes_cli/web_server.py` to
@@ -728,8 +728,8 @@ Implemented first slice:
 - A diagnostic marker is written to:
   - local: `<HERMES_HOME>/desktop-compat/dashboard-embedded-chat.json`;
   - SSH: `~/.hermes/desktop-compat/dashboard-embedded-chat.json`.
-- Plain remote HTTP is still probe-only. Hermes One cannot safely patch it
-  without either SSH access or a future Hermes Agent deploy endpoint.
+- Plain remote HTTP is still probe-only. Koda Desktop cannot safely patch it
+  without either SSH access or a future Koda Agent deploy endpoint.
 
 Current tests:
 
@@ -781,19 +781,19 @@ For each transport, cover:
 
 Known upstream limitation from this pass:
 
-- Gemini failures in the current lab were traced to Hermes Agent upstream
-  behavior, not the Hermes One dashboard transport.
+- Gemini failures in the current lab were traced to Koda Agent upstream
+  behavior, not the Koda Desktop dashboard transport.
 
 ### 5. Reapply Addon After Engine Updates
 
 Status: not yet implemented.
 
-Yes: any Hermes Agent compatibility patch/addon must be rechecked after every
+Yes: any Koda Agent compatibility patch/addon must be rechecked after every
 engine update, for both local and remote targets.
 
 The update flow should become:
 
-1. run the normal Hermes Agent update;
+1. run the normal Koda Agent update;
 2. restart/probe the updated engine;
 3. run the compatibility capability probe;
 4. if required, reapply the addon/overlay;
@@ -802,11 +802,11 @@ The update flow should become:
 
 This applies to:
 
-- Hermes One's bundled/local Hermes Agent install;
-- remote HTTP targets when Hermes One is allowed to deploy an addon;
+- Koda Desktop's bundled/local Koda Agent install;
+- remote HTTP targets when Koda Desktop is allowed to deploy an addon;
 - SSH targets through the tunnel/SSH deployment path.
 
-If the target cannot be modified, Hermes One should keep working in legacy mode
+If the target cannot be modified, Koda Desktop should keep working in legacy mode
 and clearly report why dashboard mode is unavailable.
 
 ### 6. Final Review And Upstreaming
@@ -816,18 +816,18 @@ Status: pending.
 Before this leaves the worktree:
 
 - split the work into reviewable commits/PRs;
-- separate Hermes One changes from Hermes Agent compatibility changes;
-- document the compatibility contract Hermes One expects from Hermes Agent;
-- upstream the Hermes Agent embedded-chat/dashboard fix if possible;
-- keep the addon/overlay path until the minimum supported Hermes Agent version
+- separate Koda Desktop changes from Koda Agent compatibility changes;
+- document the compatibility contract Koda Desktop expects from Koda Agent;
+- upstream the Koda Agent embedded-chat/dashboard fix if possible;
+- keep the addon/overlay path until the minimum supported Koda Agent version
   contains the fix natively.
 
 ## Purpose
 
-Hermes One currently merges two views of chat state:
+Koda Desktop currently merges two views of chat state:
 
 - the renderer's streamed in-memory transcript
-- the Hermes Agent `state.db` transcript loaded through `getSessionMessages()`
+- the Koda Agent `state.db` transcript loaded through `getSessionMessages()`
 
 That merge is valuable because the database contains artifacts that may not arrive
 over the OpenAI-compatible stream, especially reasoning rows, tool calls, tool
@@ -857,7 +857,7 @@ In short:
 > canonical for ordering; DB only fills missing persisted artifacts for
 > successful turns.
 
-## Current Hermes One Code Paths
+## Current Koda Desktop Code Paths
 
 ### Message Shape
 
@@ -965,9 +965,9 @@ This should remain DB-only for now. It restores persisted user/assistant rows,
 reasoning, tool calls, tool results, and attachments.
 
 It will not restore purely local errors after app restart unless we add a
-desktop-side overlay store or Hermes Agent itself persists failed turns.
+desktop-side overlay store or Koda Agent itself persists failed turns.
 
-## Upstream Hermes Agent Desktop Lessons
+## Upstream Koda Agent Desktop Lessons
 
 Source: `github.com/NousResearch/hermes-agent/apps/desktop`
 
@@ -994,7 +994,7 @@ Upstream `ChatMessage` includes:
 - optional `hidden`
 - optional `attachmentRefs`
 
-The important part for Hermes One is `error` as metadata, not as normal assistant
+The important part for Koda Desktop is `error` as metadata, not as normal assistant
 text.
 
 ### Upstream Error Handling
@@ -1027,7 +1027,7 @@ At completion, upstream only hydrates from stored session data when:
 - there is no unresolved user tail
 - and the stream did not produce useful assistant payload or final text
 
-Hermes One should copy this invariant: failed turns should not trigger a broad DB
+Koda Desktop should copy this invariant: failed turns should not trigger a broad DB
 refresh/merge that can erase or reorder the local failure.
 
 ### Upstream Error Preservation
@@ -1043,21 +1043,21 @@ assistant errors when hydration omits failed turns:
 - avoid duplicating the local user when the hydrated transcript already contains
   equivalent tail user content
 
-Hermes One needs an adapted version that understands `content` bubbles rather
+Koda Desktop needs an adapted version that understands `content` bubbles rather
 than upstream's `parts` model.
 
 ## Scope Decision
 
-Do not migrate Hermes One to upstream's `parts[]` model in this fix. That would
+Do not migrate Koda Desktop to upstream's `parts[]` model in this fix. That would
 touch rendering, transcript copying, history mapping, and live tool rendering all
 at once.
 
-Do not migrate Hermes One to the upstream dashboard/gateway architecture in this
+Do not migrate Koda Desktop to the upstream dashboard/gateway architecture in this
 fix. That is a larger product direction decision.
 
 Instead:
 
-- keep Hermes One's current `ChatMessage` union
+- keep Koda Desktop's current `ChatMessage` union
 - add minimal metadata to support local errors and anchoring
 - wrap or replace the risky whole-session merge at completion boundaries
 - preserve the DB-based cold load behavior
@@ -1441,7 +1441,7 @@ matched/deduped against DB where possible.
 
 ### `preserveLocalAssistantErrors()`
 
-Adapt upstream's helper to Hermes One.
+Adapt upstream's helper to Koda Desktop.
 
 Input:
 
@@ -1532,7 +1532,7 @@ This prevents local errors from matching real assistant text.
 ## Completion Error Text Plan
 
 Upstream detects provider/gateway errors that arrive as final assistant text.
-Hermes One currently can surface errors through `onError`, but failures may also
+Koda Desktop currently can surface errors through `onError`, but failures may also
 arrive as normal completion content depending on API behavior.
 
 Add a helper similar to upstream:
@@ -1551,7 +1551,7 @@ const COMPLETION_ERROR_PATTERNS = [
 Use cautiously. False positives could turn legitimate assistant text into error
 UI. Recommended phase:
 
-- do not use this in the first patch unless there is a known repro where Hermes
+- do not use this in the first patch unless there is a known repro where Koda
   One receives provider errors as `chat-done` content
 - add tests before enabling
 
@@ -1578,7 +1578,7 @@ This restores:
 - tool result rows
 - DB-backed attachments
 
-It does not restore local provider errors after app restart if Hermes Agent never
+It does not restore local provider errors after app restart if Koda Agent never
 wrote them to `state.db`. That is already true today.
 
 If restart-persistent local errors are required, add a separate phase:
@@ -2275,7 +2275,7 @@ This is not required for the first stabilization fix.
 
 Goal:
 
-- Preserve local-only provider errors across app restart, even when Hermes Agent
+- Preserve local-only provider errors across app restart, even when Koda Agent
   never wrote a failed turn to `state.db`.
 
 Possible storage:
@@ -2305,7 +2305,7 @@ Implementation notes:
 - Overlay local errors by matching the nearest user row.
 - Prune overlay events when sessions are deleted.
 - Keep this separate from DB reconciliation so synthetic desktop UI state does
-  not pretend to be canonical Hermes Agent history.
+  not pretend to be canonical Koda Agent history.
 
 ## Risks and Mitigations
 

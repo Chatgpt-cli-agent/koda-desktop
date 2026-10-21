@@ -1,6 +1,6 @@
 # Onboarding Chrome
 
-The first-run screens (Welcome, Install) share one cinematic shell — a dark aurora backdrop, twinkling starfield, and an animated Hermes emblem — provided by [[src/renderer/src/components/common/OnboardHero.tsx#OnboardHero]]. Titles are upright sans; the design intentionally runs dark regardless of theme.
+The first-run screens (Welcome, Install) share one cinematic shell — a dark aurora backdrop, twinkling starfield, and an animated Koda emblem — provided by [[src/renderer/src/components/common/OnboardHero.tsx#OnboardHero]]. Titles are upright sans; the design intentionally runs dark regardless of theme.
 
 The `.onboard-screen` CSS scope owns `color-scheme: dark`, its dark surface and text tokens, and its background colour. It never inherits saved light-theme tokens, so the first frame and every onboarding child retain the designed contrast. [[tests/onboarding-theme.test.ts]] protects that scope.
 
@@ -18,13 +18,13 @@ When `intro` is set (the Welcome screen), the emblem draws itself **big in the c
 
 The component holds a `phase` of `draw → settle → done`. On mount a timer at `DRAW_MS` (the stroke-draw + fill completes) measures the settled emblem's `getBoundingClientRect`, sets the flying logo's transform to translate/scale into that slot, and switches to `settle`; a second timer at `DRAW_MS + SETTLE_MS` switches to `done`, which removes the flying overlay and runs the reveal cascade via the `[data-phase="done"]` CSS rules. `prefers-reduced-motion` skips straight to `done` with no fly.
 
-The stroke-draw itself is pure CSS: each emblem path animates `onboardDraw` (dash offset) → `onboardFill` (fill-opacity) → `onboardStrokeOut`, staggered per path via the `.onboard-fp{1..4}` classes.
+The stroke-draw itself is pure CSS: the emblem path animates `onboardDraw` (dash offset) → `onboardFill` (fill-opacity) → `onboardStrokeOut` via the `.onboard-glyph` class. The Koda glyph is a single path, so it replaced upstream's four staggered `.onboard-fp{1..4}` paths with one draw.
 
 ## Welcome
 
 [[src/renderer/src/screens/Welcome/Welcome.tsx#Welcome]] is the default first-run view. Its no-error state renders through `OnboardHero intro`.
 
-The hero carries the "HERMES ONE" eyebrow, subtitle, a gradient "Get Started" pill, and glass "Connect via SSH" / "Connect to Remote Hermes" pills. The install-error state and the SSH / remote connect panels keep the legacy `.welcome-screen` layout.
+The hero carries the "KODA" eyebrow, subtitle, a gradient "Get Started" pill, and glass "Connect via SSH" / "Connect to Remote Koda" pills. The install-error state and the SSH / remote connect panels keep the legacy `.welcome-screen` layout.
 
 ## Install confirm + progress
 

@@ -71,7 +71,7 @@ describe("buildDockerLauncherScript", () => {
       "/opt/hermes/.venv/bin/hermes",
       "",
     );
-    expect(script).toContain("# managed by Hermes Desktop (docker:hermes-abc)");
+    expect(script).toContain("# managed by Koda (docker:hermes-abc)");
     expect(script).toContain("container='hermes-abc'");
     expect(script).toContain("'/opt/hermes/.venv/bin/hermes' \"$@\"");
     expect(script).toContain("-e HOME=/opt/data -e HERMES_HOME=/opt/data");

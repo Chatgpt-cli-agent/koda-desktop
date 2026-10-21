@@ -1,5 +1,5 @@
 export default {
-  appName: "Hermes One",
+  appName: "Koda",
   continue: "Continue",
   cancel: "Cancel",
   retry: "Retry",
@@ -7,6 +7,7 @@ export default {
   loadingShort: "Loading",
   saved: "Saved",
   save: "Save",
+  saving: "Saving...",
   done: "Done",
   edit: "Edit",
   addKey: "Add key",
@@ -30,6 +31,8 @@ export default {
   start: "Start",
   stop: "Stop",
   refresh: "Refresh",
+  forward: "Forward",
+  reload: "Reload",
   copy: "Copy",
   settings: "Settings",
   provider: "Provider",

@@ -109,7 +109,7 @@ export function normalizeApprovalRequest(
           "warning",
         ],
         2048,
-      ) || "Hermes requires approval before continuing.",
+      ) || "Koda requires approval before continuing.",
     choices,
   };
 }

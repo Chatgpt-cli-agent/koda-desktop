@@ -387,7 +387,7 @@ export function openRemoteOAuthLogin(
     const loginWindow = new BrowserWindow({
       width: 520,
       height: 720,
-      title: "Sign in to remote Hermes gateway",
+      title: "Sign in to remote Koda gateway",
       autoHideMenuBar: true,
       ...(parent ? { parent, modal: true } : {}),
       webPreferences: {

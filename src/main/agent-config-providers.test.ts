@@ -119,7 +119,7 @@ describe("agent-config providers (config.yaml bridge)", () => {
 
   // The agent's config scaffold writes `providers: {}` (inline empty dict).
   // The upsert must rewrite that line into block form — this exact miss made
-  // the Hermes One mirror a silent no-op on real configs (appending would
+  // the Koda Cloud mirror a silent no-op on real configs (appending would
   // have produced a duplicate `providers:` key instead).
   it("rewrites an inline empty providers dict into block form", async () => {
     writeConfig(
@@ -133,7 +133,7 @@ describe("agent-config providers (config.yaml bridge)", () => {
     );
     const m = await mod();
     m.upsertAgentUserProvider("default", {
-      name: "Hermes One",
+      name: "Koda",
       slug: "hermesone",
       baseUrl: "https://inference.hermesone.org/v1",
       keyEnv: "HERMESONE_API_KEY",
@@ -145,7 +145,7 @@ describe("agent-config providers (config.yaml bridge)", () => {
     expect(m.listAgentUserProviders("default")).toEqual([
       {
         slug: "hermesone",
-        name: "Hermes One",
+        name: "Koda",
         baseUrl: "https://inference.hermesone.org/v1",
         keyEnv: "HERMESONE_API_KEY",
       },
@@ -160,7 +160,7 @@ describe("agent-config providers (config.yaml bridge)", () => {
     writeConfig(before);
     const m = await mod();
     m.upsertAgentUserProvider("default", {
-      name: "Hermes One",
+      name: "Koda",
       baseUrl: "https://inference.hermesone.org/v1",
       keyEnv: "HERMESONE_API_KEY",
     });

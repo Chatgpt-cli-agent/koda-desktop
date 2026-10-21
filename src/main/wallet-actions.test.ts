@@ -106,7 +106,7 @@ describe("getWalletPortfolio", () => {
         tokens: [
           {
             symbol: "HD",
-            name: "Hermes Desktop",
+            name: "Koda",
             balance: 100,
             balanceUsd: 2.5,
           },

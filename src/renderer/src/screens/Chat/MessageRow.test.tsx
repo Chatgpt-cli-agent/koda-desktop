@@ -26,7 +26,7 @@ describe("MessageRow user Markdown", () => {
       "",
       "| Name | Value |",
       "|---|---|",
-      "| Hermes | One |",
+      "| Koda | One |",
     ].join("\n");
 
     render(

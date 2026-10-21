@@ -69,7 +69,7 @@ it.each(["linux", "darwin", "win32"] as const)(
       platform === "win32" ? "open PowerShell" : "open a terminal",
     );
     expect(message).toContain("Check the installation log");
-    expect(message).toContain("Keep existing Hermes configuration");
+    expect(message).toContain("Keep existing Koda configuration");
     expect(message).not.toMatch(
       /Remove-Item|rm -rf|path is too long|Administrator|Set-ExecutionPolicy|\| iex/,
     );

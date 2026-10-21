@@ -47,6 +47,7 @@ async function runHook(
   installed: string;
   profile: string;
   install: string;
+  appArmorPath: string;
 }> {
   const home = mkdtempSync(join(tmpdir(), "hermes-package-hook-"));
   homes.push(home);
@@ -56,6 +57,10 @@ async function runHook(
     config.linux,
   );
   const executableName = appInfo.sanitizedName.toLowerCase();
+  // The AppArmor profile names the installed binary under the product's
+  // install prefix; derive it from the builder config so a rebrand cannot
+  // leave this assertion pointing at a path that no longer exists.
+  const appArmorPath = `/opt/${appInfo.sanitizedProductName}/${executableName}`;
   let scriptNumber = 0;
   const packager = {
     config,
@@ -120,7 +125,9 @@ async function runHook(
     .replaceAll("/usr/bin/ischroot", join(bin, "ischroot"))
     .replaceAll("/proc/self/ns/user", join(home, "user-namespace"));
   expect(script).not.toMatch(
-    /\/opt\/HermesOne|\/etc\/apparmor\.d|\/usr\/bin\/ischroot/,
+    new RegExp(
+      `${appArmorPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}|/etc/apparmor\\.d|/usr/bin/ischroot`,
+    ),
   );
   const hook = join(home, "safe-post-install.sh");
   writeFileSync(hook, script);
@@ -139,6 +146,7 @@ async function runHook(
     installed: join(policies, executableName),
     profile,
     install,
+    appArmorPath: `/opt/${appInfo.sanitizedProductName}/${executableName}`,
   };
 }
 
@@ -155,7 +163,7 @@ describe.skipIf(process.platform === "win32")(
         expect(fixture.result.status).toBe(0);
         expect(existsSync(fixture.installed)).toBe(true);
         expect(readFileSync(fixture.installed, "utf8")).toBe(fixture.profile);
-        expect(fixture.profile).toContain('"/opt/HermesOne/hermes-desktop"');
+        expect(fixture.profile).toContain(`"${fixture.appArmorPath}"`);
         expect(fixture.commands).toContain(
           "apparmor_parser\t--skip-kernel-load --debug",
         );

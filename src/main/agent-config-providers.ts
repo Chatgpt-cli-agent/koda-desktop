@@ -348,7 +348,7 @@ export function mirrorFirstPartyAgentProviders(profile?: string): void {
     if (!match || !match[1].trim()) return;
     upsertAgentUserProvider(profile, {
       slug: "hermesone",
-      name: "Hermes One",
+      name: "Koda",
       baseUrl: HERMESONE_BASE_URL,
       keyEnv: "HERMESONE_API_KEY",
     });

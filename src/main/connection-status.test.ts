@@ -76,7 +76,7 @@ describe("connection status snapshots", () => {
     vi.clearAllMocks();
     mocks.isGatewayRunning.mockReturnValue(true);
     mocks.isGatewayHealthy.mockResolvedValue(true);
-    mocks.getHermesVersion.mockResolvedValue("Hermes Agent v1.0.0");
+    mocks.getHermesVersion.mockResolvedValue("Koda v1.0.0");
     mocks.probeRemoteAuthMode.mockResolvedValue({
       authMode: "token",
       version: "1.1.0",

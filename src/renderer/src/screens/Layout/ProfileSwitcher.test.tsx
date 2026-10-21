@@ -10,7 +10,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("../../components/useI18n", () => ({
   useI18n: () => ({
-    t: (key: string): string => (key === "common.appName" ? "Hermes One" : key),
+    t: (key: string): string => (key === "common.appName" ? "Koda" : key),
   }),
 }));
 
@@ -75,7 +75,7 @@ describe("ProfileSwitcher", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Hermes One")).toBeInTheDocument();
+      expect(screen.getByText("Koda")).toBeInTheDocument();
     });
   });
 

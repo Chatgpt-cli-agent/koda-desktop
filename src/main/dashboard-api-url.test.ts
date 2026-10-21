@@ -31,7 +31,7 @@ describe("dashboard URL construction", () => {
     ).toBe("https://proxy%20user:pass%40word@dashboard.test/api/status");
     expect(() =>
       dashboardApiUrl({ remoteUrl: "  ", apiKey: "" }, "/api/status"),
-    ).toThrow("Remote Hermes dashboard URL is not configured.");
+    ).toThrow("Remote Koda dashboard URL is not configured.");
     expect(() =>
       dashboardApiUrl({ remoteUrl: "not a URL", apiKey: "" }, "/api/status"),
     ).toThrow();

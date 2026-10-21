@@ -17,7 +17,7 @@ export default {
   reasoningEffort: {
     title: "Reasoning Level",
     auto: "Auto",
-    autoDescription: "Let Hermes and the model decide.",
+    autoDescription: "Let Koda and the model decide.",
     hint: "Auto is safest. Manual levels may be ignored or rejected by models that do not support reasoning effort.",
     saveError: "Could not save reasoning level. Selection was restored.",
     minimal: "Minimal",
@@ -46,11 +46,11 @@ export default {
   deny: "Deny",
   clarify: {
     unavailable: "This question is no longer awaiting an answer.",
-    defaultQuestion: "Hermes needs your input.",
+    defaultQuestion: "Koda needs your input.",
     placeholder: "Type your answer…  (Ctrl+Enter to send)",
     send: "Send",
-    skip: "Skip — let Hermes decide",
-    skipped: "Skipped — Hermes decided",
+    skip: "Skip — let Koda decide",
+    skipped: "Skipped — Koda decided",
     error: "Couldn't deliver your answer — the turn may have ended. Try again.",
   },
   approval: {
@@ -156,7 +156,7 @@ export default {
     model: "Show or switch the current model",
     memory: "Show agent memory",
     persona: "Show current persona",
-    version: "Show Hermes version",
+    version: "Show Koda version",
   },
   queued: "{{count}} message(s) queued — will send when the agent finishes",
   queuedCount: "{{count}} queued",
@@ -202,11 +202,4 @@ export default {
   },
   showWorktree: "Show file explorer",
   hideWorktree: "Hide file explorer",
-  followUs: {
-    title: "Follow Us on X",
-    description:
-      "Stay up to date with the latest Hermes One features, tips, and updates. Follow us on X!",
-    follow: "Follow",
-    notNow: "Not Now",
-  },
 } as const;

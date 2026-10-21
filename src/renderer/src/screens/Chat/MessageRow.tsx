@@ -107,7 +107,7 @@ export interface AgentAvatarInfo {
  * freeze-mid-frame problem the way the old gif did). With no known agent (e.g.
  * the live typing indicator before any turn) the orb stays as the fallback.
  */
-export const HermesAvatar = memo(function HermesAvatar({
+export const KodaAvatar = memo(function KodaAvatar({
   size = 30,
   active = false,
   agent,
@@ -227,7 +227,7 @@ export const MessageRow = memo(function MessageRow({
     return (
       <div className={`chat-message chat-message-${msg.role}`}>
         {showAvatar ? (
-          <HermesAvatar active={isLoading && isLast} agent={agent} />
+          <KodaAvatar active={isLoading && isLast} agent={agent} />
         ) : (
           <AvatarSpacer />
         )}
@@ -260,7 +260,7 @@ export const MessageRow = memo(function MessageRow({
       {msg.role === "user" ? null : !showAvatar ? (
         <AvatarSpacer />
       ) : (
-        <HermesAvatar active={isLoading && isLast} agent={agent} />
+        <KodaAvatar active={isLoading && isLast} agent={agent} />
       )}
       <div
         className={`chat-bubble chat-bubble-${msg.role}${

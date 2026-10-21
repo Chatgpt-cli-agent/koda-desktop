@@ -168,7 +168,7 @@ export function useSettingsData(profile?: string) {
   );
 
   // Desktop app (Electron) auto-update — a *separate* update channel from the
-  // Hermes Agent engine update above: this ships the desktop shell itself via
+  // Koda Agent engine update above: this ships the desktop shell itself via
   // electron-updater / GitHub releases. Mirrors the sidebar-footer updater so
   // the About pane can check/download/restart on its own.
   const [desktopUpdateState, setDesktopUpdateState] = useState<

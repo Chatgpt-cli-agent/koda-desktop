@@ -43,7 +43,7 @@ export interface SshConnectionConfig {
   keyPath: string;
   remotePort: number;
   localPort: number;
-  // Docker container on the SSH host that runs Hermes (issue #432). Used by
+  // Docker container on the SSH host that runs the engine (issue #432). Used by
   // the Settings/Welcome target inspection UI; the runtime itself routes
   // through the provisioned remote launcher hook, not this name.
   dockerContainerName?: string;
@@ -137,7 +137,7 @@ function readConnectionDesktopConfig(): Record<string, unknown> {
     return parsed as Record<string, unknown>;
   } catch {
     throw new Error(
-      "Hermes Desktop could not read desktop.json; the existing file was left unchanged.",
+      "Koda could not read desktop.json; the existing file was left unchanged.",
     );
   }
 }
@@ -269,7 +269,7 @@ function connectionRegistryFromDesktopConfig(data: Record<string, unknown>): {
   if (existing) return { registry: existing, migrated: false };
   if ("connectionRegistry" in data) {
     throw new Error(
-      "Hermes Desktop found an unsupported or invalid connection registry; the existing file was left unchanged.",
+      "Koda found an unsupported or invalid connection registry; the existing file was left unchanged.",
     );
   }
 
@@ -2198,7 +2198,7 @@ function authFilePath(profile?: string): string {
  * `auth_type` to distinguish OAuth from API-key entries inside the
  * same pool, and uses `id` / `priority` / `source` for rotation and
  * telemetry. Issue #367 — pool entries written by the desktop with
- * just `{key, label}` were rejected at runtime ("Hermes is not
+ * just `{key, label}` were rejected at runtime ("Koda is not
  * logged into Nous Portal") because none of the canonical fields
  * were present.
  *

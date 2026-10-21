@@ -1,7 +1,6 @@
 export default {
   title: "メモリ",
-  subtitle:
-    "Hermes がセッションを跨いで覚えているあなたと環境に関する情報です。",
+  subtitle: "Koda がセッションを跨いで覚えているあなたと環境に関する情報です。",
   sessions: "セッション",
   messages: "メッセージ",
   memories: "メモリ",
@@ -20,14 +19,14 @@ export default {
   noProvidersFound: "このインストールにはメモリプロバイダが見つかりません。",
   openProviderWebsite: "プロバイダのウェブサイトを開く",
   noMemoriesYet:
-    "まだメモリがありません。Hermes はチャットを通じて重要な事実を保存します。",
+    "まだメモリがありません。Koda はチャットを通じて重要な事実を保存します。",
   noMemoryEntries: "メモリエントリがまだありません。",
   noToolsetsFound: "ツールセットが見つかりません。",
   addManuallyHint: "上のボタンから手動でメモリを追加することもできます。",
   userProfileHint:
-    "あなた自身について Hermes に教えてください — 名前、役割、好み、コミュニケーションスタイルなど。",
+    "あなた自身について Koda に教えてください — 名前、役割、好み、コミュニケーションスタイルなど。",
   providersHint:
-    "プラガブルなメモリプロバイダは Hermes に高度な長期記憶を与えます。組み込みメモリ（上）は選択したプロバイダと並行して常時動作します。",
+    "プラガブルなメモリプロバイダは Koda に高度な長期記憶を与えます。組み込みメモリ（上）は選択したプロバイダと並行して常時動作します。",
   providersHintActive: "稼働中：<strong>{{provider}}</strong>",
   providersHintInactive: "外部プロバイダ未使用 — 組み込みのみ利用中。",
   enterEnvKey: "{{key}} を入力",

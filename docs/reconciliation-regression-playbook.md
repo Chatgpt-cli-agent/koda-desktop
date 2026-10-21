@@ -1,12 +1,12 @@
 # Chat Reconciliation Regression Playbook
 
-This playbook is the repeatable gate for the sandboxed Hermes One reconciliation work.
-Run it after Hermes One changes, Hermes Agent engine updates, compatibility
+This playbook is the repeatable gate for the sandboxed Koda Desktop reconciliation work.
+Run it after Koda Desktop changes, Koda Agent engine updates, compatibility
 addon changes, or remote/SSH lab changes.
 
 ## Scope
 
-The goal is to verify that Hermes One uses the dashboard event stream as the
+The goal is to verify that Koda Desktop uses the dashboard event stream as the
 active-turn source of truth without losing behavior that existed in the legacy
 desktop app:
 
@@ -23,7 +23,7 @@ desktop app:
 Run from the separate development worktree:
 
 ```powershell
-cd C:\Users\pmos6\Documents\Claude\Projects\Hermes-Desktop-reconcile
+cd C:\Users\pmos6\Documents\Claude\Projects\Koda-Desktop-reconcile
 
 npm run typecheck
 npm test -- --run tests/remote-sessions.test.ts tests/remote-metadata.test.ts tests/remote-models.test.ts tests/dashboard-chat-transport.test.ts tests/dashboard-event-adapter.test.ts tests/live-tool-events.test.ts tests/live-reasoning-events.test.ts tests/tool-activity-group-title.test.ts tests/reconcile-streamed-with-db.test.ts tests/session-history-mapping.test.ts tests/sessions-history-items.test.ts tests/sessions-decode-content.test.ts src/renderer/src/screens/Chat/mediaUtils.test.ts src/renderer/src/screens/Chat/hooks/useChatIPC.test.tsx tests/chat-messages.test.ts tests/session-continuation-store.test.ts tests/dashboard-remote.test.ts tests/dashboard-launch.test.ts tests/dashboard-gateway-client.test.ts tests/hermes-agent-compat.test.ts tests/run-stream.test.ts src/renderer/src/screens/Sessions/Sessions.test.tsx
@@ -56,7 +56,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\ssh-lab.ps1 up
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\ssh-lab.ps1 status
 ```
 
-Start the sandboxed Hermes One instance:
+Start the sandboxed Koda Desktop instance:
 
 ```powershell
 npm run dev:sandbox
@@ -67,7 +67,7 @@ Pass criteria:
 - Remote status shows dashboard status, dashboard session auth, and legacy
   OpenAI models auth as OK.
 - SSH status reaches the remote dashboard through the tunnel.
-- Hermes One title bar says `Hermes One`.
+- Koda Desktop title bar says `Koda Desktop`.
 - Settings shows the active connection mode and active chat transport.
 
 ## Connection Matrix
@@ -90,9 +90,9 @@ Local, Remote HTTP, and SSH should refresh:
 - model selector rows;
 - Models page rows;
 - Sessions page rows;
-- Settings Hermes Agent metadata.
+- Settings Koda Agent metadata.
 
-Remote HTTP and SSH should show models configured on the remote Hermes Agent
+Remote HTTP and SSH should show models configured on the remote Koda Agent
 side, not the local desktop's model library.
 
 ## Manual Cases
@@ -190,7 +190,7 @@ Pass criteria:
 
 - The user bubble appears once.
 - The pasted image thumbnail appears in the user bubble.
-- Hermes Agent fallback text such as `[The user attached an image but analysis failed.]`
+- Koda Agent fallback text such as `[The user attached an image but analysis failed.]`
   is not shown as user-visible prompt content.
 - The same session restored from Sessions still shows the image thumbnail, not
   raw fallback text.
@@ -249,9 +249,9 @@ Pass criteria:
 
 ## Known Upstream Limitations
 
-- Gemini failures in the current lab have been traced to Hermes Agent upstream
-  behavior, not Hermes One dashboard reconciliation.
-- Plain Remote HTTP cannot be patched by Hermes One unless the target exposes a
+- Gemini failures in the current lab have been traced to Koda Agent upstream
+  behavior, not Koda Desktop dashboard reconciliation.
+- Plain Remote HTTP cannot be patched by Koda Desktop unless the target exposes a
   future deploy endpoint or is also reachable over SSH.
 - The remote lab intentionally bridges to this Windows host's AI Playground
   ComfyUI for testing. That is not normal remote deployment behavior.
@@ -266,5 +266,5 @@ Before asking for review or preparing a PR:
   SSH.
 - Legacy fallback is checked at least once after any change that touches legacy
   IPC or `/v1` paths.
-- Any known failure is classified as Hermes One, Hermes Agent upstream, lab
+- Any known failure is classified as Koda Desktop, Koda Agent upstream, lab
   setup, or provider/service behavior.

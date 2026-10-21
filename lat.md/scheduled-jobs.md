@@ -1,8 +1,8 @@
 # Scheduled jobs
 
-The Schedules screen presents Hermes cron jobs consistently across local files, the remote API, and named SSH profiles.
+The Schedules screen presents Koda cron jobs consistently across local files, the remote API, and named SSH profiles.
 
-Jobs explicitly marked `completed` keep that terminal state even though Hermes also disables them. Other disabled jobs are normalized as paused by [[src/main/cronjobs.ts#listCronJobs]]. Named-profile SSH lists use [[src/main/cronjobs.ts#parseCronListOutput]] and mark completed jobs disabled too, so active-only lists exclude terminal jobs across transports.
+Jobs explicitly marked `completed` keep that terminal state even though Koda also disables them. Other disabled jobs are normalized as paused by [[src/main/cronjobs.ts#listCronJobs]]. Named-profile SSH lists use [[src/main/cronjobs.ts#parseCronListOutput]] and mark completed jobs disabled too, so active-only lists exclude terminal jobs across transports.
 
 ## Remote dashboard requests
 
@@ -26,7 +26,7 @@ Remote output requires membership in the job's newest 100-run window before read
 
 ## Test specifications
 
-These tests protect state normalization at the boundary between Hermes cron data and the desktop schedule model.
+These tests protect state normalization at the boundary between Koda cron data and the desktop schedule model.
 
 ### Completed jobs remain completed
 

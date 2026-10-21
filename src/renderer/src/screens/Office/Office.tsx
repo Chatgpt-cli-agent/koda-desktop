@@ -75,7 +75,7 @@ function readStoredCeo(): string | null {
 
 /**
  * The Office tab. Renders a native, in-renderer 3D office (no external dev
- * server / webview) where each Hermes profile appears as an interactive agent.
+ * server / webview) where each the engine profile appears as an interactive agent.
  */
 function Office({ visible, profile }: OfficeProps): React.JSX.Element {
   const { t } = useI18n();

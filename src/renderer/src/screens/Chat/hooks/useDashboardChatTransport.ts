@@ -712,7 +712,7 @@ function logDashboardEvent(
   const events = window.__HERMES_DASHBOARD_EVENTS__ ?? [];
   events.push(summary);
   window.__HERMES_DASHBOARD_EVENTS__ = events.slice(-200);
-  console.info("[Hermes dashboard event]", summary);
+  console.info("[Koda dashboard event]", summary);
 }
 
 export function usageFromPayload(payload: unknown): Partial<UsageState> | null {
@@ -862,7 +862,7 @@ export function completionFailed(payload: unknown): boolean {
 function completionErrorMessage(payload: unknown): string {
   const row = asRecord(payload);
   const raw = String(row.error || row.text || row.rendered || "").trim();
-  return raw.replace(/^error\s*:\s*/i, "") || "Hermes reported an error";
+  return raw.replace(/^error\s*:\s*/i, "") || "Koda reported an error";
 }
 
 function userContentById(
@@ -1574,7 +1574,7 @@ export function useDashboardChatTransport({
       // Already known unavailable on this remote/SSH connection — fail fast so the
       // caller falls back to legacy without re-running the slow status+probe.
       if (dashboardUnavailableRef.current) {
-        throw new Error("Hermes dashboard transport is unavailable");
+        throw new Error("Koda dashboard transport is unavailable");
       }
       if (connectingRef.current) return connectingRef.current;
 
@@ -1596,7 +1596,7 @@ export function useDashboardChatTransport({
               (!authority || currentAuthority !== authority))
           ) {
             const error = new Error(
-              "Hermes dashboard connection authority changed. Retry on the current chat.",
+              "Koda dashboard connection authority changed. Retry on the current chat.",
             ) as Error & { dashboardWasReachable?: boolean };
             error.dashboardWasReachable = true;
             throw error;
@@ -1618,7 +1618,7 @@ export function useDashboardChatTransport({
             connectionId,
           );
           if (clientGenerationRef.current !== generation) {
-            throw new Error("Hermes dashboard connection was superseded");
+            throw new Error("Koda dashboard connection was superseded");
           }
           if (!status.running || !status.connection) {
             if (status.needsOAuthLogin) {
@@ -1637,11 +1637,11 @@ export function useDashboardChatTransport({
             ) {
               dashboardUnavailableRef.current = true;
               onDashboardUnavailable?.(
-                status.error || "Hermes dashboard transport is unavailable",
+                status.error || "Koda dashboard transport is unavailable",
               );
             }
             throw new Error(
-              status.error || "Hermes dashboard transport is unavailable",
+              status.error || "Koda dashboard transport is unavailable",
             );
           }
           let clientClosed = false;
@@ -1694,7 +1694,7 @@ export function useDashboardChatTransport({
                 )
               : status.connection.wsUrl;
             if (!freshUrl) {
-              throw new Error("Hermes dashboard WebSocket URL is unavailable");
+              throw new Error("Koda dashboard WebSocket URL is unavailable");
             }
             if (getConnectionAuthority)
               await assertAuthority(() => clientClosed);
@@ -1714,7 +1714,7 @@ export function useDashboardChatTransport({
             lastConnectErr = err;
             client.close();
             if (clientGenerationRef.current !== generation) {
-              throw new Error("Hermes dashboard connection was superseded");
+              throw new Error("Koda dashboard connection was superseded");
             }
             // Transient connect failure while the dashboard IS up — back off and
             // retry (the tunnel may be re-establishing).
@@ -1723,7 +1723,7 @@ export function useDashboardChatTransport({
           }
           if (clientGenerationRef.current !== generation) {
             client.close();
-            throw new Error("Hermes dashboard connection was superseded");
+            throw new Error("Koda dashboard connection was superseded");
           }
           clientRef.current = client;
           return client;
@@ -1733,8 +1733,8 @@ export function useDashboardChatTransport({
         // /v1 to the dashboard tunnel (which 405s).
         const err = new Error(
           lastConnectErr instanceof Error
-            ? `Hermes dashboard chat connection failed: ${lastConnectErr.message}`
-            : "Hermes dashboard chat connection failed",
+            ? `Koda dashboard chat connection failed: ${lastConnectErr.message}`
+            : "Koda dashboard chat connection failed",
         ) as Error & { dashboardWasReachable?: boolean };
         err.dashboardWasReachable = true;
         throw err;
@@ -1973,7 +1973,7 @@ export function useDashboardChatTransport({
             ? `; /model output: ${slashResponse.output}`
             : "";
           throw new Error(
-            `Hermes dashboard did not switch to ${dashboardProvider}/${model}; live model is ${live.provider || "unknown"}/${live.model || "unknown"}${warning}${output}; custom inventory: ${modelOptionsSummary(before)}`,
+            `Koda dashboard did not switch to ${dashboardProvider}/${model}; live model is ${live.provider || "unknown"}/${live.model || "unknown"}${warning}${output}; custom inventory: ${modelOptionsSummary(before)}`,
           );
         }
         appliedModelRef.current = key;
@@ -2116,7 +2116,7 @@ export function useDashboardChatTransport({
       };
       const assertSubmission = (): void => {
         if (!ownsSubmission())
-          throw new Error("Hermes dashboard submission was superseded");
+          throw new Error("Koda dashboard submission was superseded");
       };
       const pendingClarifyRequestId = pendingClarifyRef.current?.requestId;
       if (pendingClarifyRequestId) {
@@ -2318,7 +2318,7 @@ export function useDashboardChatTransport({
           if (!ownsSubmission()) return retireSupersededSubmission();
           if (fallbackOnUnavailable) return handoffToLegacy();
           return failActiveTurn(
-            "Hermes dashboard could not attach the selected file. Use Auto or Legacy to fall back to the legacy attachment path.",
+            "Koda dashboard could not attach the selected file. Use Auto or Legacy to fall back to the legacy attachment path.",
           );
         }
         const submitText = dashboardPromptTextWithAttachmentRefs(

@@ -3,8 +3,8 @@
 ### Prerequisites
 
 - Node.js and npm
-- A Unix-like shell environment for the Hermes installer
-- Network access for downloading Hermes during first-run install
+- A Unix-like shell environment for the Koda Agent installer
+- Network access for downloading the agent during first-run install
 
 ### Install dependencies
 

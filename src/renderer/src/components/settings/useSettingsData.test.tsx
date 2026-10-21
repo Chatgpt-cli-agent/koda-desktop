@@ -56,7 +56,7 @@ describe("useSettingsData remote OAuth", () => {
         getApiServerKeyStatus: vi.fn(async () => ({ hasKey: true })),
         getAutoUpgradeEnabled: vi.fn(async () => true),
         getHermesHome: vi.fn(async () => "/tmp/hermes"),
-        getHermesVersion: vi.fn(async () => "Hermes Agent v1.0.0"),
+        getHermesVersion: vi.fn(async () => "Koda v1.0.0"),
         getAgentCapabilities: vi.fn(async () => ({
           canUpdate: false,
           checkedAt: 1,

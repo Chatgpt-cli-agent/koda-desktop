@@ -80,7 +80,7 @@ export default {
     model: "Tampilkan atau ganti model saat ini",
     memory: "Tampilkan memori agent",
     persona: "Tampilkan persona saat ini",
-    version: "Tampilkan versi Hermes",
+    version: "Tampilkan versi Koda",
   },
   queuedCancel: "Batalkan pesan antrian",
   copyMessage: "Salin pesan",

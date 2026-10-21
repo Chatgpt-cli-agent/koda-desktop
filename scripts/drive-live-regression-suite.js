@@ -187,7 +187,7 @@ let cachedRemoteToken = args.remoteToken || process.env.HERMES_REMOTE_TOKEN || "
 
 if (args.help) {
   console.log(`
-Hermes One live visual regression suite
+Koda Desktop live visual regression suite
 
 Usage:
   node scripts/drive-live-regression-suite.js [options]
@@ -976,7 +976,7 @@ async function runMode(page, report, mode) {
   ensureDir(OUTPUT_DIR);
   const { browser, page } = await attach({
     cdpUrl: `http://127.0.0.1:${CDP_PORT}`,
-    titleHint: "Hermes One",
+    titleHint: "Koda",
   });
   page.setDefaultTimeout(15_000);
 

@@ -124,7 +124,7 @@ export async function getConnectionStatuses(
           : getCachedAgentCapabilityEvidence(connection.connectionId, profile);
       const versionText =
         probe.version && /^\d/.test(probe.version)
-          ? `Hermes Agent v${probe.version}`
+          ? `Koda v${probe.version}`
           : probe.version;
       return {
         connectionId: connection.connectionId,

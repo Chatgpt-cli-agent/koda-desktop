@@ -14,8 +14,8 @@ vi.mock("../../components/useI18n", () => ({
   }),
 }));
 
-vi.mock("../../components/common/HermesLogo", () => ({
-  default: (): React.JSX.Element => <div data-testid="hermes-logo" />,
+vi.mock("../../components/common/KodaLogo", () => ({
+  default: (): React.JSX.Element => <div data-testid="koda-logo" />,
 }));
 
 // Agents reads the global profile modal via useProfileModal, which throws

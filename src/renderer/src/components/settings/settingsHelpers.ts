@@ -2,9 +2,9 @@ import type { AppLocale } from "../../../../shared/i18n";
 
 /** Community + support links shown in the Community pane. */
 export const DISCORD_COMMUNITY_URL = "https://discord.gg/HtZNeyJjJ";
-export const HERMES_WEBSITE_URL = "https://www.hermesone.org";
-export const HERMES_X_URL = "https://x.com/HermesOneAPp";
-export const HERMES_TELEGRAM_URL = "https://t.me/hermes_agent_desktop";
+export const KODA_WEBSITE_URL = "https://www.hermesone.org";
+export const KODA_X_URL = "https://x.com/HermesOneAPp";
+export const KODA_TELEGRAM_URL = "https://t.me/hermes_agent_desktop";
 export const KOFI_SUPPORT_URL = "https://ko-fi.com/fathah";
 
 export type RemoteChatTransport = "auto" | "dashboard" | "legacy";

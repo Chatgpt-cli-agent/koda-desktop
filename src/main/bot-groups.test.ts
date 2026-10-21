@@ -54,7 +54,7 @@ describe("Bot groups main-process boundary", () => {
         event_id: "e",
         payload: { text: "hi", thread_id: "main" },
       }),
-    ).rejects.toThrow("local Hermes");
+    ).rejects.toThrow("local Koda");
     expect(mocks.request).not.toHaveBeenCalled();
     expect(mocks.config).toHaveBeenCalledWith("remote-one");
   });
@@ -79,7 +79,7 @@ describe("Bot groups main-process boundary", () => {
     );
     await expect(
       botGroupsRequest("local-one", "state", { room_id: "room-one" }),
-    ).rejects.toThrow("Hermes could not complete");
+    ).rejects.toThrow("Koda could not complete");
     const status = await botGroupsRequest("local-one", "capabilities");
     expect(JSON.stringify(status)).not.toContain("private-secret");
   });

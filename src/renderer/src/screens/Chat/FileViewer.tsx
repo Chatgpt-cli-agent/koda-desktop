@@ -187,7 +187,7 @@ export const FileViewer = memo(function FileViewer({
         const imageData = await window.hermesAPI.readImageFile(filePath);
         if (cancelled) return;
         if (imageData === null) {
-          setError(t("worktree.errorLoading"));
+          setError(t("chat.worktree.errorLoading"));
         } else {
           setImageUrl(imageData);
         }
@@ -199,7 +199,7 @@ export const FileViewer = memo(function FileViewer({
       const result = await window.hermesAPI.readFile(filePath, 102400);
       if (cancelled) return;
       if (result === null) {
-        setError(t("worktree.errorLoading"));
+        setError(t("chat.worktree.errorLoading"));
       } else {
         setContent(result.content);
         setTruncated(result.truncated);
@@ -249,7 +249,9 @@ export const FileViewer = memo(function FileViewer({
             {(content || imageUrl) && (
               <span className="file-viewer-size">
                 {content ? formatFileSize(content) : imageUrl ? "Image" : ""}
-                {truncated && content && ` (${t("worktree.fileTruncated")})`}
+                {truncated &&
+                  content &&
+                  ` (${t("chat.worktree.fileTruncated")})`}
               </span>
             )}
           </div>
@@ -257,7 +259,7 @@ export const FileViewer = memo(function FileViewer({
             <button
               className="btn-ghost file-viewer-open"
               onClick={() => window.hermesAPI.openFileInEditor(filePath)}
-              title={t("worktree.openInEditor")}
+              title={t("chat.worktree.openInEditor")}
             >
               <ExternalLink size={14} />
               <span className="file-viewer-open-text">Open</span>
@@ -265,7 +267,7 @@ export const FileViewer = memo(function FileViewer({
             <button
               className="btn-ghost file-viewer-close"
               onClick={onClose}
-              title={t("worktree.closeFile")}
+              title={t("chat.worktree.closeFile")}
             >
               <X size={16} />
             </button>
@@ -275,7 +277,7 @@ export const FileViewer = memo(function FileViewer({
         <div className="file-viewer-content">
           {isLoading ? (
             <div className="file-viewer-loading">
-              {t("worktree.loading")}...
+              {t("chat.worktree.loading")}...
             </div>
           ) : error ? (
             <div className="file-viewer-error">{error}</div>
@@ -289,7 +291,7 @@ export const FileViewer = memo(function FileViewer({
             </div>
           ) : content === null ? (
             <div className="file-viewer-error">
-              {t("worktree.errorLoading")}
+              {t("chat.worktree.errorLoading")}
             </div>
           ) : isBinaryFile(fileName) ? (
             <div className="file-viewer-binary">
@@ -305,7 +307,7 @@ export const FileViewer = memo(function FileViewer({
             <>
               {truncated && (
                 <div className="file-viewer-truncated">
-                  {t("worktree.fileTruncatedWarning")}
+                  {t("chat.worktree.fileTruncatedWarning")}
                 </div>
               )}
               <pre className="file-viewer-code">

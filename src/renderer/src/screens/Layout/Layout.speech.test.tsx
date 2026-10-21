@@ -20,7 +20,6 @@ vi.mock("../../components/ChatPreferencesProvider", () => ({
 vi.mock("../../components/ConfigHealthBanner", () => ({
   ConfigHealthBanner: () => null,
 }));
-vi.mock("../../components/FollowUsModal", () => ({ default: () => null }));
 vi.mock("../../components/common/ProfileAvatar", () => ({
   default: () => null,
 }));

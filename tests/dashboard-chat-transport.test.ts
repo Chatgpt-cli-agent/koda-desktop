@@ -690,7 +690,7 @@ describe("resolveDashboardProviderForModel", () => {
 
   // Regression: `/model hermesone-swift --provider custom` let the agent bind
   // "custom" to the session's *current* base URL — a session sitting on Nous
-  // sent the Hermes One model to the Nous proxy (404 "not in our configuration
+  // sent the Koda Cloud model to the Nous proxy (404 "not in our configuration
   // or OpenRouter catalog"). A named user-provider row on the same endpoint
   // (the mirrored config.yaml `providers: hermesone:` entry) must win.
   it("resolves custom rows to a named user provider on the same endpoint", () => {

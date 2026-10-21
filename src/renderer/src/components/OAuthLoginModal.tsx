@@ -105,7 +105,7 @@ function OAuthLoginModal({
             </div>
           )}
           {log && (
-            <pre className="settings-hermes-doctor" ref={logRef}>
+            <pre className="settings-koda-doctor" ref={logRef}>
               {log}
             </pre>
           )}

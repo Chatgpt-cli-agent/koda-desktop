@@ -10,7 +10,7 @@ import type { SessionUsage } from "./sessionUsage";
  */
 export interface ChatRun {
   runId: string;
-  /** Immutable: the Hermes machine this run was started against. */
+  /** Immutable: the engine machine this run was started against. */
   connectionId: string;
   /** Immutable: the profile/agent this run was started under. */
   profile: string;

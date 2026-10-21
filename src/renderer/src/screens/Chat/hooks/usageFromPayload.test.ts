@@ -8,7 +8,7 @@ import {
 import type { ChatMessage } from "../types";
 
 describe("usageFromPayload", () => {
-  it("reads the Hermes gateway snake-case keys (input/prompt/context_used)", () => {
+  it("reads the Koda Agent gateway snake-case keys (input/prompt/context_used)", () => {
     // Shape emitted by tui_gateway/server.py `_get_usage` on message.complete.
     const result = usageFromPayload({
       usage: {

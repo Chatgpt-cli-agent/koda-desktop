@@ -2,7 +2,7 @@ import { Bot } from "../../assets/icons";
 import claudeLogo from "../../assets/logos/claude-color.svg";
 import geminiLogo from "../../assets/logos/gemini-color.svg";
 import nousLogo from "../../assets/logos/nousresearch.svg";
-import hermesoneLogo from "../../assets/hermes-icon.svg";
+import kodaIcon from "../../assets/koda/koda-icon.svg";
 import openaiLogo from "../../assets/logos/openai.svg";
 import openrouterLogo from "../../assets/logos/openrouter.svg";
 import requestyLogo from "../../assets/logos/requesty.svg";
@@ -100,7 +100,7 @@ type BrandKey =
   | "unknown";
 
 const LOGOS: Record<Exclude<BrandKey, "unknown">, string> = {
-  hermesone: hermesoneLogo,
+  hermesone: kodaIcon,
   claude: claudeLogo,
   gemini: geminiLogo,
   nous: nousLogo,
@@ -148,6 +148,15 @@ const LOGOS: Record<Exclude<BrandKey, "unknown">, string> = {
   api_server: apiLogo,
   webhooks: webhookLogo,
   home_assistant: homeAssistantLogo,
+};
+
+/**
+ * Human-readable names for brands whose internal key isn't a display name.
+ * The `hermesone` key is the provider slug that appears in config.yaml and
+ * on the wire; the name the user sees is "Koda".
+ */
+const BRAND_LABELS: Partial<Record<BrandKey, string>> = {
+  hermesone: "Koda",
 };
 
 function detectBrand(provider?: string, modelId?: string): BrandKey {
@@ -255,7 +264,7 @@ function BrandLogo({
       width={size}
       height={size}
       className={classes}
-      alt={brand}
+      alt={BRAND_LABELS[brand] ?? brand}
     />
   );
 }

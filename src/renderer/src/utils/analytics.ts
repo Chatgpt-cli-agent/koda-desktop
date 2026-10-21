@@ -1,6 +1,6 @@
 // In-house analytics client.
 //
-// Events are POSTed to the Hermes analytics service:
+// Events are POSTed to the Koda analytics service:
 //   POST {VITE_ANALYTICS_BASE_URL}/v1/events
 //   header: x-api-key: {VITE_ANALYTICS_API_KEY}
 //   body:   { anonymous_id, event, source: "desktop", properties }
@@ -74,7 +74,7 @@ export function initAnalytics(): void {
   getOrCreateAnonymousId();
   initialized = true;
 
-  // app_version is the Hermes app version (package.json), fetched over IPC.
+  // app_version is the app version (package.json), fetched over IPC.
   // The Electron/Node runtime versions are reported separately. getAppVersion
   // is async, so resolve it before emitting app_opened.
   void Promise.resolve()

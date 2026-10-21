@@ -110,7 +110,7 @@ async function runKanban(
   args: string[],
   opts: RunOpts = {},
 ): Promise<KanbanResult<unknown>> {
-  // SSH tunnel mode: dispatch to the remote Hermes CLI over SSH.
+  // SSH tunnel mode: dispatch to the remote the `hermes` CLI over SSH.
   const conn = getConnectionConfig();
   if (conn.mode === "ssh" && conn.ssh) {
     return sshRunKanban(conn.ssh, args, {
@@ -166,9 +166,9 @@ export function unsupportedInRemote<T>(): KanbanResult<T> {
     success: false,
     unsupportedMode: true,
     error:
-      "Kanban requires either a local Hermes install or SSH tunnel mode. " +
+      "Kanban requires either a local Koda install or SSH tunnel mode. " +
       "Plain remote (HTTP+API key) mode does not yet expose the kanban API. " +
-      "Switch to SSH tunnel mode in Settings to use the board against a remote Hermes.",
+      "Switch to SSH tunnel mode in Settings to use the board against a remote Koda.",
   };
 }
 

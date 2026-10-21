@@ -80,7 +80,7 @@ export default {
     model: "Mostrar ou trocar o modelo atual",
     memory: "Mostrar a memória do agente",
     persona: "Mostrar a persona atual",
-    version: "Mostrar a versão do Hermes",
+    version: "Mostrar a versão do Koda",
   },
   queuedCancel: "Remover da fila",
   copyMessage: "Copiar mensagem",

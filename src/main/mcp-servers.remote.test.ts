@@ -91,7 +91,7 @@ describe("remote MCP requests", () => {
   it("retains anonymous access when auto authentication resolves to a keyless token dashboard", async () => {
     connection.current.remoteAuthMode = "auto";
     request.mockRejectedValue(
-      new Error("Remote Hermes dashboard token is not configured."),
+      new Error("Remote Koda dashboard token is not configured."),
     );
     const bare = vi.fn().mockResolvedValue(new Response('{"servers":[]}'));
     vi.stubGlobal("fetch", bare);

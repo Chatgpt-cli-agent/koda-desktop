@@ -46,11 +46,11 @@ The default-true on dispatch is a safety net: a stray click in the Actions UI ca
 
 ### Identifiers and naming
 
-- **Winget `PackageIdentifier`:** `NousResearch.HermesDesktop` (stable, never renamed)
+- **Winget `PackageIdentifier`:** `Chatgpt-cli-agent.KodaDesktop` (stable, never renamed)
 - **Winget `Publisher`:** `Nous Research` (free-text; binaries hosted under `fathah/hermes-desktop`, which the moderation review will verify against the `InstallerUrl`)
-- **Winget `PackageName`:** `Hermes Agent` (matches `productName` in `electron-builder.yml`)
+- **Winget `PackageName`:** `Koda Agent` (matches `productName` in `electron-builder.yml`)
 - **NSIS scope:** `oneClick: true`, `perMachine: false` — installs into `%LOCALAPPDATA%`, no UAC prompt, aligns with `winget install` default user scope and with the app's existing `~/.hermes` user-state model.
-- **RPM artifact name:** `hermes-desktop-<version>.rpm` (no spaces, no arch suffix — consistent with the existing `.deb` and `.AppImage` naming. The default `${productName}` would produce `Hermes Agent-...rpm` which breaks `dnf install ./file.rpm`. We explicitly only build `x86_64`, so the missing arch suffix is unambiguous in practice.).
+- **RPM artifact name:** `hermes-desktop-<version>.rpm` (no spaces, no arch suffix — consistent with the existing `.deb` and `.AppImage` naming. The default `${productName}` would produce `Koda Agent-...rpm` which breaks `dnf install ./file.rpm`. We explicitly only build `x86_64`, so the missing arch suffix is unambiguous in practice.).
 
 ## File changes
 
@@ -99,7 +99,7 @@ YAML manifest with placeholders: `{{VERSION}}`, `{{INSTALLER_URL}}`, `{{INSTALLE
 
 #### `build/winget/Locale.en-US.template.yaml`
 
-Locale manifest with placeholders: `{{VERSION}}`, `{{RELEASE_NOTES_URL}}`. Includes `Publisher: Nous Research`, `PublisherUrl: https://github.com/fathah/hermes-desktop`, `PackageName: Hermes Agent`, `License: MIT`, `LicenseUrl: https://github.com/fathah/hermes-desktop/blob/main/LICENSE`, `ShortDescription`, `Tags: [ai, agent, desktop, electron, llm]`.
+Locale manifest with placeholders: `{{VERSION}}`, `{{RELEASE_NOTES_URL}}`. Includes `Publisher: Nous Research`, `PublisherUrl: https://github.com/fathah/hermes-desktop`, `PackageName: Koda Agent`, `License: MIT`, `LicenseUrl: https://github.com/fathah/hermes-desktop/blob/main/LICENSE`, `ShortDescription`, `Tags: [ai, agent, desktop, electron, llm]`.
 
 #### `build/winget/Version.template.yaml`
 
@@ -107,11 +107,11 @@ Root version manifest with placeholders: `{{VERSION}}`. Trivial: `PackageIdentif
 
 #### `scripts/generate-winget-manifests.mjs`
 
-Node ESM script (~50 lines, zero external deps). Reads `package.json` to get `version` and `name`. Locates `dist/<name>-<version>-setup.exe`. Computes SHA256 with `node:crypto` `createHash('sha256')` over the file. Reads each `*.template.yaml` from `build/winget/`. Replaces all `{{KEY}}` placeholders by string `replaceAll`. Writes output to `dist/winget/manifests/n/NousResearch/HermesDesktop/<version>/`:
+Node ESM script (~50 lines, zero external deps). Reads `package.json` to get `version` and `name`. Locates `dist/<name>-<version>-setup.exe`. Computes SHA256 with `node:crypto` `createHash('sha256')` over the file. Reads each `*.template.yaml` from `build/winget/`. Replaces all `{{KEY}}` placeholders by string `replaceAll`. Writes output to `dist/winget/manifests/c/Chatgpt-cli-agent/KodaDesktop/<version>/`:
 
-- `NousResearch.HermesDesktop.installer.yaml`
-- `NousResearch.HermesDesktop.locale.en-US.yaml`
-- `NousResearch.HermesDesktop.yaml`
+- `Chatgpt-cli-agent.KodaDesktop.installer.yaml`
+- `Chatgpt-cli-agent.KodaDesktop.locale.en-US.yaml`
+- `Chatgpt-cli-agent.KodaDesktop.yaml`
 
 The path mirrors the directory layout in `microsoft/winget-pkgs`, so the operator submitting the PR can `cp -r` directly.
 
@@ -123,7 +123,7 @@ Add script `"build:rpm": "npm run build && electron-builder --linux rpm"` for lo
 
 #### `README.md`
 
-Update the Install section's platform table to add Windows (`.exe` and, once accepted into winget-pkgs, `winget install NousResearch.HermesDesktop`) and Fedora (`.rpm`). Add a note that:
+Update the Install section's platform table to add Windows (`.exe` and, once accepted into winget-pkgs, `winget install Chatgpt-cli-agent.KodaDesktop`) and Fedora (`.rpm`). Add a note that:
 
 - The Windows build is unsigned; Windows SmartScreen will warn on first launch.
 - The `.rpm` is unsigned; install with `sudo dnf install ./hermes-desktop-<version>.x86_64.rpm` (or use `--nogpgcheck` if a system policy enforces signature checking).
@@ -151,7 +151,7 @@ download-artifact "windows-artifacts" → dist/
 node scripts/generate-winget-manifests.mjs
   → SHA256(dist/hermes-desktop-<version>-setup.exe)
   → fill 3 templates with VERSION, INSTALLER_URL, INSTALLER_SHA256, RELEASE_DATE
-  → write dist/winget/manifests/n/NousResearch/HermesDesktop/<version>/*.yaml
+  → write dist/winget/manifests/c/Chatgpt-cli-agent/KodaDesktop/<version>/*.yaml
 upload-artifact "winget-manifests-<version>"
 ```
 

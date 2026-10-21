@@ -258,7 +258,7 @@ describe("PetSettings", () => {
     ).toBeInTheDocument();
   });
 
-  it("updates its active selection when another Hermes surface changes the pet", async () => {
+  it("updates its active selection when another Koda surface changes the pet", async () => {
     let onEvent: (event: { type: string }) => void = () => undefined;
     let selected = false;
     openGateway.mockImplementation(async (_profile, _connection, handler) => {

@@ -105,7 +105,7 @@ it("emits real SSH phases before their operations and never measures the pending
     "credential",
   ]);
   expect(updates.map((p) => p.title)).toEqual([
-    "Updating remote Hermes Agent",
+    "Updating remote Koda",
     "Checking dashboard compatibility",
     "Restarting gateway",
     "Reconnecting tunnel",

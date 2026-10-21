@@ -21,7 +21,7 @@ export function verifiedInstallerCommand(
     `trap 'rm -f "$installer_tmp"' EXIT`,
     `curl -fsSL -o "$installer_tmp" -- ${shellQuote(url)} || exit ${INSTALLER_VERIFICATION_FAILED}`,
     `installer_actual="$( (sha256sum "$installer_tmp" 2>/dev/null || shasum -a 256 "$installer_tmp") | awk '{print $1}' )" || exit ${INSTALLER_VERIFICATION_FAILED}`,
-    `if [ "$installer_actual" != "${sha256}" ]; then echo "Hermes installer checksum mismatch; refusing to execute." >&2; exit ${INSTALLER_VERIFICATION_FAILED}; fi`,
+    `if [ "$installer_actual" != "${sha256}" ]; then echo "Koda installer checksum mismatch; refusing to execute." >&2; exit ${INSTALLER_VERIFICATION_FAILED}; fi`,
     `bash "$installer_tmp" --skip-setup --commit ${PINNED_INSTALL_COMMIT}`,
   ].join("\n");
 }

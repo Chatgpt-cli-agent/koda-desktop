@@ -1,18 +1,18 @@
 # Bot groups
 
-An opt-in renderer for Hermes groups protocol v2. Hermes owns group membership, shared context, execution, approvals and durable history; Desktop owns only presentation and unsent drafts.
+An opt-in renderer for Koda groups protocol v2. Koda owns group membership, shared context, execution, approvals and durable history; Desktop owns only presentation and unsent drafts.
 
 Set `HERMES_DESKTOP_BOT_GROUPS=1` in the desktop process environment. The feature
-requires a local Hermes runtime advertising groups protocol v2 and a running
-hosted room driver; the reference runtime is Hermes Agent `v2026.9.7`.
+requires a local Koda runtime advertising groups protocol v2 and a running
+hosted room driver; the reference runtime is Koda Agent `v2026.9.7`.
 The navigation entry is hidden by default. Unsetting the flag disables the UI
-without deleting history or cancelling already running Hermes work.
+without deleting history or cancelling already running Koda work.
 
 The first slice supports same-installation 2–6 Agent groups, mentions, shared
 messages, replay, stop, exact approvals and explicit retry. It does not include
 Bot direct messages, attachments, remote/SSH connections, cross-server invites,
 scheduling UI or human-to-human social messaging. It must not be exposed as a
-tenant-scoped API: Hermes groups are installation-wide.
+tenant-scoped API: Koda groups are installation-wide.
 
 ## Request boundary
 
@@ -57,7 +57,7 @@ not absence from a partial list, determines whether its write controls are safe.
 
 ## Exact approval
 
-Approval buttons send the complete room, member, task, execution generation and request identity. Only allow-once and deny are offered; stale requests remain subject to Hermes validation.
+Approval buttons send the complete room, member, task, execution generation and request identity. Only allow-once and deny are offered; stale requests remain subject to Koda validation.
 
 Fresh state is required for writes. The UI never stores a durable approval queue
 or automatically grants a pending tool request.
@@ -66,7 +66,7 @@ or automatically grants a pending tool request.
 
 [[src/shared/bot-groups.ts#mergeBotGroupLog]] rejects mixed authority pages and deduplicates committed event IDs. An epoch change resets replay instead of promoting a replica or continuing from a stale cursor.
 
-At most 500 events remain in the display cache; Hermes retains the canonical
+At most 500 events remain in the display cache; Koda retains the canonical
 history. Text is rendered with React's escaping, not injected as HTML.
 
 ## Verification
@@ -131,7 +131,7 @@ A newer capture or connection teardown wakes pending admission without waiting f
 
 ### Unconfirmed room creation
 
-An explicit retry after a lost creation acknowledgement retains the submitted room ID and payload, so Hermes can return the same durable room without duplicate creation.
+An explicit retry after a lost creation acknowledgement retains the submitted room ID and payload, so Koda can return the same durable room without duplicate creation.
 
 ### Creation preserves navigation
 
@@ -163,7 +163,7 @@ Group members use the shared Desktop profile-name contract, including existing u
 
 [[src/shared/profile-name.ts#PROFILE_NAME_RE]] is also consumed by Desktop's existing profile-path helpers, keeping group admission aligned without importing main-process modules into the renderer.
 
-Desktop forwards the selected profile unchanged; Hermes still controls discovery
+Desktop forwards the selected profile unchanged; Koda still controls discovery
 and group membership. The reference Agent CLI rejects leading underscores, and
 hosted-room validation applies its stricter identifier rule to all discovered
 local profiles. An existing `_ops` directory can therefore block creation even

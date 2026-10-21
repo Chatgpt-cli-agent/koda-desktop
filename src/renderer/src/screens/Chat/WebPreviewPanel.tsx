@@ -493,7 +493,7 @@ export const WebPreviewPanel = memo(function WebPreviewPanel({
             type="button"
             className="web-preview-btn"
             onClick={handleOpenExternal}
-            title={t("worktree.open") || "Open in system browser"}
+            title={t("chat.worktree.open") || "Open in system browser"}
           >
             <ExternalLink size={15} />
           </button>
@@ -501,7 +501,7 @@ export const WebPreviewPanel = memo(function WebPreviewPanel({
             type="button"
             className="web-preview-btn"
             onClick={onClose}
-            title={t("worktree.closeFile") || "Close"}
+            title={t("chat.worktree.closeFile") || "Close"}
           >
             <X size={16} />
           </button>

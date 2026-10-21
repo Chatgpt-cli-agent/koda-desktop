@@ -6,7 +6,7 @@ The Electron main process configures `electron-updater` against the repository p
 
 When GitHub reports a newer release, [[src/renderer/src/screens/Layout/Layout.tsx#Layout]] shows an upgrade button in the sidebar footer as soon as the app reaches the main layout. The button downloads the update when needed, shows download progress, and changes into a restart action after the update is ready.
 
-[[src/renderer/src/components/settings/AboutPane.tsx#AboutPane]] (the About & Updates pane of the settings modal) presents the desktop app as its own card, separate from the Hermes Agent engine card — the two update on independent channels. The card shows the app version, the auto-upgrade toggle, and an explicit update action: [[src/renderer/src/components/settings/useSettingsData.ts#useSettingsData]] subscribes to the same `onUpdateAvailable`/`onUpdateDownloadProgress`/`onUpdateDownloaded`/`onUpdateError` events as the footer button and adds a manual `checkDesktopUpdate` (via `checkForUpdates`) plus a `handleDesktopUpdate` that downloads, then restarts via `installUpdate`. When auto-upgrade is enabled the startup release check downloads automatically; when disabled, downloading waits for the user's click (footer button or this card's action).
+[[src/renderer/src/components/settings/AboutPane.tsx#AboutPane]] (the About & Updates pane of the settings modal) presents the desktop app as its own card, separate from the Koda Agent engine card — the two update on independent channels. The card shows the app version, the auto-upgrade toggle, and an explicit update action: [[src/renderer/src/components/settings/useSettingsData.ts#useSettingsData]] subscribes to the same `onUpdateAvailable`/`onUpdateDownloadProgress`/`onUpdateDownloaded`/`onUpdateError` events as the footer button and adds a manual `checkDesktopUpdate` (via `checkForUpdates`) plus a `handleDesktopUpdate` that downloads, then restarts via `installUpdate`. When auto-upgrade is enabled the startup release check downloads automatically; when disabled, downloading waits for the user's click (footer button or this card's action).
 
 ## Desktop installation channel
 
@@ -160,9 +160,9 @@ Electron Builder explicitly unpacks `node_modules/better-sqlite3/prebuilds/*.nod
 
 ### Platform package identity
 
-Linux packages use the space-free `/opt/HermesOne` directory while macOS keeps the existing `Hermes One.app` bundle and executable name. RPM filenames retain the `.rpm` extension expected by release uploads.
+Linux packages use the space-free `/opt/Koda` directory while macOS uses the `Koda.app` bundle and the `Koda` executable name. RPM filenames retain the `.rpm` extension expected by release uploads.
 
-The global packaging product name supplies Electron Builder's Linux install-directory component. The explicit macOS `executableName` preserves its bundle path, and platform display labels retain Hermes One. Linux package setup uses the builder's default hooks. [[tests/packaging-identity.test.ts]] validates the configuration with the installed Electron Builder schema and evaluates its real application metadata and artifact macros.
+The global packaging product name supplies Electron Builder's Linux install-directory component. The explicit macOS `executableName` preserves its bundle path, and platform display labels retain Koda. Linux package setup uses the builder's default hooks. [[tests/packaging-identity.test.ts]] validates the configuration with the installed Electron Builder schema and evaluates its real application metadata and artifact macros.
 
 ### Linux package sandbox and AppArmor
 

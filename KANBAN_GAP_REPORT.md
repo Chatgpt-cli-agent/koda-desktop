@@ -4,7 +4,7 @@ _Generated 2026-06-21. Sources: `hermes-agent` docs + `kanban_db.py` + `plugins/
 
 ## 1. What Kanban is (in hermes-agent)
 
-Hermes Kanban is a **durable, SQLite-backed task board** (`~/.hermes/kanban.db`, WAL mode) for coordinating multiple named agent profiles. It is the heavier sibling of `delegate_task`:
+Koda Kanban is a **durable, SQLite-backed task board** (`~/.hermes/kanban.db`, WAL mode) for coordinating multiple named agent profiles. It is the heavier sibling of `delegate_task`:
 
 | | `delegate_task` | Kanban |
 |---|---|---|

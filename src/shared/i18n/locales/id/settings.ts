@@ -1,7 +1,7 @@
 export default {
   title: "Pengaturan",
   sections: {
-    hermesAgent: "Hermes Agent",
+    kodaAgent: "Koda",
     appearance: "Tampilan",
     privacy: "Privasi",
     credentialPool: "Kumpulan Kredensial",
@@ -9,7 +9,7 @@ export default {
   nav: {
     groups: {
       general: "Umum",
-      hermes: "Hermes One",
+      koda: "Koda Cloud",
     },
     appearance: "Tampilan",
     language: "Bahasa",
@@ -23,14 +23,14 @@ export default {
   },
   analytics: {
     label: "Kirim analitik penggunaan anonim",
-    hint: "Membantu meningkatkan Hermes dengan mengirim data penggunaan anonim dan teragregasi ke layanan analitik proyek. Anda dapat menonaktifkannya kapan saja.",
+    hint: "Membantu meningkatkan Koda dengan mengirim data penggunaan anonim dan teragregasi ke layanan analitik proyek. Anda dapat menonaktifkannya kapan saja.",
     disclosure: {
       uuid: "Pengenal acak per-instalasi yang disimpan hanya di perangkat ini (tanpa nama, email, atau info akun).",
       platform: "Sistem operasi, versi Electron, dan versi Node.js Anda.",
       navigation:
         "Layar mana yang Anda kunjungi di dalam aplikasi (mis. Chat, Sesi, Pengaturan). Tidak ada konten chat, prompt, respons model, atau isi file yang dikumpulkan.",
       endpoint:
-        "Data dikirim ke layanan analitik Hermes (analytics.hermesone.org). Rekaman sesi dan tangkapan pageview otomatis dinonaktifkan.",
+        "Data dikirim ke layanan analitik Koda (analytics.hermesone.org). Rekaman sesi dan tangkapan pageview otomatis dinonaktifkan.",
       notCollected:
         "Tidak pernah dikumpulkan: pesan chat, jalur file, kunci API, konfigurasi model, kredensial akun.",
     },
@@ -53,7 +53,7 @@ export default {
   },
   notDetected: "Tidak terdeteksi",
   updatedSuccessfully: "Berhasil diperbarui!",
-  updateSuccess: "Hermes berhasil diperbarui.",
+  updateSuccess: "Koda berhasil diperbarui.",
   updateFailed: "Pembaruan gagal.",
   version: "v{{version}}",
   proxyPlaceholder: "mis. socks5://127.0.0.1:1080 atau http://proxy:8080",
@@ -81,14 +81,13 @@ export default {
     "Tidak dapat menjangkau daftar model provider — Anda masih bisa mengetik nama model",
   customBaseUrlHint: "Endpoint API kompatibel OpenAI",
   poolHint:
-    "Tambahkan beberapa API Key untuk provider yang sama agar Hermes dapat melakukan rotasi otomatis dan load balancing.",
+    "Tambahkan beberapa API Key untuk provider yang sama agar Koda dapat melakukan rotasi otomatis dan load balancing.",
   add: "Tambah",
   remove: "Hapus",
   keyLabel: "Key",
   empty: "(kosong)",
   dataSection: "Data",
-  dataHint:
-    "Ekspor atau impor konfigurasi Hermes, sesi, skill, dan memori Anda.",
+  dataHint: "Ekspor atau impor konfigurasi Koda, sesi, skill, dan memori Anda.",
   backingUp: "Membuat backup...",
   exportBackup: "Ekspor Backup",
   importing: "Mengimpor...",
@@ -105,10 +104,10 @@ export default {
   debugDump: "Debug Dump",
   migrationDetected: "Instalasi OpenClaw Terdeteksi",
   migrationDesc:
-    "OpenClaw ditemukan di <code>{{path}}</code>. Anda dapat memigrasikan konfigurasi, API key, sesi, dan skill ke Hermes.",
+    "OpenClaw ditemukan di <code>{{path}}</code>. Anda dapat memigrasikan konfigurasi, API key, sesi, dan skill ke Koda.",
   migrationDismiss: "Jangan tampilkan lagi",
   migrating: "Memigrasikan...",
-  migrateToHermes: "Migrasi ke Hermes",
+  migrateToKoda: "Migrasi ke Koda",
   skip: "Lewati",
   appearanceHint: "Pilih tampilan antarmuka yang Anda sukai",
   apiKeyPlaceholder: "API Key",
@@ -116,11 +115,11 @@ export default {
   connectionSection: "Koneksi",
   modeLocal: "Lokal",
   modeRemote: "Remote",
-  modeLocalHint: "Menggunakan Hermes yang terinstal di perangkat ini",
-  modeRemoteHint: "Hubungkan ke server Hermes API di jaringan atau cloud Anda",
+  modeLocalHint: "Menggunakan Koda yang terinstal di perangkat ini",
+  modeRemoteHint: "Hubungkan ke server Koda API di jaringan atau cloud Anda",
   remoteUrl: "URL Remote",
   remoteUrlHint:
-    "URL server Hermes API (harus mengekspos /health dan /v1/chat/completions)",
+    "URL server Koda API (harus mengekspos /health dan /v1/chat/completions)",
   remoteApiKey: "API Key",
   remoteApiKeyHint:
     "Cocok dengan API_SERVER_KEY di host remote. Kosongkan jika server menerima request tanpa autentikasi.",
@@ -129,7 +128,7 @@ export default {
   save: "Simpan",
   serverConfigTitle: "Konfigurasi Server",
   serverConfigHint:
-    "Anda terhubung ke server Hermes remote. Pilihan model, API key provider, dan kredensial dikelola di <code>~/.hermes/.env</code> dan <code>config.yaml</code> pada server. Edit di host (mis. <code>docker exec -it hermes vi /opt/data/.env</code>) lalu restart container.",
+    "Anda terhubung ke server Koda Remote. Pilihan model, API key provider, dan kredensial dikelola di <code>~/.hermes/.env</code> dan <code>config.yaml</code> pada server. Edit di host (mis. <code>docker exec -it hermes vi /opt/data/.env</code>) lalu restart container.",
   connectionMode: "Mode",
   switchedToLocal: "Beralih ke mode lokal",
 } as const;

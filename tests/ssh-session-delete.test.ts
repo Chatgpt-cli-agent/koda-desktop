@@ -166,7 +166,7 @@ it("does not create an empty database or permit a profile path escape", async ()
   expect(await run(root, ["missing"])).toEqual({ requested: 1, deleted: 0 });
   expect(existsSync(join(root, "state.db"))).toBe(false);
   await expect(run(root, ["a"], "../escape")).rejects.toThrow(
-    "Invalid Hermes profile",
+    "Invalid Koda profile",
   );
 });
 

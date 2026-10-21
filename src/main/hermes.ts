@@ -343,7 +343,7 @@ function transcribeAudioViaLocalPython(
 ): Promise<string> {
   if (!existsSync(HERMES_PYTHON) || !existsSync(HERMES_REPO)) {
     throw new Error(
-      "Voice input needs a local Hermes Agent install with speech-to-text support.",
+      "Voice input needs a local Koda install with speech-to-text support.",
     );
   }
 
@@ -457,7 +457,7 @@ export async function transcribeAudio(
     setApiCacheFor(resolved, ready);
     if (!ready) {
       throw new Error(
-        "Voice input needs the Hermes API server, but it is not running.",
+        "Voice input needs the Koda API server, but it is not running.",
       );
     }
   }
@@ -492,7 +492,7 @@ export async function transcribeAudio(
   } | null;
   if (!data) {
     throw new Error(
-      "Transcription failed. The Hermes API returned an invalid response.",
+      "Transcription failed. The Koda API returned an invalid response.",
     );
   }
   return (data.transcript || data.text || "").trim();
@@ -578,7 +578,7 @@ async function waitForDashboardReady(
     if (await isDashboardReady(baseUrl, token)) return;
     await delay(500);
   }
-  throw new Error("Hermes dashboard gateway did not become ready");
+  throw new Error("Koda dashboard gateway did not become ready");
 }
 
 class TuiGatewayClient {
@@ -621,14 +621,14 @@ class TuiGatewayClient {
   ): Promise<T> {
     await this.start();
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
-      throw new Error("Hermes dashboard gateway stream is not connected");
+      throw new Error("Koda dashboard gateway stream is not connected");
     }
 
     const id = `r${++this.nextId}`;
     return new Promise<T>((resolve, reject) => {
       const timer = setTimeout(() => {
         this.pending.delete(id);
-        reject(new Error(`Hermes gateway request timed out: ${method}`));
+        reject(new Error(`Koda gateway request timed out: ${method}`));
       }, timeoutMs);
       timer.unref?.();
       this.pending.set(id, {
@@ -670,7 +670,7 @@ class TuiGatewayClient {
   stop(): void {
     this.ws?.close();
     this.proc?.kill("SIGTERM");
-    this.rejectPending(new Error("Hermes dashboard gateway stream stopped"));
+    this.rejectPending(new Error("Koda dashboard gateway stream stopped"));
     this.reset();
   }
 
@@ -716,7 +716,7 @@ class TuiGatewayClient {
       proc.once("exit", (code, signal) => {
         reject(
           new Error(
-            `Hermes dashboard gateway exited before ready (${signal || code})`,
+            `Koda dashboard gateway exited before ready (${signal || code})`,
           ),
         );
       });
@@ -746,7 +746,7 @@ class TuiGatewayClient {
     proc.removeAllListeners("exit");
     proc.once("exit", (code, signal) => {
       const error = new Error(
-        `Hermes dashboard gateway exited (${signal || code})`,
+        `Koda dashboard gateway exited (${signal || code})`,
       );
       this.rejectPending(error);
       this.reset();
@@ -758,7 +758,7 @@ class TuiGatewayClient {
       const ws = new WebSocket(url);
       this.ws = ws;
       const timer = setTimeout(() => {
-        reject(new Error("Hermes dashboard gateway WebSocket timed out"));
+        reject(new Error("Koda dashboard gateway WebSocket timed out"));
         ws.close();
       }, 15_000);
       timer.unref?.();
@@ -774,7 +774,7 @@ class TuiGatewayClient {
       });
       ws.on("close", () => {
         if (this.ws !== ws) return;
-        const error = new Error("Hermes dashboard gateway WebSocket closed");
+        const error = new Error("Koda dashboard gateway WebSocket closed");
         this.rejectPending(error);
         this.reset();
       });
@@ -795,7 +795,7 @@ class TuiGatewayClient {
       clearTimeout(pending.timer);
       this.pending.delete(String(frame.id));
       if (frame.error) {
-        pending.reject(new Error(frame.error.message || "Hermes RPC failed"));
+        pending.reject(new Error(frame.error.message || "Koda RPC failed"));
       } else {
         pending.resolve(frame.result);
       }
@@ -865,7 +865,7 @@ function waitForGatewayEvent(
     let cleanup = (): void => undefined;
     const timer = setTimeout(() => {
       cleanup();
-      reject(new Error("Timed out waiting for Hermes gateway readiness"));
+      reject(new Error("Timed out waiting for Koda gateway readiness"));
     }, timeoutMs);
     timer.unref?.();
     cleanup = client.onEvent((event) => {
@@ -1820,7 +1820,7 @@ function sendMessageViaApi(
   });
   req.on("timeout", () => {
     finish(
-      "API request timed out. Check the SSH tunnel and remote Hermes gateway.",
+      "API request timed out. Check the SSH tunnel and remote Koda gateway.",
     );
     req.destroy();
   });
@@ -1936,7 +1936,7 @@ function sendMessageViaRuns(
     if (finished || fallbackStarted) return;
     if (approvalInteraction) {
       finish(
-        "Hermes lost the run after requesting approval. The prompt was not replayed.",
+        "Koda lost the run after requesting approval. The prompt was not replayed.",
       );
       return;
     }
@@ -2009,7 +2009,7 @@ function sendMessageViaRuns(
       const err =
         typeof raw.error === "string" && raw.error
           ? raw.error
-          : "Hermes run failed.";
+          : "Koda run failed.";
       if (!hasContent) {
         fallbackToChatCompletions();
         return;
@@ -2019,7 +2019,7 @@ function sendMessageViaRuns(
     }
 
     if (eventName === "run.cancelled") {
-      finish(hasContent ? undefined : "Hermes run was cancelled.");
+      finish(hasContent ? undefined : "Koda run was cancelled.");
       return;
     }
 
@@ -2030,7 +2030,7 @@ function sendMessageViaRuns(
       // Keep ordinary Runs streaming, but never approve through that endpoint.
       if (runId) postRunStop(apiUrl, profile, runId, conn);
       finish(
-        "Hermes stopped this run because its approval API cannot safely target a specific command. Use Dashboard chat for manual command approvals.",
+        "Koda stopped this run because its approval API cannot safely target a specific command. Use Dashboard chat for manual command approvals.",
       );
       eventsReq?.destroy();
     }
@@ -2264,7 +2264,7 @@ async function sendMessageViaTuiGateway(
     cleanup();
     client.stop();
     console.warn(
-      "[chat] Hermes gateway stream failed before output; falling back to API stream:",
+      "[chat] Koda gateway stream failed before output; falling back to API stream:",
       reason,
     );
     void sendMessageViaNonGatewayApi(
@@ -2349,7 +2349,7 @@ async function sendMessageViaTuiGateway(
       const error =
         typeof event.payload?.message === "string"
           ? event.payload.message
-          : "Hermes gateway stream reported an error.";
+          : "Koda gateway stream reported an error.";
       if (!hasGatewayOutput) {
         startApiFallback(error);
         return;
@@ -2366,7 +2366,7 @@ async function sendMessageViaTuiGateway(
           .request("session.interrupt", { session_id: activeSessionId }, 5_000)
           .catch(() => undefined);
         finish(
-          "Hermes did not provide an addressable approval request. The turn was stopped without approving.",
+          "Koda did not provide an addressable approval request. The turn was stopped without approving.",
         );
         return;
       }
@@ -2397,7 +2397,7 @@ async function sendMessageViaTuiGateway(
               )
               .catch(() => undefined);
             finish(
-              "Hermes could not confirm the selected approval request. The turn was stopped without replaying the prompt.",
+              "Koda could not confirm the selected approval request. The turn was stopped without replaying the prompt.",
             );
             return false;
           }
@@ -2420,7 +2420,7 @@ async function sendMessageViaTuiGateway(
           .request("session.interrupt", { session_id: activeSessionId }, 5_000)
           .catch(() => undefined);
         finish(
-          "Hermes requested approval, but no approval listener is available. The turn was stopped without approving.",
+          "Koda requested approval, but no approval listener is available. The turn was stopped without approving.",
         );
       }
       return;
@@ -2438,7 +2438,7 @@ async function sendMessageViaTuiGateway(
           .request("session.interrupt", { session_id: activeSessionId }, 5_000)
           .catch(() => undefined);
         finish(
-          "Hermes requested clarify input, but the gateway provided no request_id to answer.",
+          "Koda requested clarify input, but the gateway provided no request_id to answer.",
         );
         return;
       }
@@ -2487,7 +2487,7 @@ async function sendMessageViaTuiGateway(
           .request("session.interrupt", { session_id: activeSessionId }, 5_000)
           .catch(() => undefined);
         finish(
-          `Hermes requested ${event.type.replace(".request", "")} input, but the gateway provided no request_id to answer.`,
+          `Koda requested ${event.type.replace(".request", "")} input, but the gateway provided no request_id to answer.`,
         );
         return;
       }
@@ -2571,7 +2571,7 @@ async function sendMessageViaTuiGateway(
     }
 
     if (!activeSessionId) {
-      throw new Error("Hermes gateway did not return a session id");
+      throw new Error("Koda gateway did not return a session id");
     }
 
     if (!hasSessionInfo) {
@@ -2992,8 +2992,8 @@ function sendMessageViaCli(
       const detail = stderrBuffer.trim();
       cb.onError(
         detail
-          ? `Hermes exited with code ${code}: ${detail}`
-          : `Hermes exited with code ${code}. Check your model configuration and API key.`,
+          ? `Koda exited with code ${code}: ${detail}`
+          : `Koda exited with code ${code}. Check your model configuration and API key.`,
       );
     }
   });
@@ -3111,7 +3111,7 @@ async function sendMessageViaBestApi(
       );
     } catch (error) {
       console.warn(
-        "[chat] Hermes gateway stream unavailable; falling back to API stream:",
+        "[chat] Koda gateway stream unavailable; falling back to API stream:",
         error instanceof Error ? error.message : String(error),
       );
     }
@@ -3443,14 +3443,14 @@ function invalidateApiCacheFor(profile?: string): void {
 function getGatewaySpawnError(): string | null {
   if (!existsSync(HERMES_PYTHON)) {
     return (
-      `Cannot start the gateway because the Hermes Python interpreter was not found at ${HERMES_PYTHON}. ` +
-      "Install or repair Hermes Agent, then try again."
+      `Cannot start the gateway because the Koda Python interpreter was not found at ${HERMES_PYTHON}. ` +
+      "Install or repair Koda, then try again."
     );
   }
   if (!existsSync(HERMES_REPO)) {
     return (
       `Cannot start the gateway because the hermes-agent repository was not found at ${HERMES_REPO}. ` +
-      "Install or repair Hermes Agent, then try again."
+      "Install or repair Koda, then try again."
     );
   }
   return null;
@@ -3564,7 +3564,7 @@ export function startGatewayDetailed(profile?: string): GatewayStartResult {
   // that pops a generic error dialog.  Refuse cleanly here.
   if (isRemoteMode()) {
     const error =
-      "The local gateway can only be started in local mode. Switch to local mode, or start the gateway on the remote Hermes host.";
+      "The local gateway can only be started in local mode. Switch to local mode, or start the gateway on the remote Koda host.";
     console.warn(
       "[gateway] startGateway() called in remote/SSH mode — refusing local spawn",
     );
@@ -3812,7 +3812,7 @@ export function assertLocalGatewayKeyMutationAllowed(
     isExternallyManagedMultiplexGateway(profile ?? "default")
   ) {
     throw new Error(
-      "The API key belongs to a gateway managed outside Hermes One. Change it through that gateway's service manager.",
+      "The API key belongs to a gateway managed outside Koda. Change it through that gateway's service manager.",
     );
   }
 }

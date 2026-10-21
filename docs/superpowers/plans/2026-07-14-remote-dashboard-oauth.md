@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add automatic OAuth browser authentication for direct Remote-mode Hermes dashboards while preserving token Remote mode and SSH behavior.
+**Goal:** Add automatic OAuth browser authentication for direct Remote-mode Koda dashboards while preserving token Remote mode and SSH behavior.
 
 **Architecture:** A focused Electron main-process module owns the persistent OAuth session, login window, cookie-authenticated REST, and single-use WebSocket tickets. Dashboard resolution selects token or OAuth behavior from `/api/status`; renderer receives only bounded auth state and a fresh connection URL.
 

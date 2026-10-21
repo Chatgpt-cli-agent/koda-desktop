@@ -194,7 +194,7 @@ The central slash command architecture in [[src/renderer/src/screens/Chat/slash/
 
 The router's attachment guard rejects a command run with staged attachments unless it declares `supportsAttachments`, but `target: "desktop"` commands are exempt — they are local UI actions / info displays that never consume attachments (the files stay in the composer for the next message), matching the pre-router behavior where local commands ran unconditionally. Only `agent`/`model` commands, which route content upstream, are gated.
 
-The command palette and executor share a catalog built by [[src/renderer/src/screens/Chat/slash/commandCatalog.ts#createSlashCatalog]]. Hermes Agent metadata comes from `commands.catalog`; Desktop commands are merged after collision validation, and upstream names/aliases are normalized from `/name` to the router's canonical `name`.
+The command palette and executor share a catalog built by [[src/renderer/src/screens/Chat/slash/commandCatalog.ts#createSlashCatalog]]. Koda Agent metadata comes from `commands.catalog`; Desktop commands are merged after collision validation, and upstream names/aliases are normalized from `/name` to the router's canonical `name`.
 
 The same successful catalog read is recorded through the bounded compatibility bridge described by [[agent-capabilities#Bounded command inventory]]. Only normalized names reach the main-process cache; a failed read clears prior command evidence so capability gates become unknown rather than stale.
 

@@ -44,7 +44,7 @@ function readStore(): SessionLocationData {
     return parsed as SessionLocationData;
   } catch {
     throw new Error(
-      "Hermes Desktop could not read session-locations.json; the existing file was left unchanged.",
+      "Koda could not read session-locations.json; the existing file was left unchanged.",
     );
   }
 }

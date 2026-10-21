@@ -369,7 +369,7 @@ export function useChatActions({
             (async () => ({
               kind: "error",
               message:
-                "This command requires the Hermes Agent gateway. Switch chat transport to Auto or Dashboard and try again.",
+                "This command requires the Koda gateway. Switch chat transport to Auto or Dashboard and try again.",
             })),
           submitPrompt: async (submission: PreparedModelSubmission) => {
             removePending();

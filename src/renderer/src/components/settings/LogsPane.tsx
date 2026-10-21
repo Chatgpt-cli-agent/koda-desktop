@@ -65,7 +65,7 @@ export default function LogsPane(): React.JSX.Element {
           </div>
         )}
         <pre
-          className="settings-hermes-doctor"
+          className="settings-koda-doctor"
           style={{
             maxHeight: 360,
             overflow: "auto",

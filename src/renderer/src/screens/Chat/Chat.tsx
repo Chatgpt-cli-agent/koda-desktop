@@ -31,7 +31,6 @@ import { useI18n } from "../../components/useI18n";
 import { useChatPreferences } from "../../components/ChatPreferencesProvider";
 import { buildChatTranscript } from "./transcriptUtils";
 import { ConfigHealthBanner } from "../../components/ConfigHealthBanner";
-import FollowUsModal from "../../components/FollowUsModal";
 import type { Attachment } from "../../../../shared/attachments";
 import type { ApprovalChoice } from "../../../../shared/chat-approval";
 import type { SessionModelOverride } from "../../../../shared/model-override";
@@ -104,7 +103,7 @@ interface ChatProps {
   /** Stable id for this conversation/run. One <Chat> is mounted per run; all
    *  remain mounted (background sessions) and only the active one is shown. */
   runId: string;
-  /** Stable Hermes machine identity for this run. */
+  /** Stable the engine machine identity for this run. */
   connectionId: string;
   /** Seed transcript when re-opening a session from history; empty for new chats. */
   initialMessages?: ChatMessage[];
@@ -1508,8 +1507,6 @@ function Chat({
           setFolderPickerOpen(false);
         }}
       />
-      {/* Show follow-us modal only after setup is complete */}
-      {active && connectionModeLoaded && readiness.ok && <FollowUsModal />}
     </div>
   );
 }

@@ -1,12 +1,12 @@
-# Connecting Hermes Desktop to a Remote Hermes VPS over SSH
+# Connecting Koda Desktop to a Remote Koda VPS over SSH
 
-This guide walks through configuring Hermes Desktop to use a Hermes Agent
+This guide walks through configuring Koda Desktop to use a Koda Agent
 running on a remote server (a VPS, a HyperV/KVM VM, a Raspberry Pi on your
 LAN, etc.) so that **every screen — Chat, Sessions, Skills, Memory, Soul,
-Tools, Schedules, Gateway, Profiles, Models, Logs — works as if Hermes
+Tools, Schedules, Gateway, Profiles, Models, Logs — works as if Koda
 were installed locally**.
 
-If you only need to chat against a remote Hermes and you don't care about
+If you only need to chat against a remote Koda and you don't care about
 the management screens, the simpler **"Remote" mode** (HTTP URL + API key)
 is enough. If you want full functionality parity, you need **"SSH Tunnel"
 mode**, which is what this document covers.
@@ -31,28 +31,28 @@ surface areas:
 | Logs (gateway, agent)                          |       ❌ reads local       | ✅ via SSH proxy |
 
 Plain Remote mode only proxies the chat path. **All other screens read
-the local `~/.hermes` directory**, so if you have no Hermes install on the
-desktop's host, those screens look empty even though your remote Hermes
+the local `~/.hermes` directory**, so if you have no Koda install on the
+desktop's host, those screens look empty even though your remote Koda
 has data. SSH Tunnel mode proxies every screen via `sshExec` against the
 remote host's `~/.hermes`, which is what you almost certainly want.
 
 ## Prerequisites
 
-On the **desktop machine** (where Hermes Desktop runs):
+On the **desktop machine** (where Koda Desktop runs):
 
 - An SSH key pair (e.g. `~/.ssh/id_ed25519` / `~/.ssh/id_ed25519.pub`).
   Generate one with `ssh-keygen -t ed25519` if you don't have it.
 - The OpenSSH client on `PATH`. macOS and Linux have it by default;
   Windows 10/11 ship it as an optional feature ("OpenSSH Client").
 
-On the **remote machine** (where Hermes Agent runs):
+On the **remote machine** (where Koda Agent runs):
 
 - OpenSSH server reachable from the desktop host (port 22 by default).
-- A user account whose `~/.hermes` directory contains your Hermes data
+- A user account whose `~/.hermes` directory contains your Koda data
   (more on this below).
 - Your desktop's public key authorized for that user
   (`~/.ssh/authorized_keys`).
-- The Hermes API listening on `127.0.0.1:8642` (the default — it does
+- The Koda API listening on `127.0.0.1:8642` (the default — it does
   **not** need to be exposed publicly; the SSH tunnel forwards it).
 
 ## Which user account should the desktop SSH in as?
@@ -62,18 +62,18 @@ screens are empty" reports.
 
 The desktop app's SSH proxy uses paths like `~/.hermes/...` (which
 resolves to `$HOME/.hermes/` of the SSH user). It must log in as the
-**same user that runs Hermes Agent** so that `~` points at the directory
+**same user that runs Koda Agent** so that `~` points at the directory
 containing your real data.
 
-### Case A — You installed Hermes manually as your own user
+### Case A — You installed Koda manually as your own user
 
-If you ran the Hermes installer interactively as e.g. `andrea` and your
+If you ran the Koda installer interactively as e.g. `andrea` and your
 data lives in `/home/andrea/.hermes`, SSH in as `andrea`. Nothing extra
 to do.
 
-### Case B — Hermes runs as a dedicated service user (systemd)
+### Case B — Koda runs as a dedicated service user (systemd)
 
-This is common on production VPSes. Hermes is installed under
+This is common on production VPSes. Koda is installed under
 `/opt/hermes` (or similar) and runs via a systemd unit like:
 
 ```ini
@@ -107,17 +107,17 @@ SSH in as the `hermes` user. Two things to set up:
    echo "$PUBKEY" | sudo tee -a /opt/hermes/.ssh/authorized_keys
    ```
 
-   **Note:** systemd's `ProtectHome=read-only` on the Hermes service unit
-   only restricts the Hermes process itself. Interactive SSH sessions
+   **Note:** systemd's `ProtectHome=read-only` on the Koda service unit
+   only restricts the Koda process itself. Interactive SSH sessions
    into the `hermes` user are unaffected, so the desktop can still
    write skills, memory edits, soul updates, etc.
 
-### Case C — Hermes runs as root
+### Case C — Koda runs as root
 
 Don't. If it currently does, migrate it to a dedicated user before
 exposing SSH to it.
 
-### Case D — Hermes runs in a Docker container (Coolify, Compose, NAS)
+### Case D — Koda runs in a Docker container (Coolify, Compose, NAS)
 
 A containerized `nousresearch/hermes-agent` deployment is fully
 supported, but the host has no `hermes` binary and no real `~/.hermes` —
@@ -128,18 +128,18 @@ and Doctor come up empty.
 
 The desktop can set this up for you. In **Settings → Connection → SSH**
 (or the first-run SSH screen), use **Detect remote install**. The
-desktop lists running Hermes containers; pick one (required when several
+desktop lists running Koda containers; pick one (required when several
 run) and click **Set up Docker access**. This writes two files on the
 SSH host, as the SSH user:
 
 - `~/.config/hermes-desktop/remote-hermes` — a launcher that runs the
-  Hermes CLI inside the selected container via `docker exec`. This is
+  Koda CLI inside the selected container via `docker exec`. This is
   the standard per-user launcher hook the desktop already probes first
   for every remote CLI call, so gateway controls, Doctor, skills, and
   profile listing all route into the container automatically.
 - `~/.hermes` → symlink to the container's data volume (for example
   `/data/hermes`), so session lists, config, logs, and memory read the
-  real Hermes home.
+  real Koda home.
 
 Requirements: the SSH user must be able to run `docker` (root or a user
 in the `docker` group), and the container must mount a host directory at
@@ -175,13 +175,13 @@ desktop app.
 
 Open **Settings → Connection** and select **SSH Tunnel**. Fill in:
 
-| Field              | Value                                                                                               |
-| ------------------ | --------------------------------------------------------------------------------------------------- |
-| SSH Host           | hostname or IP of the remote (e.g. `your.vps.example.com`)                                          |
-| SSH Port           | `22` (or your sshd port)                                                                            |
-| Username           | the user whose `~/.hermes` is the real one (`hermes` in Case B)                                     |
-| Private Key Path   | absolute path, e.g. `~/.ssh/id_ed25519` on macOS/Linux or `C:\Users\you\.ssh\id_ed25519` on Windows |
-| Remote Hermes Port | `8642` (default)                                                                                    |
+| Field            | Value                                                                                               |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| SSH Host         | hostname or IP of the remote (e.g. `your.vps.example.com`)                                          |
+| SSH Port         | `22` (or your sshd port)                                                                            |
+| Username         | the user whose `~/.hermes` is the real one (`hermes` in Case B)                                     |
+| Private Key Path | absolute path, e.g. `~/.ssh/id_ed25519` on macOS/Linux or `C:\Users\you\.ssh\id_ed25519` on Windows |
+| Remote Koda Port | `8642` (default)                                                                                    |
 
 Click **Test SSH Connection**. Expected result: "SSH tunnel connected!".
 Then **Save** and restart the app.
@@ -248,12 +248,12 @@ Most common causes:
   disables agent fallback negotiation in some configurations).
 - The key has a passphrase and is unlocked only in the agent. Either
   remove the passphrase or ensure the agent is loaded before launching
-  Hermes Desktop.
+  Koda Desktop.
 
 ### Screens are empty even after switching to SSH Tunnel mode
 
 You're almost certainly SSH'ing in as the wrong user — `~/.hermes`
-resolves to that user's home, not where Hermes actually keeps its data.
+resolves to that user's home, not where Koda actually keeps its data.
 Verify with:
 
 ```bash
@@ -265,12 +265,12 @@ The directory should contain `SOUL.md`, `config.yaml`, `auth.json`,
 you're in the wrong account — re-read the **"Which user account"**
 section above.
 
-If Hermes runs in a Docker container on the remote (Doctor reports
+If Koda runs in a Docker container on the remote (Doctor reports
 `hermes CLI not found on remote PATH…`), no user has a real `~/.hermes`
 — use **Detect remote install** in the SSH settings and run the Docker
 setup (see **Case D** above).
 
-### Settings → Hermes Agent shows blank Engine / Released / Python / OpenAI SDK
+### Settings → Koda Agent shows blank Engine / Released / Python / OpenAI SDK
 
 Production installs commonly ship `/usr/local/bin/hermes` as a
 `sudo -u hermes …` wrapper, and the sudoers policy refuses to run the
@@ -288,7 +288,7 @@ ssh <user>@<host> '/opt/hermes/hermes-agent/.venv/bin/hermes --version'
 A working version string means the fix will populate the card once your
 build includes #205.
 
-### Kanban shows "Kanban requires a local Hermes install"
+### Kanban shows "Kanban requires a local Koda install"
 
 This screen is not yet wired for remote/SSH mode (the UI explicitly
 says "Remote/SSH support is coming in a follow-up"). All other
@@ -305,10 +305,10 @@ service is independent of this screen — visit it directly at
 
 ### `Test SSH Connection` succeeds but chat fails with 401 or auth errors
 
-Hermes API may require an API key locally even when bound to
+Koda API may require an API key locally even when bound to
 `127.0.0.1`. Configure it in the desktop app's Settings → API key (or
 leave blank if the gateway is configured for no-auth on localhost). The
-key, if used, is the one stored in your remote Hermes `.env`/`auth.json`,
+key, if used, is the one stored in your remote Koda `.env`/`auth.json`,
 not a value you generate on the desktop.
 
 ### Windows-specific: keys not persisting across restarts
@@ -320,18 +320,18 @@ restart until the upstream fix lands.
 ## Security notes
 
 - The SSH tunnel binds **only** to `127.0.0.1` on the desktop side. The
-  remote Hermes port is **not** exposed to the public internet at any
+  remote Koda port is **not** exposed to the public internet at any
   point in this flow.
 - `BatchMode=yes` means a stolen desktop without an unlocked SSH key
-  cannot impersonate you to the remote Hermes — there's no password to
+  cannot impersonate you to the remote Koda — there's no password to
   steal and no key-loading prompt to manipulate.
 - `StrictHostKeyChecking=accept-new` trusts the host key on first
   connection and pins it in `~/.ssh/known_hosts` after that. If the
   remote host key ever changes (e.g. server reinstall), SSH will fail
   closed and you'll need to manually re-trust it. This is the desired
   behavior — don't change it.
-- Authorize the desktop's pubkey only on the dedicated Hermes user, not
-  on root. The Hermes user is already what runs the agent; giving it
+- Authorize the desktop's pubkey only on the dedicated Koda user, not
+  on root. The Koda user is already what runs the agent; giving it
   inbound SSH does not expand the blast radius.
 
 [#159]: https://github.com/fathah/hermes-desktop/issues/159

@@ -24,7 +24,7 @@ interface Props {
 }
 
 /**
- * SSH target inspection + Docker setup (issue #432). Detects Hermes running
+ * SSH target inspection + Docker setup (issue #432). Detects the engine running
  * inside a Docker container on the SSH host, lets the user pick a container
  * when several run, and provisions the remote launcher hook + ~/.hermes
  * symlink that the rest of SSH mode already understands. Shared by Settings

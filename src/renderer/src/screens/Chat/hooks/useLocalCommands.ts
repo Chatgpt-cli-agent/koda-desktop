@@ -119,7 +119,7 @@ export function useLocalCommands({
             window.hermesAPI.getAppVersion(),
           ]);
           addAgentMessage(
-            `**Hermes Agent:** ${hermesVer || "unknown"}\n**Hermes One:** v${appVer}`,
+            `**Koda Agent:** ${hermesVer || "unknown"}\n**Koda:** v${appVer}`,
           );
           return true;
         }

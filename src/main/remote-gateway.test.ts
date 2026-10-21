@@ -665,7 +665,7 @@ describe("remote gateway lifecycle", () => {
         remoteAuthMode: authMode,
       };
       request.mockRejectedValue(
-        new Error("Remote Hermes dashboard token is not configured."),
+        new Error("Remote Koda dashboard token is not configured."),
       );
       let action: keyof typeof actions = "start";
       let reads = 0;
@@ -727,7 +727,7 @@ describe("remote gateway lifecycle", () => {
         remoteAuthMode: authMode,
       };
       request.mockRejectedValue(
-        new Error("Remote Hermes dashboard token is not configured."),
+        new Error("Remote Koda dashboard token is not configured."),
       );
       let refused = true;
       const fetchMock = vi
@@ -791,7 +791,7 @@ describe("remote gateway lifecycle", () => {
         remoteAuthMode: String(authMode),
       };
       request.mockRejectedValue(
-        new Error("Remote Hermes dashboard token is not configured."),
+        new Error("Remote Koda dashboard token is not configured."),
       );
       let refused = true;
       const fetchMock = vi

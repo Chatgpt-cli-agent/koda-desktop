@@ -18,7 +18,7 @@ SSH directory discovery cannot verify a managed launcher's service user or custo
 
 Graphnosis requires its separately installed app and memory plugin. The optional Local action registers a pinned stdio relay in the captured profile without downloading or starting it.
 
-The relay is `@graphnosis/mcp-relay@1.0.3`; its default socket resolves through `os.homedir()` without shell expansion. Node.js and the unlocked Graphnosis app must be available on this machine when Hermes starts the server. Registration alone does not verify socket connectivity.
+The relay is `@graphnosis/mcp-relay@1.0.3`; its default socket resolves through `os.homedir()` without shell expansion. Node.js and the unlocked Graphnosis app must be available on this machine when Koda starts the server. Registration alone does not verify socket connectivity.
 
 The main process validates [[profile-editors#Profile editors#Captured request target]] before any write and refuses this action for SSH or Remote targets. Existing manual MCP controls remain available. Target changes suppress delayed UI success, errors and refresh callbacks.
 
@@ -34,7 +34,7 @@ Plain MCP mapping headers are supported, including empty mappings and comments. 
 
 ## Recall provider names
 
-Recall metadata recognizes legacy `recall` and the current external plugin name `recall-memory-hermes`. Both use a fixed link to the official Hermes plugin repository and require no provider API key.
+Recall metadata recognizes legacy `recall` and the current external plugin name `recall-memory-hermes`. Both use a fixed link to the upstream plugin repository and require no provider API key.
 
 The current plugin is installed separately with the Agent plugin manager; installing its Python wheel alone does not create the flat plugin directory. Its optional embeddings use a separately configured local endpoint, while database paths are resolved by the plugin under the active profile.
 

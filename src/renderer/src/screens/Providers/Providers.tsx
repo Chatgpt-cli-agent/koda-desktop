@@ -15,7 +15,7 @@ import {
 import { useI18n } from "../../components/useI18n";
 import BrandLogo from "../../components/common/BrandLogo";
 import OAuthLoginModal from "../../components/OAuthLoginModal";
-import HermesAccountModal from "../../components/HermesAccountModal";
+import KodaAccountModal from "../../components/KodaAccountModal";
 import ProviderKeysSection from "../../components/ProviderKeysSection";
 import RegistryBrowserModal from "../../components/RegistryBrowserModal";
 import AuxiliaryTasksSection from "../../components/AuxiliaryTasksSection";
@@ -550,7 +550,7 @@ function ProvidersScreen({
     const isSet = (k: string): boolean => !!(env[k] && env[k].trim());
     const out: PickerProvider[] = [];
     const seen = new Set<string>();
-    // 1) Keyed FieldDef providers, in FieldDef order (Hermes One first).
+    // 1) Keyed FieldDef providers, in FieldDef order (Koda Cloud first).
     const llm = SETTINGS_SECTIONS.find(
       (s) => s.title === "constants.sectionLlmProviders",
     );
@@ -750,17 +750,17 @@ function ProvidersScreen({
               </p>
             )}
             {account ? (
-              <div className="hermes-account-card">
+              <div className="koda-account-card">
                 {account.user.avatarUrl ? (
                   <img
-                    className="hermes-account-avatar"
+                    className="koda-account-avatar"
                     src={account.user.avatarUrl}
                     alt=""
                     referrerPolicy="no-referrer"
                   />
                 ) : (
                   <span
-                    className="hermes-account-avatar hermes-account-avatar-letter"
+                    className="koda-account-avatar koda-account-avatar-letter"
                     aria-hidden="true"
                   >
                     {(account.user.name || account.user.email || "?")
@@ -768,27 +768,27 @@ function ProvidersScreen({
                       .toUpperCase()}
                   </span>
                 )}
-                <span className="hermes-account-who">
-                  <span className="hermes-account-name">
+                <span className="koda-account-who">
+                  <span className="koda-account-name">
                     {account.user.name || account.user.email || account.user.id}
                   </span>
                   {account.user.name && account.user.email && (
-                    <span className="hermes-account-email">
+                    <span className="koda-account-email">
                       {account.user.email}
                     </span>
                   )}
-                  <span className="hermes-account-chips">
-                    <span className="hermes-account-chip is-connected">
-                      <span className="hermes-account-dot" aria-hidden="true" />
+                  <span className="koda-account-chips">
+                    <span className="koda-account-chip is-connected">
+                      <span className="koda-account-dot" aria-hidden="true" />
                       {t("providers.hermesAccount.connected")}
                     </span>
-                    <span className="hermes-account-chip">
+                    <span className="koda-account-chip">
                       <RefreshCw size={11} aria-hidden="true" />
                       {t("providers.hermesAccount.syncOn")}
                     </span>
                     {credits !== null && (
                       <span
-                        className="hermes-account-chip"
+                        className="koda-account-chip"
                         title={t("providers.hermesAccount.creditsTitle")}
                       >
                         <Coins size={11} aria-hidden="true" />
@@ -915,7 +915,7 @@ function ProvidersScreen({
               {poolAvailable === "ssh" && (
                 <div role="note" className="settings-field-hint">
                   Credential pool operations are unavailable over SSH. Manage
-                  the pool on the Hermes server.
+                  the pool on the Koda server.
                 </div>
               )}
               <fieldset
@@ -1169,7 +1169,7 @@ function ProvidersScreen({
           )}
 
           {showAccountModal && (
-            <HermesAccountModal
+            <KodaAccountModal
               profile={profile}
               onClose={() => setShowAccountModal(false)}
               onSignedIn={() => {
