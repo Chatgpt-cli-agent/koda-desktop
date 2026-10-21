@@ -35,7 +35,7 @@ This PR fixes the production white-screen regression and adjusts the GPU fallbac
 For immediate local recovery from the Office lag on macOS:
 
 ```bash
-rm "$HOME/Library/Application Support/hermes-desktop/disable-gpu.flag"
+rm "$HOME/Library/Application Support/koda-desktop/disable-gpu.flag"
 ```
 
 Then relaunch Koda Desktop.

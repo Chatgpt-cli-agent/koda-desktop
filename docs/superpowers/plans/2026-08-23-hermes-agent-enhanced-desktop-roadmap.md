@@ -8,15 +8,15 @@
 
 **Upstream reference:** `NousResearch/hermes-agent` desktop and release notes through the audit baseline
 
-**Owner:** hermes-desktop maintainers
+**Owner:** Koda Desktop maintainers
 
 ## Goal
 
-Track the missing Koda Agent desktop capabilities that should be implemented in hermes-desktop while keeping this repository an independent, enhanced client for a system-installed Koda Agent.
+Track the missing Koda Agent desktop capabilities that should be implemented in Koda Desktop while keeping this repository an independent, enhanced client for a system-installed Koda Agent.
 
 ## Product boundary
 
-Koda Agent owns agent execution, gateway protocols, bot behavior, routines, cron execution, voice services, messaging integrations, and agent-side plugins. hermes-desktop owns native windows, orchestration, presentation, local integrations, and user workflows.
+Koda Agent owns agent execution, gateway protocols, bot behavior, routines, cron execution, voice services, messaging integrations, and agent-side plugins. Koda Desktop owns native windows, orchestration, presentation, local integrations, and user workflows.
 
 The desktop must consume Agent capabilities instead of copying Agent backend logic. The desktop app and Koda Agent continue to use independent update channels.
 

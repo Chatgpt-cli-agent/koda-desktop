@@ -51,7 +51,7 @@ const DEFAULT_MODELS: DefaultModel[] = [
   },
 
   // ── Atlas Cloud (OpenAI-compatible, 59+ LLMs) ─────────────────────
-  // https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop
+  // https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=koda-desktop
   // All 59 hosted chat models (from api.md):
   //   Anthropic: anthropic/claude-haiku-4.5-20251001, anthropic/claude-opus-4.8, anthropic/claude-sonnet-4.6
   //   OpenAI: openai/gpt-5.4, openai/gpt-5.5

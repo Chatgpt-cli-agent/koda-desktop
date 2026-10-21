@@ -36,7 +36,7 @@ describe("Hermes home adoption", () => {
   beforeEach(() => {
     vi.resetModules();
     previousHermesHome = process.env.HERMES_HOME;
-    testRoot = mkdtempSync(join(tmpdir(), "hermes-desktop-home-"));
+    testRoot = mkdtempSync(join(tmpdir(), "koda-desktop-home-"));
     desktopUserData = join(testRoot, "desktop-user-data");
     inheritedHome = join(testRoot, "inherited-home");
     selectedHome = join(testRoot, "selected-home");

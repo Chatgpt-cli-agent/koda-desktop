@@ -3,12 +3,12 @@ PackageIdentifier: Chatgpt-cli-agent.KodaDesktop
 PackageVersion: {{VERSION}}
 PackageLocale: en-US
 Publisher: Koda
-PublisherUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop
-PublisherSupportUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop/issues
+PublisherUrl: https://github.com/Chatgpt-cli-agent/koda-desktop
+PublisherSupportUrl: https://github.com/Chatgpt-cli-agent/koda-desktop/issues
 PackageName: Koda
-PackageUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop
+PackageUrl: https://github.com/Chatgpt-cli-agent/koda-desktop
 License: MIT
-LicenseUrl: https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE
+LicenseUrl: https://github.com/Chatgpt-cli-agent/koda-desktop/blob/main/LICENSE
 ShortDescription: Self-improving AI assistant desktop app
 Description: |-
   Koda is a native desktop app for installing, configuring, and chatting

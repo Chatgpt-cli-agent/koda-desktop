@@ -707,7 +707,7 @@ export function runHermesDoctor(): string {
 
 const OPENCLAW_DIR_NAMES = [".openclaw", ".clawdbot", ".moldbot"];
 
-// hermes-desktop itself creates ~/.openclaw/claw3d/ as a stub when preparing
+// Koda Desktop itself creates ~/.openclaw/claw3d/ as a stub when preparing
 // Claw3D settings (see claw3d.ts:writeClaw3dSettings), so a bare `existsSync`
 // check would surface that empty stub as a "real" OpenClaw install and
 // prompt the user to migrate from themselves. Require at least one regular

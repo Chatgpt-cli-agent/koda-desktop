@@ -4,5 +4,5 @@ provider: github
 # and identity. Upstream still reaches Koda the safe way: merge upstream
 # into this repo, then cut a Koda release from the result.
 owner: Chatgpt-cli-agent
-repo: hermes-desktop
+repo: koda-desktop
 updaterCacheDirName: koda-desktop-updater

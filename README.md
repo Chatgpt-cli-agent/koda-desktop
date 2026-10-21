@@ -3,13 +3,13 @@
 <br/>
 <p align="center">
   <a href="https://discord.gg/HtZNeyJjJ"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img src="https://img.shields.io/badge/Download-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
-<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/stargazers">
-  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/hermes-desktop?style=for-the-badge&color=FFD700&label=Stars" alt="Stars">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img src="https://img.shields.io/badge/Download-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
+<a href="https://github.com/Chatgpt-cli-agent/koda-desktop/stargazers">
+  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/koda-desktop?style=for-the-badge&color=FFD700&label=Stars" alt="Stars">
 </a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/">
-  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/hermes-desktop/total?style=for-the-badge&color=00B496&label=Total%20Downloads" alt="Downloads">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases/">
+  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/koda-desktop/total?style=for-the-badge&color=00B496&label=Total%20Downloads" alt="Downloads">
 </a>
   
   
@@ -26,17 +26,17 @@
   
   
   
- <a href="https://www.star-history.com/Chatgpt-cli-agent/hermes-desktop">
+ <a href="https://www.star-history.com/Chatgpt-cli-agent/koda-desktop">
   <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
-   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop" />
+   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop" />
   </picture>
  </a>
 </p>
 
 
-> **This project is in active development.** Features may change, and some things might break. If you run into a problem or have an idea, [open an issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). Contributions are welcome!
+> **This project is in active development.** Features may change, and some things might break. If you run into a problem or have an idea, [open an issue](https://github.com/Chatgpt-cli-agent/koda-desktop/issues). Contributions are welcome!
 
 Koda Desktop is a community maintained native desktop app for installing, configuring, and chatting with [Koda Agent](https://github.com/NousResearch/hermes-agent) — a self-improving AI assistant with tool use, multi-platform messaging, and a closed learning loop.
 
@@ -54,8 +54,8 @@ Instead of managing the CLI by hand, the app walks through install, provider set
 <table>
 
 <tr>
-<td width="180"><a href="https://www.greptile.com/?utm_source=hermes-desktop"><img src="assets/partners/greptile.webp" alt="Greptile" width=""></a></td>
-<td> <a href="https://www.greptile.com/?utm_source=hermes-desktop">Greptile</a> is an AI code reviewer. It reviews and tests pull requests with full context of the codebase. It catches bugs, flags regressions, and leaves inline review comments on every PR automatically. </td>
+<td width="180"><a href="https://www.greptile.com/?utm_source=koda-desktop"><img src="assets/partners/greptile.webp" alt="Greptile" width=""></a></td>
+<td> <a href="https://www.greptile.com/?utm_source=koda-desktop">Greptile</a> is an AI code reviewer. It reviews and tests pull requests with full context of the codebase. It catches bugs, flags regressions, and leaves inline review comments on every PR automatically. </td>
 </tr>
 
 </table>
@@ -64,9 +64,9 @@ Instead of managing the CLI by hand, the app walks through install, provider set
 
 ## Install
 
-<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img width="380" alt="Download Now" src="previews/download.webp" /></a>
+<a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img width="380" alt="Download Now" src="previews/download.webp" /></a>
 
-Download the desktop app for your operating system from [GitHub Releases](https://github.com/Chatgpt-cli-agent/hermes-desktop/releases). `npm install hermes-desktop` is not a supported desktop app installation method.
+Download the desktop app for your operating system from [GitHub Releases](https://github.com/Chatgpt-cli-agent/koda-desktop/releases). `npm install koda-desktop` is not a supported desktop app installation method.
 
 To run the app in development, clone this repository and follow the [Contributing Guide](CONTRIBUTING.md#getting-started). Its `npm install` step installs dependencies inside the source checkout.
 
@@ -84,7 +84,7 @@ To run the app in development, clone this repository and follow the [Contributin
 > sudo rm /etc/sudoers.d/hermes-install
 > ```
 >
-> Tracked in [#109](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/109).
+> Tracked in [#109](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/109).
 
 </details>
 
@@ -93,7 +93,7 @@ To run the app in development, clone this repository and follow the [Contributin
 <br/>
 
 ```bash
-sudo dnf install ./hermes-desktop-<version>.rpm
+sudo dnf install ./koda-desktop-<version>.rpm
 ```
 
 > **Fedora users:** The `.rpm` is not GPG-signed. If your system enforces signature checking, append `--nogpgcheck` to the install command. Auto-update is not supported for `.rpm` builds (limitation of `electron-updater`); reinstall the new `.rpm` to update.
@@ -188,7 +188,7 @@ In local mode, chat requests go through `http://127.0.0.1:8642` with SSE streami
 
 | Provider        | Notes                                                                                                                                                                               |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Atlas Cloud** | OpenAI-compatible gateway — DeepSeek, Qwen, GLM, Kimi, MiniMax and more ([atlascloud.ai](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop)) |
+| **Atlas Cloud** | OpenAI-compatible gateway — DeepSeek, Qwen, GLM, Kimi, MiniMax and more ([atlascloud.ai](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=koda-desktop)) |
 
 ### LLM Providers
 
@@ -335,7 +335,7 @@ Source of truth: [`src/main/secrets/`](src/main/secrets/).
 
 ## Contributing
 
-Contributions are welcome! Check out the [Contributing Guide](CONTRIBUTING.md) to get started. If you're not sure where to begin, take a look at the [open issues](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). Found a bug or have a feature request? [File an issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new).
+Contributions are welcome! Check out the [Contributing Guide](CONTRIBUTING.md) to get started. If you're not sure where to begin, take a look at the [open issues](https://github.com/Chatgpt-cli-agent/koda-desktop/issues). Found a bug or have a feature request? [File an issue](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/new).
 
 ## Related Project
 

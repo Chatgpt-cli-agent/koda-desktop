@@ -22,7 +22,7 @@ import { createHash } from "crypto";
 import { BrowserWindow, dialog } from "electron";
 
 const MAX_MEDIA_BYTES = 25 * 1024 * 1024;
-const TEMP_MEDIA_DIR = join(tmpdir(), "hermes-desktop-media");
+const TEMP_MEDIA_DIR = join(tmpdir(), "koda-desktop-media");
 const TEMP_MEDIA_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const TEMP_MEDIA_MAX_FILES = 100;
 

@@ -80,6 +80,10 @@ const REQUIRED = [
     token: "remote-hermes",
     why: "the managed remote launcher the remote host looks for",
   },
+  {
+    token: "Chatgpt-cli-agent/koda-desktop",
+    why: "the repository the update feed and the release publisher point at",
+  },
 ];
 
 /**
@@ -141,6 +145,14 @@ const FORBIDDEN = [
   {
     token: ".config/Koda-desktop",
     why: "the managed remote launcher lives under ~/.config/hermes-desktop",
+  },
+  {
+    token: "Chatgpt-cli-agent/hermes-desktop",
+    why: "Koda's repository is Chatgpt-cli-agent/koda-desktop since the rename",
+  },
+  {
+    token: "repo: hermes-desktop",
+    why: "the update feed and the release publisher must name koda-desktop",
   },
 ];
 

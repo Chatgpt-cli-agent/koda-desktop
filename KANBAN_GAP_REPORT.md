@@ -1,4 +1,4 @@
-# Kanban — Reference vs. hermes-desktop: Report & Plan
+# Kanban — Reference vs. Koda Desktop: Report & Plan
 
 _Generated 2026-06-21. Sources: `hermes-agent` docs + `kanban_db.py` + `plugins/kanban/dashboard/plugin_api.py`; our `src/main/kanban.ts` + `src/renderer/src/screens/Kanban/Kanban.tsx`._
 
@@ -56,7 +56,7 @@ Dashboard `BOARD_COLUMNS` (plugin_api.py): `triage, todo, scheduled, ready, runn
 
 > Note: the **reference desktop app** (`hermes-agent/apps/desktop`) has **no kanban board UI** — only `/kanban` as a slash-command string and a notifications comment. The rich UI reference is the **dashboard plugin**, not that app.
 
-## 4. What our hermes-desktop has today
+## 4. What our Koda Desktop has today
 
 **Main (`src/main/kanban.ts`)** — execs `hermes kanban` (local) or SSH-tunnels (`sshRunKanban`); blocks plain-remote mode. Exposes:
 `listBoards, currentBoard, switchBoard, createBoard, removeBoard, listTasks, getTask, createTask, assignTask, completeTask, blockTask, unblockTask, archiveTask, specifyTask, reclaimTask, commentTask, listClaw3dHqTasks, dispatchOnce`.

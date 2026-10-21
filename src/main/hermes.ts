@@ -347,7 +347,7 @@ function transcribeAudioViaLocalPython(
     );
   }
 
-  const dir = mkdtempSync(join(tmpdir(), "hermes-desktop-stt-"));
+  const dir = mkdtempSync(join(tmpdir(), "koda-desktop-stt-"));
   const audioPath = join(dir, `speech${audioExtensionForMime(mimeType)}`);
   writeFileSync(audioPath, Buffer.from(audio));
 

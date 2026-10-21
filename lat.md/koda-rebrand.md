@@ -60,8 +60,8 @@ A build-time check that holds the engine's technical spellings in place, so an u
 
 It runs as `scripts/check-hermes-contracts.mjs` over `src`, `tests`, `scripts`, `build`, `.github` and the root configuration files, and works in both directions:
 
-- **Required** — a spelling that must still exist somewhere in the tree: `hermes-agent`, `hermes_cli`, `"hermes"`, `~/.hermes`, `HERMES_HOME`, `HERMES_DISABLE_GPU`, `hermesone.org`, `X-Hermes-Session-Token`, `hermes-account-login`, `hermes-one`, `remote-hermes`. If a merge renamed one, the check fails.
-- **Forbidden** — the exact wrong spellings a rename produces: `Koda-agent`, `Koda mcp`, `KodaHome`, `Koda_HOME`, `Koda_DISABLE_GPU`, `Kodaone`, `Koda-cli`, `Koda-one`, `Koda-account-login`, `X-Koda-Session-Token`, `~/.Koda`, `docker exec -it koda`, `.config/Koda-desktop`. If one appears, the check fails.
+- **Required** — a spelling that must still exist somewhere in the tree: `hermes-agent`, `hermes_cli`, `"hermes"`, `~/.hermes`, `HERMES_HOME`, `HERMES_DISABLE_GPU`, `hermesone.org`, `X-Hermes-Session-Token`, `hermes-account-login`, `hermes-one`, `remote-hermes`, `Chatgpt-cli-agent/koda-desktop`. If a merge renamed one, the check fails.
+- **Forbidden** — the exact wrong spellings a rename produces: `Koda-agent`, `Koda mcp`, `KodaHome`, `Koda_HOME`, `Koda_DISABLE_GPU`, `Kodaone`, `Koda-cli`, `Koda-one`, `Koda-account-login`, `X-Koda-Session-Token`, `~/.Koda`, `docker exec -it koda`, `.config/Koda-desktop`, `Chatgpt-cli-agent/hermes-desktop`, `repo: hermes-desktop`. If one appears, the check fails.
 
 Both lists are small and every entry says why. The forbidden list is the one that pays for itself: it is exactly the set of shapes the rebrand's own repair had to undo.
 
@@ -85,6 +85,7 @@ Two parts of the app link to the upstream project's channels. They are real chan
 
 - The follow-us-on-X promo was removed. It pointed at the upstream project's account while its copy promised "the latest Koda features", which was a promise about an account Koda does not own. Repointing it is a one-line change in a new component when Koda has an account of its own.
 - The community pane keeps its Discord, website, X and Telegram buttons, and the Ko-fi support card, but the buttons no longer carry the URL as a tooltip. The URLs live in one file — [[src/renderer/src/components/settings/settingsHelpers.ts]] — so they can be repointed at Koda's own channels in one edit.
+- The Help menu's "Koda on GitHub" and "Report an Issue" items point at Koda's own repository. They used to point at the engine's repository and at upstream's issue tracker, so a menu item labelled "Koda on GitHub" opened somebody else's project — and the old brand was the only thing the user saw, in their browser.
 
 ## Translation key ratchet
 
@@ -120,10 +121,14 @@ The same sweep found keys that were already broken before the rebrand: `common.s
 
 The installer, the auto-updater feed and the release workflow all point at Koda's own GitHub repository, so an upstream release can never install over this app.
 
-- `electron-builder.yml` publishes from `Chatgpt-cli-agent/hermes-desktop`.
+- `electron-builder.yml` publishes from `Chatgpt-cli-agent/koda-desktop`.
 - `dev-app-update.yml` — the feed the auto-updater reads — points at the same owner.
 - `.github/workflows/release.yml` generates its winget manifests with `PUBLISH_OWNER=Chatgpt-cli-agent`, so the installer URL resolves to a Koda release.
 - The macOS update feed is built from artifact names, which follow `package.json`'s `name` — `koda-desktop`, not `hermes-desktop`.
+
+The repository itself was renamed to `koda-desktop`, so the name in the URL, the name in the release publisher and the name in the winget manifest are the same word. The contract ratchet holds that: `Chatgpt-cli-agent/koda-desktop` is required, and both `Chatgpt-cli-agent/hermes-desktop` and `repo: hermes-desktop` are forbidden, so a merge that repoints the feed at the old name fails the build instead of installing upstream's releases over Koda.
+
+One path in the tree keeps the old spelling on purpose, because it is a path rather than a brand: `~/.config/hermes-desktop/remote-hermes`, the launcher a remote host looks for. The AppArmor profile, by contrast, is installed under the executable's name, so it follows the rename to `/etc/apparmor.d/koda-desktop`.
 
 The landing-page rebuild is opt-in through the `LANDING_PAGE_REPO` repository variable. It used to dispatch into upstream's landing-page repository, which would have rebuilt upstream's site from a Koda release; with no Koda landing page of its own yet, the step is skipped rather than pointed at upstream.
 

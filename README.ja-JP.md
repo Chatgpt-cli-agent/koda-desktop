@@ -4,17 +4,17 @@
 <p align="center">
   <a href="https://hermes-agent.nousresearch.com/docs/"><img src="https://img.shields.io/badge/Docs-hermes--agent.nousresearch.com-FFD700?style=for-the-badge" alt="Documentation"></a>
   <a href="https://t.me/hermes_agent_desktop"><img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img src="https://img.shields.io/badge/Download-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
-<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/stargazers">
-  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/hermes-desktop?style=for-the-badge&color=FFD700&label=Stars" alt="Stars">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img src="https://img.shields.io/badge/Download-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
+<a href="https://github.com/Chatgpt-cli-agent/koda-desktop/stargazers">
+  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/koda-desktop?style=for-the-badge&color=FFD700&label=Stars" alt="Stars">
 </a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/">
-  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/hermes-desktop/total?style=for-the-badge&color=00B496&label=Total%20Downloads" alt="Downloads">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases/">
+  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/koda-desktop/total?style=for-the-badge&color=00B496&label=Total%20Downloads" alt="Downloads">
 </a>
 </p>
 
-> **本プロジェクトは現在も活発に開発中です。** 機能は変更される可能性があり、一部が動作しなくなることもあります。問題に遭遇した場合や、アイデアがある場合は[Issue を作成してください](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues)。コントリビューションも歓迎しています！
+> **本プロジェクトは現在も活発に開発中です。** 機能は変更される可能性があり、一部が動作しなくなることもあります。問題に遭遇した場合や、アイデアがある場合は[Issue を作成してください](https://github.com/Chatgpt-cli-agent/koda-desktop/issues)。コントリビューションも歓迎しています！
 
 ## 言語
 
@@ -28,7 +28,7 @@ CLI を手作業で管理する代わりに、本アプリではインストー�
 
 ## インストール
 
-<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img width="380" alt="Download Now" src="previews/download.webp" /></a>
+<a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img width="380" alt="Download Now" src="previews/download.webp" /></a>
 
 ### Windows
 
@@ -42,12 +42,12 @@ CLI を手作業で管理する代わりに、本アプリではインストー�
 > sudo rm /etc/sudoers.d/hermes-install
 > ```
 >
-> [#109](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/109) で追跡しています。
+> [#109](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/109) で追跡しています。
 
 ### Fedora (RPM)
 
 ```bash
-sudo dnf install ./hermes-desktop-<version>.rpm
+sudo dnf install ./koda-desktop-<version>.rpm
 ```
 
 > **Fedora ユーザーへ:** `.rpm` は GPG 署名されていません。署名検証を強制する設定の場合は、インストールコマンドに `--nogpgcheck` を追加してください。`.rpm` ビルドは自動アップデートに対応していません（`electron-updater` の制約）。アップデートする場合は新しい `.rpm` を再インストールしてください。
@@ -259,7 +259,7 @@ Koda のファイルは以下の場所で管理されます。
 
 ## コントリビューション
 
-コントリビューションを歓迎します！始め方は[コントリビューションガイド](CONTRIBUTING.md)をご覧ください。どこから手を付ければよいか分からない場合は、[Open Issues](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues) を確認してください。バグを見つけた、または機能要望がある場合は [Issue を作成してください](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new)。
+コントリビューションを歓迎します！始め方は[コントリビューションガイド](CONTRIBUTING.md)をご覧ください。どこから手を付ければよいか分からない場合は、[Open Issues](https://github.com/Chatgpt-cli-agent/koda-desktop/issues) を確認してください。バグを見つけた、または機能要望がある場合は [Issue を作成してください](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/new)。
 
 ## 関連プロジェクト
 

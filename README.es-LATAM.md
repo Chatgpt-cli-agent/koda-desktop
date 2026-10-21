@@ -3,13 +3,13 @@
 <br/>
 <p align="center">
   <a href="https://discord.gg/HtZNeyJjJ"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="Licencia: MIT"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img src="https://img.shields.io/badge/Descargar-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/stargazers">
-  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/hermes-desktop?style=for-the-badge&color=FFD700&label=Estrellas" alt="Estrellas">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/blob/main/LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge" alt="Licencia: MIT"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img src="https://img.shields.io/badge/Descargar-Releases-FF6600?style=for-the-badge" alt="Releases"></a>
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/stargazers">
+  <img src="https://img.shields.io/github/stars/Chatgpt-cli-agent/koda-desktop?style=for-the-badge&color=FFD700&label=Estrellas" alt="Estrellas">
 </a>
-  <a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases/">
-  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/hermes-desktop/total?style=for-the-badge&color=00B496&label=Descargas%20Totales" alt="Descargas">
+  <a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases/">
+  <img src="https://img.shields.io/github/downloads/Chatgpt-cli-agent/koda-desktop/total?style=for-the-badge&color=00B496&label=Descargas%20Totales" alt="Descargas">
 </a>
   <a href="https://bankr.bot/launches/0xfda75f77a22b4f4b783bbbb21915ef64d149bba3">
   <img src="https://img.shields.io/badge/Token-$HD-purple?style=for-the-badge&logo=ethereum" alt="Token $HD">
@@ -24,16 +24,16 @@
 </p>
 
 <p align="center">
- <a href="https://www.star-history.com/Chatgpt-cli-agent/hermes-desktop">
+ <a href="https://www.star-history.com/Chatgpt-cli-agent/koda-desktop">
   <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
-   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/hermes-desktop" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop" />
+   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Chatgpt-cli-agent/koda-desktop" />
   </picture>
  </a>
 </p>
 
-> **Este proyecto está en desarrollo activo.** Las funciones pueden cambiar y algunas cosas podrían no funcionar perfectamente. Si encuentras un problema o tienes una idea, [abre un issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). ¡Las contribuciones son bienvenidas!
+> **Este proyecto está en desarrollo activo.** Las funciones pueden cambiar y algunas cosas podrían no funcionar perfectamente. Si encuentras un problema o tienes una idea, [abre un issue](https://github.com/Chatgpt-cli-agent/koda-desktop/issues). ¡Las contribuciones son bienvenidas!
 
 Koda Desktop es una aplicación nativa de escritorio para instalar, configurar y chatear con [Koda Agent](https://github.com/NousResearch/hermes-agent) — un asistente de IA con autoaprendizaje, uso de herramientas, mensajería multiplataforma y un ciclo de aprendizaje cerrado.
 
@@ -41,15 +41,15 @@ En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación,
 
 ## Patrocinadores
 
-<a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop" target="_blank" rel="noopener noreferrer">
+<a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=koda-desktop" target="_blank" rel="noopener noreferrer">
     <img src="src/renderer/src/assets/logos/atlascloud.svg" alt="Atlas Cloud" height="100" style="display: block;">
   </a>
 
-> **[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop)** es una plataforma de inferencia de IA full-modal compatible con OpenAI (DeepSeek, Qwen, GLM, Kimi, MiniMax y más). Úsala en Koda Desktop seleccionando **Atlas Cloud** como tu proveedor — la URL base se configura automáticamente.
+> **[Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=koda-desktop)** es una plataforma de inferencia de IA full-modal compatible con OpenAI (DeepSeek, Qwen, GLM, Kimi, MiniMax y más). Úsala en Koda Desktop seleccionando **Atlas Cloud** como tu proveedor — la URL base se configura automáticamente.
 
 ## Instalación
 
-<a href="https://github.com/Chatgpt-cli-agent/hermes-desktop/releases"><img width="380" alt="Descargar ahora" src="previews/download.webp" /></a>
+<a href="https://github.com/Chatgpt-cli-agent/koda-desktop/releases"><img width="380" alt="Descargar ahora" src="previews/download.webp" /></a>
 
 ### Windows
 
@@ -63,12 +63,12 @@ En lugar de manejar el CLI a mano, la app guía todo el proceso de instalación,
 > sudo rm /etc/sudoers.d/hermes-install
 > ```
 >
-> Seguimiento en [#109](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/109).
+> Seguimiento en [#109](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/109).
 
 ### Fedora (RPM)
 
 ```bash
-sudo dnf install ./hermes-desktop-<version>.rpm
+sudo dnf install ./koda-desktop-<version>.rpm
 ```
 
 > **Usuarios de Fedora:** El `.rpm` no tiene firma GPG. Si tu sistema exige verificación de firma, agrega `--nogpgcheck` al comando de instalación. La actualización automática no está disponible para builds `.rpm` (limitación de `electron-updater`); reinstala el nuevo `.rpm` para actualizar.
@@ -161,7 +161,7 @@ En modo local, las solicitudes de chat van por `http://127.0.0.1:8642` con strea
 
 | Proveedor       | Notas                                                                                                                                                                                |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Atlas Cloud** | Gateway compatible con OpenAI — DeepSeek, Qwen, GLM, Kimi, MiniMax y más ([atlascloud.ai](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=hermes-desktop)) |
+| **Atlas Cloud** | Gateway compatible con OpenAI — DeepSeek, Qwen, GLM, Kimi, MiniMax y más ([atlascloud.ai](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=koda-desktop)) |
 
 ### Proveedores de LLM
 
@@ -336,7 +336,7 @@ Fuente de verdad: [`src/main/secrets/`](src/main/secrets/).
 
 ## Contribuir
 
-¡Las contribuciones son bienvenidas! Consulta la [Guía de contribución](CONTRIBUTING.md) para comenzar. Si no sabes por dónde empezar, mira los [issues abiertos](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues). ¿Encontraste un bug o tienes una solicitud de funcionalidad? [Abre un issue](https://github.com/Chatgpt-cli-agent/hermes-desktop/issues/new).
+¡Las contribuciones son bienvenidas! Consulta la [Guía de contribución](CONTRIBUTING.md) para comenzar. Si no sabes por dónde empezar, mira los [issues abiertos](https://github.com/Chatgpt-cli-agent/koda-desktop/issues). ¿Encontraste un bug o tienes una solicitud de funcionalidad? [Abre un issue](https://github.com/Chatgpt-cli-agent/koda-desktop/issues/new).
 
 ## Proyecto relacionado
 

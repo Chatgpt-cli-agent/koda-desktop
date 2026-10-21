@@ -97,14 +97,23 @@ export function buildMenu({ getMainWindow, openExternalUrl }: MenuDeps): void {
             ]
           : []),
         {
+          // These two point at Koda's own repository, not at the engine's or
+          // at upstream's. A menu item labelled "Koda on GitHub" that opens
+          // someone else's project is a broken promise, and it is also the
+          // one place where the old brand would be printed in the user's
+          // browser. Repoint them when Koda has channels of its own.
           label: "Koda on GitHub",
           click: () =>
-            openExternalUrl("https://github.com/NousResearch/hermes-agent/"),
+            openExternalUrl(
+              "https://github.com/Chatgpt-cli-agent/koda-desktop",
+            ),
         },
         {
           label: "Report an Issue",
           click: () =>
-            openExternalUrl("https://github.com/fathah/hermes-desktop/issues"),
+            openExternalUrl(
+              "https://github.com/Chatgpt-cli-agent/koda-desktop/issues",
+            ),
         },
       ],
     },
