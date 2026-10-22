@@ -614,4 +614,154 @@ describe("model-discovery", () => {
     );
     expect(ctx).toBeNull();
   });
+
+  // @lat: [[local-studio-backend#The model library comes from the engine#A custom endpoint's key comes from the engine's provider list]]
+  it("authenticates a custom endpoint with the key the engine's provider list names", async () => {
+    // A local Unsloth Studio is just a `custom` endpoint on loopback, and no
+    // URL rule recognises it, so discovery used to go out unauthenticated and
+    // the Studio answered 401. The engine records the key's env var name
+    // under `providers:` → `key_env:`, and that is what must be used.
+    let seenAuth = "";
+    server = http.createServer((req, res) => {
+      if (req.url === "/v1/models" && req.method === "GET") {
+        seenAuth = String(req.headers.authorization || "");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(
+          JSON.stringify({
+            data: [
+              { id: "unsloth/Ornith-1.5-35B-A3B-GGUF" },
+              { id: "unsloth/Qwen2.5-Coder-14B-Instruct-128K-GGUF" },
+            ],
+          }),
+        );
+        return;
+      }
+      res.writeHead(404);
+      res.end();
+    });
+    await listen();
+
+    writeFileSync(
+      join(testHome, "config.yaml"),
+      [
+        "providers:",
+        "  unsloth:",
+        '    name: "Unsloth Studio"',
+        `    base_url: "${baseUrl}"`,
+        "    key_env: UNSLOTH_API_KEY",
+        "",
+      ].join("\n"),
+    );
+    writeFileSync(join(testHome, ".env"), "UNSLOTH_API_KEY=sk-studio\n");
+
+    const { discoverProviderModels } = await loadDiscovery();
+    const result = await discoverProviderModels(
+      "custom",
+      baseUrl,
+      undefined,
+      undefined,
+    );
+    expect(result.status).toBe("ok");
+    expect(result.models).toEqual([
+      "unsloth/Ornith-1.5-35B-A3B-GGUF",
+      "unsloth/Qwen2.5-Coder-14B-Instruct-128K-GGUF",
+    ]);
+    expect(seenAuth).toBe("Bearer sk-studio");
+  });
+
+  // @lat: [[local-studio-backend#The model library comes from the engine#A custom endpoint's key comes from the engine's provider list]]
+  it("falls back to the desktop's own key name for the same provider", async () => {
+    let seenAuth = "";
+    server = http.createServer((req, res) => {
+      if (req.url === "/v1/models" && req.method === "GET") {
+        seenAuth = String(req.headers.authorization || "");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ data: [{ id: "alpha" }] }));
+        return;
+      }
+      res.writeHead(404);
+      res.end();
+    });
+    await listen();
+
+    writeFileSync(
+      join(testHome, "config.yaml"),
+      [
+        "providers:",
+        "  unsloth:",
+        '    name: "Unsloth Studio"',
+        `    base_url: "${baseUrl}"`,
+        "",
+      ].join("\n"),
+    );
+    // The desktop's own convention for a named custom provider.
+    writeFileSync(
+      join(testHome, ".env"),
+      "CUSTOM_PROVIDER_UNSLOTH_STUDIO_KEY=sk-named\n",
+    );
+
+    const { discoverProviderModels } = await loadDiscovery();
+    const result = await discoverProviderModels(
+      "custom",
+      baseUrl,
+      undefined,
+      undefined,
+    );
+    expect(result.status).toBe("ok");
+    expect(seenAuth).toBe("Bearer sk-named");
+  });
+
+  // @lat: [[local-studio-backend#The model library comes from the engine#A local endpoint is found by its host]]
+  it("authenticates a local endpoint under the provider name the engine gave it", async () => {
+    // The engine registers the local Studio as the named provider `unsloth`,
+    // and that is the name the model library row carries too. The URL rules
+    // know nothing about it, so the key has to come from the engine's own
+    // provider list — matched by the endpoint, not by the provider's name.
+    let seenAuth = "";
+    server = http.createServer((req, res) => {
+      if (req.url === "/v1/models" && req.method === "GET") {
+        seenAuth = String(req.headers.authorization || "");
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(
+          JSON.stringify({
+            data: [
+              { id: "unsloth/Ornith-1.5-35B-A3B-GGUF" },
+              { id: "unsloth/North-Mini-Code-1.0-GGUF" },
+            ],
+          }),
+        );
+        return;
+      }
+      res.writeHead(404);
+      res.end();
+    });
+    await listen();
+
+    writeFileSync(
+      join(testHome, "config.yaml"),
+      [
+        "providers:",
+        "  unsloth:",
+        '    name: "Unsloth Studio"',
+        `    base_url: "${baseUrl}"`,
+        "    key_env: UNSLOTH_API_KEY",
+        "",
+      ].join("\n"),
+    );
+    writeFileSync(join(testHome, ".env"), "UNSLOTH_API_KEY=sk-studio\n");
+
+    const { discoverProviderModels } = await loadDiscovery();
+    const result = await discoverProviderModels(
+      "unsloth",
+      baseUrl,
+      undefined,
+      undefined,
+    );
+    expect(result.status).toBe("ok");
+    expect(result.models).toEqual([
+      "unsloth/North-Mini-Code-1.0-GGUF",
+      "unsloth/Ornith-1.5-35B-A3B-GGUF",
+    ]);
+    expect(seenAuth).toBe("Bearer sk-studio");
+  });
 });

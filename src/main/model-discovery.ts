@@ -18,6 +18,7 @@ import { execFile } from "child_process";
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { readEnv, getModelContextLengthOverride } from "./config";
+import { listAgentUserProviders } from "./agent-config-providers";
 import { profileHome } from "./utils";
 import {
   expectedEnvKeyForModel,
@@ -30,7 +31,11 @@ import {
 // same lookup without pulling in this whole file (and triggering a
 // circular import via `model-discovery → config → ...`).
 import { PROVIDER_BASE_URLS } from "./provider-registry";
-import { normalizeModelEndpointUrl } from "../shared/model-endpoint";
+import {
+  normalizeModelEndpointUrl,
+  isLoopbackModelEndpoint,
+} from "../shared/model-endpoint";
+import { customProviderEnvKey } from "../shared/url-key-map";
 
 /** Providers whose `/models` we never call — either they don't expose it,
  *  use a different protocol, or rely on OAuth credentials we can't
@@ -301,6 +306,52 @@ function envApiKeyFor(
   return (env[envKey] || "").trim().replace(/^["']|["']$/g, "");
 }
 
+/** Compare two endpoint URLs ignoring a trailing slash and case. */
+function sameBaseUrl(a: string, b: string): boolean {
+  const norm = (u: string): string =>
+    (u || "").trim().replace(/\/+$/, "").toLowerCase();
+  return !!norm(a) && norm(a) === norm(b);
+}
+
+/**
+ * Resolve the API key for a `custom` OpenAI-compatible endpoint from the
+ * engine's own provider list.
+ *
+ * The engine records which env var holds each provider's key under
+ * `providers:` → `key_env:`. A local Unsloth Studio is just a `custom`
+ * endpoint on 127.0.0.1, and no URL rule recognises it, so the discovery
+ * request went out unauthenticated, the Studio answered 401, and the model
+ * picker could only offer the models the library happened to list — one,
+ * when the Studio held six.
+ *
+ * The provider is matched by base URL, because that is what identifies it.
+ * The key is then read from the profile's `.env`, under the engine's
+ * `key_env` or the desktop's own `CUSTOM_PROVIDER_<NAME>_KEY` convention.
+ */
+function agentProviderApiKey(
+  baseUrl: string,
+  profile: string | undefined,
+): string {
+  let env: Record<string, string>;
+  try {
+    env = readEnv(profile);
+  } catch {
+    return "";
+  }
+  for (const provider of listAgentUserProviders(profile)) {
+    if (!sameBaseUrl(provider.baseUrl, baseUrl)) continue;
+    for (const envKey of [
+      provider.keyEnv,
+      customProviderEnvKey(provider.name),
+    ]) {
+      if (!envKey) continue;
+      const value = (env[envKey] || "").trim().replace(/^["']|["']$/g, "");
+      if (value) return value;
+    }
+  }
+  return "";
+}
+
 interface DiscoveryRawResponse {
   data?: Array<{ id?: string }>;
   models?: Array<{ id?: string; name?: string }>;
@@ -427,15 +478,6 @@ function authHeaders(provider: string, apiKey: string): Record<string, string> {
     };
   }
   return { Authorization: `Bearer ${apiKey}` };
-}
-
-function isLoopbackBaseUrl(baseUrl: string): boolean {
-  try {
-    const host = new URL(baseUrl).hostname.toLowerCase();
-    return host === "localhost" || host === "127.0.0.1" || host === "::1";
-  } catch {
-    return false;
-  }
 }
 
 function fetchModelsHttp(
@@ -569,12 +611,20 @@ export async function discoverProviderModels(
   const cached = fromCache(lowerProvider, baseUrl);
   if (cached) return { models: cached, status: "ok", cached: true };
 
+  // The URL rules cover the named providers. A local endpoint is registered in
+  // the engine's own provider list under whatever name it was given —
+  // `unsloth`, `custom`, anything — so the engine's list is where its key
+  // lives. A `custom` provider is the user's own endpoint by definition, so
+  // the same list serves it too.
   const apiKey =
     (apiKeyOverride || "").trim() ||
-    envApiKeyFor(lowerProvider, baseUrl, profile);
+    envApiKeyFor(lowerProvider, baseUrl, profile) ||
+    (isLoopbackModelEndpoint(baseUrl) || lowerProvider === "custom"
+      ? agentProviderApiKey(baseUrl, profile)
+      : "");
   const canDiscoverWithoutKey =
     LOCAL_NO_KEY_PROVIDERS.has(lowerProvider) ||
-    (lowerProvider === "custom" && isLoopbackBaseUrl(baseUrl));
+    isLoopbackModelEndpoint(baseUrl);
   if (!apiKey && !canDiscoverWithoutKey) {
     return { models: [], status: "no-key", cached: false };
   }
@@ -676,10 +726,13 @@ export async function getModelContextWindow(
   // `_cache`-hit early-return would skip the ctx fetch entirely.
   const apiKey =
     (apiKeyOverride || "").trim() ||
-    envApiKeyFor(lowerProvider, baseUrl, profile);
+    envApiKeyFor(lowerProvider, baseUrl, profile) ||
+    (isLoopbackModelEndpoint(baseUrl) || lowerProvider === "custom"
+      ? agentProviderApiKey(baseUrl, profile)
+      : "");
   const canDiscoverWithoutKey =
     LOCAL_NO_KEY_PROVIDERS.has(lowerProvider) ||
-    (lowerProvider === "custom" && isLoopbackBaseUrl(baseUrl));
+    isLoopbackModelEndpoint(baseUrl);
   if (!apiKey && !canDiscoverWithoutKey) return null;
 
   await fetchAndCacheModels(lowerProvider, baseUrl, apiKey);

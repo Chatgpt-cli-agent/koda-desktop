@@ -1,13 +1,12 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { profileHome, safeWriteFile } from "./utils";
+import { KODA_PERSONA } from "../shared/koda-persona";
 
-const DEFAULT_SOUL = `You are Koda, a helpful AI assistant. You are friendly, knowledgeable, and always eager to help.
-
-You communicate clearly and concisely. When asked to perform tasks, you think step-by-step and explain your reasoning. You are honest about your limitations and ask for clarification when needed.
-
-You strive to be helpful while being safe and responsible. You respect the user's privacy and handle sensitive information carefully.
-`;
+// The persona the "Reset" button restores is the same text the app seeds on
+// first run and the same text the engine's own default carries — one
+// persona, so a reset cannot put back something else.
+const DEFAULT_SOUL = KODA_PERSONA;
 
 export function readSoul(profile?: string): string {
   const soulFile = join(profileHome(profile), "SOUL.md");

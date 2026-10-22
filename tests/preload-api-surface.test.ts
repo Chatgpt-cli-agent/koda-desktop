@@ -24,6 +24,22 @@ function extractPreloadMethods(src: string): string[] {
 }
 
 /**
+ * Extract the names of members exposed as an object namespace, e.g.
+ * `  localStudio: {`. A namespace is a single API member that holds several
+ * calls; it is implemented, and the function-only extraction above cannot
+ * see it.
+ */
+function extractPreloadNamespaces(src: string): string[] {
+  const names: string[] = [];
+  const re = /^\s{2}(\w+)\s*:\s*\{/gm;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(src)) !== null) {
+    names.push(m[1]);
+  }
+  return [...new Set(names)];
+}
+
+/**
  * Extract method names from the HermesAPI interface in index.d.ts.
  */
 function extractTypeMethods(src: string): string[] {
@@ -41,6 +57,7 @@ function extractTypeMethods(src: string): string[] {
 }
 
 const preloadMethods = extractPreloadMethods(preloadSrc);
+const preloadNamespaces = extractPreloadNamespaces(preloadSrc);
 const typeMethods = extractTypeMethods(preloadTypes);
 
 describe("Preload API Surface", () => {
@@ -58,7 +75,9 @@ describe("Preload API Surface", () => {
   });
 
   it("every type declaration has a preload implementation", () => {
-    const missing = typeMethods.filter((m) => !preloadMethods.includes(m));
+    const missing = typeMethods.filter(
+      (m) => !preloadMethods.includes(m) && !preloadNamespaces.includes(m),
+    );
     expect(missing).toEqual([]);
   });
 });

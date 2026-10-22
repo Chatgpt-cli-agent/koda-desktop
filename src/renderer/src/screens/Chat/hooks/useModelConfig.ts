@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PROVIDERS, displayBrandFromConfig } from "../../../constants";
 import { useDiscoveredModels } from "../../../hooks/useDiscoveredModels";
 import { useI18n } from "../../../components/useI18n";
+import { isLoopbackModelEndpoint } from "../../../../../shared/model-endpoint";
 import type { ModelGroup } from "../types";
 
 const OLLAMA_CLOUD_PROVIDER = "ollama-cloud";
@@ -53,6 +54,53 @@ function mergeLiveOllamaCloudModels(
     ...savedModels.filter((model) => model.provider !== OLLAMA_CLOUD_PROVIDER),
     ...liveEntries,
   ];
+}
+
+/**
+ * Merge the models an OpenAI-compatible endpoint advertises right now into
+ * the picker.
+ *
+ * The library is a curated list: it holds the models someone chose to save,
+ * not the models the endpoint actually has. A local Unsloth Studio holds
+ * every GGUF that was downloaded and advertises all of them on `/v1/models`,
+ * but the picker only read the library — so a Studio with six downloaded
+ * models offered one, and the other five could not be tried at all.
+ *
+ * An endpoint on this machine merges its catalogue whatever it is called. The
+ * engine registers the local Studio under whatever provider name it was
+ * given — `unsloth`, `custom`, anything — so the provider's name cannot
+ * identify it; the host can. A named *remote* provider's library stays
+ * curated on purpose, and merging a whole remote catalogue into the picker
+ * would bury those entries.
+ */
+function mergeLiveCustomModels(
+  savedModels: SavedModelForPicker[],
+  liveModels: string[],
+  liveStatus: string,
+  provider: string,
+  baseUrl: string,
+): SavedModelForPicker[] {
+  const isLocal = isLoopbackModelEndpoint(baseUrl);
+  if (!isLocal && provider !== "custom") return savedModels;
+  if (liveStatus !== "ok" || liveModels.length === 0) {
+    return savedModels;
+  }
+  if (!baseUrl) return savedModels;
+
+  const known = new Set(
+    savedModels
+      .filter((m) => m.provider === provider && m.baseUrl === baseUrl)
+      .map((m) => m.model),
+  );
+  const live = Array.from(new Set(liveModels))
+    .filter((model) => model && !known.has(model))
+    .map((model) => ({
+      provider,
+      model,
+      name: model,
+      baseUrl,
+    }));
+  return [...savedModels, ...live];
 }
 
 interface UseModelConfigResult {
@@ -110,14 +158,43 @@ export function useModelConfig(profile?: string): UseModelConfigResult {
     enabled: true,
   });
 
+  // The endpoint currently in use. An OpenAI-compatible endpoint (the local
+  // Unsloth Studio, LM Studio, a vLLM server) advertises its models on
+  // /v1/models, and that live list is what the picker needs — the library
+  // only records the models that were saved by hand. The endpoint is
+  // identified by its host, not by the provider's name: the engine calls the
+  // local Studio `unsloth`, and the picker would never see its catalogue.
+  const currentDiscovery = useDiscoveredModels({
+    provider: currentProvider,
+    baseUrl: currentBaseUrl,
+    profile,
+    enabled:
+      !!currentBaseUrl &&
+      (currentProvider === "custom" || isLoopbackModelEndpoint(currentBaseUrl)),
+  });
+
   const modelsForPicker = useMemo(
     () =>
-      mergeLiveOllamaCloudModels(
-        savedModels,
-        ollamaCloudDiscovery.models,
-        ollamaCloudDiscovery.status,
+      mergeLiveCustomModels(
+        mergeLiveOllamaCloudModels(
+          savedModels,
+          ollamaCloudDiscovery.models,
+          ollamaCloudDiscovery.status,
+        ),
+        currentDiscovery.models,
+        currentDiscovery.status,
+        currentProvider,
+        currentBaseUrl,
       ),
-    [savedModels, ollamaCloudDiscovery.models, ollamaCloudDiscovery.status],
+    [
+      savedModels,
+      ollamaCloudDiscovery.models,
+      ollamaCloudDiscovery.status,
+      currentDiscovery.models,
+      currentDiscovery.status,
+      currentProvider,
+      currentBaseUrl,
+    ],
   );
 
   const reload = useCallback(async (): Promise<void> => {

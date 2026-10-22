@@ -54,6 +54,7 @@ import type { GpuPreferenceMode, GpuStatus } from "../shared/gpu";
 import type { AgentCapabilitySnapshot } from "../shared/agent-capabilities";
 import type { ConnectionStatusSnapshot } from "../shared/connection-status";
 import type { SessionLocation } from "../shared/session-location";
+import type { LocalStudioBackendStatus } from "../shared/local-studio";
 import type {
   SshHermesTargetInspection,
   SshDockerProvisionResult,
@@ -1192,8 +1193,20 @@ const hermesAPI = {
     profile?: string,
     target?: ProfileEditorTarget,
   ): Promise<{
-    memory: { content: string; exists: boolean; lastModified: number | null };
-    user: { content: string; exists: boolean; lastModified: number | null };
+    memory: {
+      content: string;
+      exists: boolean;
+      lastModified: number | null;
+      charCount: number;
+      charLimit: number;
+    };
+    user: {
+      content: string;
+      exists: boolean;
+      lastModified: number | null;
+      charCount: number;
+      charLimit: number;
+    };
     stats: { totalSessions: number; totalMessages: number };
   }> => ipcRenderer.invoke("read-memory", profile, target),
 
@@ -1989,6 +2002,15 @@ const hermesAPI = {
     lines?: number,
   ): Promise<{ content: string; path: string }> =>
     ipcRenderer.invoke("read-logs", logFile, lines),
+
+  // The local Unsloth Studio backend. `ensure` starts it when a turn targets a
+  // loopback provider, so Koda does not need the standalone Studio desktop.
+  localStudio: {
+    status: (baseUrl?: string): Promise<LocalStudioBackendStatus> =>
+      ipcRenderer.invoke("local-studio-status", baseUrl),
+    ensure: (baseUrl?: string): Promise<LocalStudioBackendStatus> =>
+      ipcRenderer.invoke("local-studio-ensure", baseUrl),
+  },
 };
 
 if (process.contextIsolated) {

@@ -185,6 +185,12 @@ A config.yaml `providers:` entry surfaces as a desktop provider card/record on t
 
 `custom_providers:` entries added from the terminal **after** the library was first seeded appear via `listModels`, exactly once (idempotent dedup), with their API key persisted under the derived env var.
 
+### The row is named after the model
+
+A library row's `name` is the model's label, and the provider's name lives in `providerLabel`, which is what the provider card matches on.
+
+[[src/main/models.ts#syncAgentConfigModels]] used to copy the provider's name into the row's own name, so the one local model on offer was labelled "Unsloth Studio" — a provider name where a model id belongs, and the single reason the picker looked like it held one model. A row written by an older build is repaired on the next read, and the provider label is left intact so the card still matches it.
+
 ### Desktop deletion cleans the agent config
 
 Removing a provider in the desktop also deletes its `providers:` entry, so it stays deleted instead of re-importing on the next read.
@@ -200,6 +206,16 @@ A keyed Koda Cloud is mirrored into config.yaml as `providers: hermesone:` ([[sr
 This exists because desktop models on `inference.hermesone.org` are saved as bare `custom` + base URL, and the agent resolves `/model … --provider custom` against the **session's current** base URL — a session sitting on another provider (e.g. Nous) would send the Koda Cloud model to the wrong endpoint (the hermesone-swift → Nous-proxy 404). The named entry gives the switch a slug that always carries the right URL and `HERMESONE_API_KEY`; the dashboard transport's [[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#resolveDashboardProviderForModel]] correspondingly matches **any** gateway provider row by base URL (named user providers included, not just `custom:*` rows) before ever falling back to bare `custom`.
 
 After a named provider switch, the agent may report the live provider as `custom` or `custom:<slug>`. [[src/renderer/src/screens/Chat/hooks/useDashboardChatTransport.ts#dashboardModelMatches]] accepts that alias only when the model ID matches exactly and the requested named provider's row is marked `is_current`; a row that merely lists the model cannot validate the switch. [[tests/dashboard-chat-transport.test.ts]] covers both current-row acceptance and rejection when another provider owns the live selection.
+
+## Local Unsloth Studio provider
+
+A locally running Unsloth Studio is a first-class OpenAI-compatible endpoint on `127.0.0.1:8888`, wired into the agent's `config.yaml` as a keyed `providers:` entry by the vendor's own `unsloth start hermes --app` command.
+
+That command writes the provider as `providers.<slug>` with `base_url`, `api_mode: openai`, a `models:` map, and the API key **inline** as `api_key` — it drops `key_env` and inlines the secret. The agent resolves that entry and serves the model, verified end to end: `hermes --provider custom:<slug>` completes a request against the Studio's `/v1` route.
+
+The desktop's import path is narrower. [[src/main/agent-config-providers.ts#listAgentUserProviders]] reads only `name`, `base_url` and `key_env` from a `providers:` entry, and [[src/main/providers-store.ts]] aliases a `key_env` value to the derived [[src/shared/url-key-map.ts#customProviderEnvKey]] name. An entry carrying an inline `api_key` and no `key_env` therefore imports its **identity** — the provider card and its endpoint appear — but no key, so the desktop's own runtime key lookup finds nothing for it.
+
+Declaring `key_env` **and** placing the same value in the profile `.env` closes that gap without changing the agent's behavior. [[src/main/utils.ts#profilePaths]] resolves the `.env` beside `config.yaml`, [[src/main/config.ts#readEnv]] reads it, and the agent's dotenv loader reads the same file. The inline `api_key` stays, so the engine keeps working even where the `.env` is absent.
 
 ## Models live under each provider (OpenCode-style)
 

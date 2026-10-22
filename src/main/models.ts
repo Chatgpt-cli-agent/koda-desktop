@@ -372,6 +372,16 @@ function writeCustomProviderEnvKeys(
 }
 
 /**
+ * A library row's display label. The row is named after the *model*, the way
+ * every other row in the library is — a model id like
+ * `ornith-ai/Ornith-1.5-35B-A3B-GGUF` reads as "Ornith-1.5-35B-A3B-GGUF".
+ */
+function shortModelLabel(model: string): string {
+  const text = (model || "").trim();
+  return text.split("/").pop() || text;
+}
+
+/**
  * Merge `custom_providers:` entries from the profile's config.yaml into the
  * model library. Runs on every renderer-facing read (not just first seed), so
  * a provider the user adds from the terminal appears in the desktop without
@@ -385,29 +395,30 @@ export function syncAgentConfigModels(profile?: string): void {
   // session model switches route them by slug instead of bare `custom`.
   mirrorFirstPartyAgentProviders(profile);
 
-  let cpModels: CustomProviderEntry[];
+  let cpModels: CustomProviderEntry[] = [];
   try {
     cpModels = loadCustomProviders(profile);
   } catch (e) {
+    // The repair below does not depend on the custom providers, so a failure
+    // to read them must not stop the library from being corrected.
     console.error("Failed to load custom providers:", e);
-    return;
   }
-  if (cpModels.length === 0) return;
 
   const models = readModelsRaw();
   let modified = false;
   for (const cp of cpModels) {
-    const exists = models.some(
+    const label = shortModelLabel(cp.model) || cp.name;
+    const existing = models.find(
       (m) =>
         m.model === cp.model &&
         m.provider === cp.provider &&
         normalizeModelEndpointUrl(m.baseUrl) ===
           normalizeModelEndpointUrl(cp.baseUrl),
     );
-    if (!exists) {
+    if (!existing) {
       models.push({
         id: randomUUID(),
-        name: cp.name,
+        name: label,
         provider: cp.provider,
         model: cp.model,
         baseUrl: cp.baseUrl,
@@ -418,9 +429,32 @@ export function syncAgentConfigModels(profile?: string): void {
         createdAt: Date.now(),
       });
       modified = true;
+    } else if (existing.name === cp.name && existing.name !== label) {
+      // Repair a row that was named after its provider. The provider's name
+      // belongs in `providerLabel`, which is what the provider card matches
+      // on; the row's own name is the model. A row called "Unsloth Studio"
+      // put a provider name where a model id belongs, so the one local model
+      // on offer was indistinguishable from the provider serving it.
+      existing.name = label;
+      modified = true;
     }
     writeCustomProviderEnvKeys(profile, cp);
   }
+
+  // The same repair for every row, not only the ones the engine registered.
+  // A row the desktop added itself — a second local endpoint, say — is not in
+  // the engine's `custom_providers:` list, so the loop above never sees it,
+  // and it kept the provider's name as its own label. A row is named after
+  // its model; the provider's name belongs in `providerLabel`.
+  for (const row of models) {
+    const label = shortModelLabel(row.model);
+    if (!label || !row.providerLabel) continue;
+    if (row.name === row.providerLabel && row.name !== label) {
+      row.name = label;
+      modified = true;
+    }
+  }
+
   if (modified) writeModels(models);
 }
 

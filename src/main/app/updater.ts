@@ -11,6 +11,18 @@ interface UpdaterDeps {
 
 let autoUpdaterInstance: AppUpdater | null = null;
 
+/**
+ * An empty release feed is not an update failure.
+ *
+ * `electron-updater` reports "No published versions on GitHub" as an error
+ * when the publish target has no releases at all. There is nothing to install
+ * and nothing for the user to do, so it must not raise the red "Update failed"
+ * button — that reads as a broken install when the app is perfectly fine.
+ */
+function isEmptyReleaseFeed(message: string): boolean {
+  return /no published versions/i.test(message);
+}
+
 function updatePreferencesPath(): string {
   return join(app.getPath("userData"), "update-preferences.json");
 }
@@ -83,6 +95,13 @@ export function setupUpdater({ getMainWindow }: UpdaterDeps): void {
     getMainWindow()?.webContents.send("update-downloaded");
   });
   autoUpdater.on("error", (err) => {
+    // Nothing published yet is a normal state for a fresh feed, not a failure.
+    if (isEmptyReleaseFeed(err.message)) {
+      updaterLogger.info(
+        `[updater] No releases published yet — staying on ${app.getVersion()}.`,
+      );
+      return;
+    }
     getMainWindow()?.webContents.send("update-error", err.message);
   });
 

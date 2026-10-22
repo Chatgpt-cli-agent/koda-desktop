@@ -19,6 +19,7 @@ import type {
   RemoteGatewayCommandStatus,
 } from "../shared/gateway";
 import type { SessionModelOverride } from "../shared/model-override";
+import type { LocalStudioBackendStatus } from "../shared/local-studio";
 import type { DesktopSessionContinuationItem } from "../shared/session-continuation";
 import type { DesktopSessionLocalError } from "../shared/session-continuation";
 import type {
@@ -872,8 +873,20 @@ interface HermesAPI {
     profile?: string,
     target?: ProfileEditorTarget,
   ) => Promise<{
-    memory: { content: string; exists: boolean; lastModified: number | null };
-    user: { content: string; exists: boolean; lastModified: number | null };
+    memory: {
+      content: string;
+      exists: boolean;
+      lastModified: number | null;
+      charCount: number;
+      charLimit: number;
+    };
+    user: {
+      content: string;
+      exists: boolean;
+      lastModified: number | null;
+      charCount: number;
+      charLimit: number;
+    };
     stats: { totalSessions: number; totalMessages: number };
   }>;
 
@@ -1509,6 +1522,12 @@ interface HermesAPI {
     logFile?: string,
     lines?: number,
   ) => Promise<{ content: string; path: string }>;
+
+  // The local Unsloth Studio backend.
+  localStudio: {
+    status: (baseUrl?: string) => Promise<LocalStudioBackendStatus>;
+    ensure: (baseUrl?: string) => Promise<LocalStudioBackendStatus>;
+  };
 }
 
 declare global {

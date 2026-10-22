@@ -20,6 +20,7 @@ import {
 import { HIDDEN_SUBPROCESS_OPTIONS } from "./process-options";
 import { readProfileMeta, defaultColorForName } from "./profile-meta";
 import { isMultiplexGatewayRunning } from "./gateway-liveness";
+import { findSkillCandidates } from "./skills";
 
 const PROFILES_DIR = join(HERMES_HOME, "profiles");
 
@@ -120,24 +121,11 @@ async function readProfileConfig(profilePath: string): Promise<{
 async function countSkills(profilePath: string): Promise<number> {
   const skillsDir = join(profilePath, "skills");
   try {
-    const dirs = await fs.readdir(skillsDir);
-    let count = 0;
-    for (const d of dirs) {
-      const sub = join(skillsDir, d);
-      const stat = await fs.stat(sub);
-      if (stat.isDirectory()) {
-        const inner = await fs.readdir(sub);
-        for (const f of inner) {
-          try {
-            await fs.access(join(sub, f, "SKILL.md"));
-            count++;
-          } catch {
-            // not a skill
-          }
-        }
-      }
-    }
-    return count;
+    // The same recursive discovery the skill list uses. A separate two-level
+    // walk here made the status bar disagree with the list it describes: the
+    // list showed every skill, the counter missed the nested ones.
+    if (!existsSync(skillsDir)) return 0;
+    return findSkillCandidates(skillsDir).length;
   } catch {
     return 0;
   }

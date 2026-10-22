@@ -1,11 +1,11 @@
 import { execFileSync } from "child_process";
 import {
+  type Dirent,
   existsSync,
   readdirSync,
   readFileSync,
   realpathSync,
   rmSync,
-  statSync,
 } from "fs";
 import { isAbsolute, join, relative, resolve } from "path";
 import { homedir } from "os";
@@ -70,8 +70,66 @@ function parseSkillFrontmatter(content: string): {
 }
 
 /**
+ * A skill found on disk: the directory that holds `SKILL.md`, the category it
+ * belongs to, and the directory name of the skill itself.
+ */
+interface SkillCandidate {
+  dir: string;
+  category: string;
+  entry: string;
+}
+
+/**
+ * The deepest level the skills tree is scanned to. Skills are installed
+ * directly under the root, but a category may nest sub-categories, and the
+ * engine's own discovery is not depth-limited either.
+ */
+const MAX_SKILL_SCAN_DEPTH = 8;
+
+/**
+ * Find every skill under a skills root.
+ *
+ * A skill is any directory holding a `SKILL.md` at least two levels below the
+ * root, and its category is the FIRST path segment — exactly how the agent
+ * engine derives it (`skills/mlops/evaluation/evaluating-llms-harness` is an
+ * `mlops` skill). The engine discovers skills at any depth, so a two-level
+ * walk hides every skill installed in a nested category.
+ */
+export function findSkillCandidates(root: string): SkillCandidate[] {
+  const found: SkillCandidate[] = [];
+
+  const walk = (dir: string, depth: number, category: string): void => {
+    if (depth > MAX_SKILL_SCAN_DEPTH) return;
+    let entries: Dirent[];
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      if (entry.name.startsWith(".")) continue;
+      const child = join(dir, entry.name);
+      if (existsSync(join(child, "SKILL.md"))) {
+        // A skill must sit at least one category below the root.
+        if (depth >= 1) {
+          found.push({ dir: child, category, entry: entry.name });
+        }
+        // A skill's own subdirectories hold support files (references/,
+        // templates/), not further skills.
+        continue;
+      }
+      walk(child, depth + 1, category || entry.name);
+    }
+  };
+
+  walk(root, 0, "");
+  return found;
+}
+
+/**
  * Walk the skills directory to find all installed skills.
- * Structure: skills/<category>/<skill-name>/SKILL.md
+ * Structure: skills/<category>/<skill-name>/SKILL.md, nested categories included.
  */
 export function listInstalledSkills(profile?: string): InstalledSkill[] {
   const skillsDir = join(profileHome(profile), "skills");
@@ -79,43 +137,28 @@ export function listInstalledSkills(profile?: string): InstalledSkill[] {
 
   const skills: InstalledSkill[] = [];
 
-  try {
-    const categories = readdirSync(skillsDir);
+  for (const candidate of findSkillCandidates(skillsDir)) {
+    try {
+      const content = readFileSync(
+        join(candidate.dir, "SKILL.md"),
+        "utf-8",
+      ).slice(0, 4000);
+      const meta = parseSkillFrontmatter(content);
 
-    for (const category of categories) {
-      const categoryPath = join(skillsDir, category);
-      if (!statSync(categoryPath).isDirectory()) continue;
-
-      const entries = readdirSync(categoryPath);
-      for (const entry of entries) {
-        const entryPath = join(categoryPath, entry);
-        if (!statSync(entryPath).isDirectory()) continue;
-
-        const skillFile = join(entryPath, "SKILL.md");
-        if (!existsSync(skillFile)) continue;
-
-        try {
-          const content = readFileSync(skillFile, "utf-8").slice(0, 4000);
-          const meta = parseSkillFrontmatter(content);
-
-          skills.push({
-            name: meta.name || entry,
-            category,
-            description: meta.description || "",
-            path: entryPath,
-          });
-        } catch {
-          skills.push({
-            name: entry,
-            category,
-            description: "",
-            path: entryPath,
-          });
-        }
-      }
+      skills.push({
+        name: meta.name || candidate.entry,
+        category: candidate.category,
+        description: meta.description || "",
+        path: candidate.dir,
+      });
+    } catch {
+      skills.push({
+        name: candidate.entry,
+        category: candidate.category,
+        description: "",
+        path: candidate.dir,
+      });
     }
-  } catch {
-    // ignore
   }
 
   return skills.sort(
@@ -236,45 +279,30 @@ export function listBundledSkills(): SkillSearchResult[] {
 
   const skills: SkillSearchResult[] = [];
 
-  try {
-    const categories = readdirSync(bundledDir);
+  for (const candidate of findSkillCandidates(bundledDir)) {
+    try {
+      const content = readFileSync(
+        join(candidate.dir, "SKILL.md"),
+        "utf-8",
+      ).slice(0, 4000);
+      const meta = parseSkillFrontmatter(content);
 
-    for (const category of categories) {
-      const catPath = join(bundledDir, category);
-      if (!statSync(catPath).isDirectory()) continue;
-
-      const entries = readdirSync(catPath);
-      for (const entry of entries) {
-        const entryPath = join(catPath, entry);
-        if (!statSync(entryPath).isDirectory()) continue;
-
-        const skillFile = join(entryPath, "SKILL.md");
-        if (!existsSync(skillFile)) continue;
-
-        try {
-          const content = readFileSync(skillFile, "utf-8").slice(0, 4000);
-          const meta = parseSkillFrontmatter(content);
-
-          skills.push({
-            name: meta.name || entry,
-            description: meta.description || "",
-            category,
-            source: "bundled",
-            installed: false,
-          });
-        } catch {
-          skills.push({
-            name: entry,
-            description: "",
-            category,
-            source: "bundled",
-            installed: false,
-          });
-        }
-      }
+      skills.push({
+        name: meta.name || candidate.entry,
+        description: meta.description || "",
+        category: candidate.category,
+        source: "bundled",
+        installed: false,
+      });
+    } catch {
+      skills.push({
+        name: candidate.entry,
+        description: "",
+        category: candidate.category,
+        source: "bundled",
+        installed: false,
+      });
     }
-  } catch {
-    // ignore
   }
 
   return skills.sort(
@@ -414,28 +442,21 @@ export function uninstallSkill(name: string, profile?: string): SkillCliResult {
   const skillsDir = join(profileHome(profile), "skills");
   if (existsSync(skillsDir)) {
     try {
-      for (const category of readdirSync(skillsDir)) {
-        const categoryPath = join(skillsDir, category);
-        if (!statSync(categoryPath).isDirectory()) continue;
-        for (const entry of readdirSync(categoryPath)) {
-          const entryPath = join(categoryPath, entry);
-          if (!statSync(entryPath).isDirectory()) continue;
+      for (const candidate of findSkillCandidates(skillsDir)) {
+        let skillName: string;
+        try {
+          const content = readFileSync(
+            join(candidate.dir, "SKILL.md"),
+            "utf-8",
+          ).slice(0, 4000);
+          skillName = parseSkillFrontmatter(content).name || candidate.entry;
+        } catch {
+          skillName = candidate.entry;
+        }
 
-          const skillFile = join(entryPath, "SKILL.md");
-          if (!existsSync(skillFile)) continue;
-
-          let skillName: string;
-          try {
-            const content = readFileSync(skillFile, "utf-8").slice(0, 4000);
-            skillName = parseSkillFrontmatter(content).name || entry;
-          } catch {
-            skillName = entry;
-          }
-
-          if (skillName === name || entry === name) {
-            rmSync(entryPath, { recursive: true, force: true });
-            return { success: true };
-          }
+        if (skillName === name || candidate.entry === name) {
+          rmSync(candidate.dir, { recursive: true, force: true });
+          return { success: true };
         }
       }
     } catch {

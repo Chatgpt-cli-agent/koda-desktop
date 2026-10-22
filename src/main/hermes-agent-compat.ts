@@ -51,6 +51,16 @@ const MODEL_LIBRARY_COMPAT_END =
   "# --- /HERMES_ONE_MODEL_LIBRARY_COMPAT_V1 ------------------------------------";
 const DASHBOARD_SPA_MOUNT_ANCHOR = "mount_spa(app)";
 
+/**
+ * Which object the injected model-library routes are registered on.
+ *
+ * The engine used to declare them on the FastAPI app in `web_server.py`; it
+ * now declares its model routes on a router module that the app includes
+ * later. Both layouts are supported, because the desktop must keep working
+ * across an engine update.
+ */
+export type ModelLibraryRouterName = "app" | "router";
+
 const MODEL_LIBRARY_COMPAT_SOURCE = `
 
 # --- HERMES_ONE_MODEL_LIBRARY_COMPAT_V1 -------------------------------------
@@ -60,6 +70,22 @@ const MODEL_LIBRARY_COMPAT_SOURCE = `
 # deliberately stored in this agent's HERMES_HOME so remote shortcuts stay on
 # the remote host and survive desktop restarts without changing upstream model
 # assignment semantics.
+#
+# The imports below are deliberate: this block is injected into whichever
+# module holds the engine's model routes, and those modules do not share a
+# namespace. Importing what the block needs keeps it working across the
+# engine's own refactors.
+import json
+import secrets
+import time
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+from fastapi import HTTPException
+
+from hermes_cli.config import get_hermes_home
+
+
 def _hermes_one_profile_home(profile=None):
     requested = str(profile or "").strip()
     if not requested or requested.lower() == "current":
@@ -235,7 +261,7 @@ def _hermes_one_model_row_from_config(cfg):
     return row
 
 
-@app.get("/api/model/library")
+@__KODA_ROUTER__.get("/api/model/library")
 def hermes_one_get_model_library(profile: Optional[str] = None):
     rows = _hermes_one_read_model_library(profile)
     current = _hermes_one_current_model_row(profile)
@@ -245,7 +271,7 @@ def hermes_one_get_model_library(profile: Optional[str] = None):
     return {"models": rows}
 
 
-@app.post("/api/model/library")
+@__KODA_ROUTER__.post("/api/model/library")
 def hermes_one_add_model_library_row(body: Dict[str, Any], profile: Optional[str] = None):
     provider = str(body.get("provider", "") or "").strip()
     model = str(body.get("model", "") or "").strip()
@@ -271,7 +297,7 @@ def hermes_one_add_model_library_row(body: Dict[str, Any], profile: Optional[str
     return row
 
 
-@app.patch("/api/model/library/{model_id:path}")
+@__KODA_ROUTER__.patch("/api/model/library/{model_id:path}")
 def hermes_one_update_model_library_row(model_id: str, body: Dict[str, Any], profile: Optional[str] = None):
     rows = _hermes_one_read_model_library(profile)
     for index, row in enumerate(rows):
@@ -292,7 +318,7 @@ def hermes_one_update_model_library_row(model_id: str, body: Dict[str, Any], pro
     raise HTTPException(status_code=404, detail="model not found")
 
 
-@app.delete("/api/model/library/{model_id:path}")
+@__KODA_ROUTER__.delete("/api/model/library/{model_id:path}")
 def hermes_one_delete_model_library_row(model_id: str, profile: Optional[str] = None):
     rows = _hermes_one_read_model_library(profile)
     filtered = [row for row in rows if row.get("id") != model_id]
@@ -302,6 +328,13 @@ def hermes_one_delete_model_library_row(model_id: str, profile: Optional[str] = 
     return {"ok": True}
 # --- /HERMES_ONE_MODEL_LIBRARY_COMPAT_V1 ------------------------------------
 `;
+
+/** The injected block, bound to the router object of the target layout. */
+export function modelLibraryCompatSource(
+  routerName: ModelLibraryRouterName = "app",
+): string {
+  return MODEL_LIBRARY_COMPAT_SOURCE.replace(/__KODA_ROUTER__/g, routerName);
+}
 
 function compatMarkerPath(): string {
   return join(HERMES_HOME, "desktop-compat", "dashboard-embedded-chat.json");
@@ -372,9 +405,11 @@ export function patchDashboardEmbeddedChatSource(
 
 export function patchDashboardModelLibrarySource(
   source: string,
+  routerName: ModelLibraryRouterName = "app",
 ): DashboardSourcePatchResult {
   const withoutExisting = removeModelLibraryCompatBlock(source);
-  if (!withoutExisting.source.includes('@app.post("/api/model/set")')) {
+  const setRoute = `@${routerName}.post("/api/model/set")`;
+  if (!withoutExisting.source.includes(setRoute)) {
     return {
       compatible: false,
       changed: false,
@@ -383,7 +418,10 @@ export function patchDashboardModelLibrarySource(
     };
   }
 
-  const patched = insertModelLibraryCompatBlock(withoutExisting.source);
+  const patched = insertModelLibraryCompatBlock(
+    withoutExisting.source,
+    routerName,
+  );
   if (patched === source) {
     return {
       compatible: true,
@@ -417,14 +455,23 @@ function removeModelLibraryCompatBlock(source: string): {
   return { source: before + after, removed: true };
 }
 
-function insertModelLibraryCompatBlock(source: string): string {
-  const block = MODEL_LIBRARY_COMPAT_SOURCE.trimEnd();
-  const anchorIndex = source.indexOf(DASHBOARD_SPA_MOUNT_ANCHOR);
-  if (anchorIndex >= 0) {
-    const before = source.slice(0, anchorIndex).replace(/\n*$/, "\n");
-    const after = source.slice(anchorIndex);
-    return `${before}${block}\n\n${after}`;
+function insertModelLibraryCompatBlock(
+  source: string,
+  routerName: ModelLibraryRouterName,
+): string {
+  const block = modelLibraryCompatSource(routerName);
+  if (routerName === "app") {
+    // The legacy layout mounts the dashboard SPA catch-all in the same file,
+    // so the routes must be registered before that mount.
+    const anchorIndex = source.indexOf(DASHBOARD_SPA_MOUNT_ANCHOR);
+    if (anchorIndex >= 0) {
+      const before = source.slice(0, anchorIndex).replace(/\n*$/, "\n");
+      const after = source.slice(anchorIndex);
+      return `${before}${block}\n\n${after}`;
+    }
   }
+  // The router layout is included into the app before the SPA catch-all, so
+  // appending to the router module registers the routes in the right order.
   return `${source.trimEnd()}\n${block}\n`;
 }
 
@@ -480,37 +527,114 @@ export function writeCompatFileAtomically(path: string, source: string): void {
   }
 }
 
+/**
+ * Where the engine keeps its model routes.
+ *
+ * The engine moved them out of `web_server.py` and into a router module that
+ * the app includes. Both layouts are supported, so a desktop that outlives an
+ * engine update keeps its model-library endpoints.
+ */
+function resolveModelLibraryTarget(): {
+  path: string;
+  routerName: ModelLibraryRouterName;
+} | null {
+  const routerPath = join(
+    HERMES_REPO,
+    "hermes_cli",
+    "web_routers",
+    "models.py",
+  );
+  if (existsSync(routerPath)) {
+    const source = readFileSync(routerPath, "utf-8");
+    if (source.includes('@router.post("/api/model/set")')) {
+      return { path: routerPath, routerName: "router" };
+    }
+  }
+  const appPath = join(HERMES_REPO, "hermes_cli", "web_server.py");
+  const source = readFileSync(appPath, "utf-8");
+  if (source.includes('@app.post("/api/model/set")')) {
+    return { path: appPath, routerName: "app" };
+  }
+  return null;
+}
+
 export function ensureLocalDashboardCompatibility(): HermesAgentCompatResult {
   const path = join(HERMES_REPO, "hermes_cli", "web_server.py");
   try {
     const source = readFileSync(path, "utf-8");
-    const patched = patchDashboardCompatibilitySource(source);
-    if (!patched.compatible) {
+    // The embedded-chat default lives in web_server.py in both layouts.
+    const embedded = patchDashboardEmbeddedChatSource(source);
+    const details: string[] = [embedded.detail];
+    let changed = embedded.changed;
+
+    if (!embedded.compatible) {
       const result: HermesAgentCompatResult = {
         ok: false,
         target: "local",
         compatible: false,
         applied: false,
         version: HERMES_AGENT_COMPAT_VERSION,
-        detail: patched.detail,
+        detail: details.join(" "),
         path,
       };
       writeLocalMarker(result);
       return result;
     }
 
-    if (patched.changed) {
-      writeCompatFileAtomically(path, patched.source);
+    const target = resolveModelLibraryTarget();
+    if (!target) {
+      const result: HermesAgentCompatResult = {
+        ok: false,
+        target: "local",
+        compatible: false,
+        applied: false,
+        version: HERMES_AGENT_COMPAT_VERSION,
+        detail: `${details.join(" ")} Could not find Koda model REST endpoints in the engine.`,
+        path,
+      };
+      writeLocalMarker(result);
+      return result;
+    }
+
+    const modelLibrary = patchDashboardModelLibrarySource(
+      // When both patches land in the same file, the model-library block must
+      // be applied on top of the embedded-chat change — not on the original.
+      target.path === path
+        ? embedded.source
+        : readFileSync(target.path, "utf-8"),
+      target.routerName,
+    );
+    details.push(modelLibrary.detail);
+    if (!modelLibrary.compatible) {
+      const result: HermesAgentCompatResult = {
+        ok: false,
+        target: "local",
+        compatible: false,
+        applied: false,
+        version: HERMES_AGENT_COMPAT_VERSION,
+        detail: details.join(" "),
+        path: target.path,
+      };
+      writeLocalMarker(result);
+      return result;
+    }
+    changed ||= modelLibrary.changed;
+
+    if (embedded.changed) {
+      writeCompatFileAtomically(path, embedded.source);
+    }
+    if (modelLibrary.changed) {
+      writeCompatFileAtomically(target.path, modelLibrary.source);
     }
 
     const result: HermesAgentCompatResult = {
       ok: true,
       target: "local",
       compatible: true,
-      applied: patched.changed,
+      applied: changed,
       version: HERMES_AGENT_COMPAT_VERSION,
-      detail: patched.detail,
-      path,
+      detail: details.join(" "),
+      path: target.path,
     };
     writeLocalMarker(result);
     return result;
@@ -594,14 +718,24 @@ def remove_model_library_compat_block(text):
     before = re.sub(r"\n*$", "\n", text[:start])
     after = re.sub(r"^\n*", "", text[after_end:])
     return before + after, True
-def insert_model_library_compat_block(text):
-    block = model_library_compat_source.rstrip()
-    index = text.find(dashboard_spa_mount_anchor)
-    if index >= 0:
-        before = re.sub(r"\n*$", "\n", text[:index])
-        after = text[index:]
-        return before + block + "\n\n" + after
+def insert_model_library_compat_block(text, router_name):
+    block = model_library_compat_source.replace("__KODA_ROUTER__", router_name).rstrip()
+    if router_name == "app":
+        index = text.find(dashboard_spa_mount_anchor)
+        if index >= 0:
+            before = re.sub(r"\n*$", "\n", text[:index])
+            after = text[index:]
+            return before + block + "\n\n" + after
     return text.rstrip() + "\n" + block + "\n"
+def write_atomic(target_path, text):
+    backup_path = target_path + ".orig"
+    tmp_path = target_path + ".hermes-one-%s.tmp" % os.getpid()
+    if not os.path.exists(backup_path):
+        with open(target_path, "rb") as src, open(backup_path, "wb") as dst:
+            dst.write(src.read())
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        f.write(text)
+    os.replace(tmp_path, target_path)
 if re.search(r"\b_DASHBOARD_EMBEDDED_CHAT_ENABLED\s*=\s*True\b", source):
     compatible = True
     details.append("Dashboard embedded chat is always enabled by this Koda Agent.")
@@ -617,11 +751,29 @@ else:
     compatible = False
     details.append("Could not find the Koda Agent embedded_chat default in web_server.py.")
 if compatible:
-    original_source = source
-    source_without_model_library, removed_model_library = remove_model_library_compat_block(source)
-    if '@app.post("/api/model/set")' in source_without_model_library:
-        source = insert_model_library_compat_block(source_without_model_library)
-        if source != original_source:
+    # The engine moved its model routes into a router module that the app
+    # includes; the older layout declared them on the app itself.
+    model_path = path
+    router_name = "app"
+    router_candidate = os.path.join(os.path.dirname(path), "web_routers", "models.py")
+    if os.path.exists(router_candidate):
+        with open(router_candidate, "r", encoding="utf-8") as f:
+            router_source = f.read()
+        if '@router.post("/api/model/set")' in router_source:
+            model_path = router_candidate
+            router_name = "router"
+    if model_path == path:
+        # Same file as the embedded-chat default: build on that change.
+        model_source = source
+    else:
+        with open(model_path, "r", encoding="utf-8") as f:
+            model_source = f.read()
+    original_source = model_source
+    source_without_model_library, removed_model_library = remove_model_library_compat_block(model_source)
+    set_route = '@%s.post("/api/model/set")' % router_name
+    if set_route in source_without_model_library:
+        model_source = insert_model_library_compat_block(source_without_model_library, router_name)
+        if model_source != original_source:
             changed = True
             if removed_model_library:
                 details.append("Moved the Koda model library endpoint before the dashboard catch-all route.")
@@ -629,18 +781,15 @@ if compatible:
                 details.append("Installed the Koda model library endpoint.")
         else:
             details.append("The Koda model library endpoint is already installed.")
+        if model_path == path:
+            source = model_source
     else:
         compatible = False
         details.append("Could not find Koda Agent model REST endpoints in web_server.py.")
 if changed and compatible:
-    backup_path = path + ".orig"
-    tmp_path = path + ".hermes-one-%s.tmp" % os.getpid()
-    if not os.path.exists(backup_path):
-        with open(path, "rb") as src, open(backup_path, "wb") as dst:
-            dst.write(src.read())
-    with open(tmp_path, "w", encoding="utf-8") as f:
-        f.write(source)
-    os.replace(tmp_path, path)
+    write_atomic(path, source)
+    if model_path != path:
+        write_atomic(model_path, model_source)
 marker_dir = os.path.expanduser("~/.hermes/desktop-compat")
 try:
     os.makedirs(marker_dir, exist_ok=True)

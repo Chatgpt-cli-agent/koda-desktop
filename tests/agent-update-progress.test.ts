@@ -138,6 +138,9 @@ it("echoes only the supplied update owner while retaining legacy callers", async
     const send = vi.fn();
     const run = handler({
       getConnectionConfig: () => ({ mode: "local" }),
+      getDashboardStatus: async () => ({ running: false }),
+      stopAllDashboards: vi.fn(),
+      startDashboard: vi.fn(),
       runHermesUpdate: async (emit: (p: unknown) => void) =>
         emit({
           operation: "update",
@@ -264,6 +267,9 @@ it("keeps Local command output and validation running after the window closes", 
   const clear = vi.fn();
   const run = handler({
     getConnectionConfig: () => ({ mode: "local" }),
+    getDashboardStatus: async () => ({ running: false }),
+    stopAllDashboards: vi.fn(),
+    startDashboard: vi.fn(),
     runHermesUpdate: async (emit: (p: unknown) => void) => {
       destroyed = true;
       emit({
@@ -306,4 +312,62 @@ it("reports real SSH operation failures even when progress has no receiver", asy
   expect(calls).toEqual(["update", "compatibility"]);
   expect(scope.setSshRemoteApiKey).not.toHaveBeenCalled();
   expect(scope.clearAgentCapabilityEvidence).not.toHaveBeenCalled();
+});
+
+// @lat: [[desktop-updates#The engine update releases the venv first#The dashboard is stopped before the updater runs]]
+it("releases the engine venv before the update and restores the dashboard after", async () => {
+  const calls: string[] = [];
+  const run = handler({
+    getConnectionConfig: () => ({ mode: "local" }),
+    getDashboardStatus: async () => {
+      calls.push("status");
+      return { running: true };
+    },
+    stopAllDashboards: async () => {
+      calls.push("stop");
+    },
+    startDashboard: async () => {
+      calls.push("start");
+    },
+    runHermesUpdate: async () => {
+      calls.push("update");
+    },
+    ensureLocalDashboardCompatibility: () => ({ ok: true }),
+    clearAgentCapabilityEvidence: vi.fn(),
+    getActiveConnection: () => ({ connectionId: "local-fixture" }),
+  });
+  expect(
+    await run({ sender: { send: vi.fn(), isDestroyed: () => false } }),
+  ).toEqual({ success: true });
+  // The dashboard holds the engine venv, so it must be gone before the
+  // updater runs and back afterwards.
+  expect(calls).toEqual(["status", "stop", "update", "start"]);
+});
+
+// @lat: [[desktop-updates#The engine update releases the venv first#A dashboard that was not running is not started]]
+it("leaves a dashboard that was not running alone", async () => {
+  const calls: string[] = [];
+  const run = handler({
+    getConnectionConfig: () => ({ mode: "local" }),
+    getDashboardStatus: async () => {
+      calls.push("status");
+      return { running: false };
+    },
+    stopAllDashboards: async () => {
+      calls.push("stop");
+    },
+    startDashboard: async () => {
+      calls.push("start");
+    },
+    runHermesUpdate: async () => {
+      calls.push("update");
+    },
+    ensureLocalDashboardCompatibility: () => ({ ok: true }),
+    clearAgentCapabilityEvidence: vi.fn(),
+    getActiveConnection: () => ({ connectionId: "local-fixture" }),
+  });
+  expect(
+    await run({ sender: { send: vi.fn(), isDestroyed: () => false } }),
+  ).toEqual({ success: true });
+  expect(calls).toEqual(["status", "update"]);
 });

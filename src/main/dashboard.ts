@@ -22,6 +22,7 @@ import {
 import { buildLocalDashboardCliArgs } from "./dashboard-launch";
 import { dashboardWebSocketUrlForRenderer } from "./dashboard-websocket-relay";
 import { ensureLocalDashboardCompatibility } from "./hermes-agent-compat";
+import { ensureLocalPersonaCompatibility } from "./koda-persona";
 import { HIDDEN_SUBPROCESS_OPTIONS } from "./process-options";
 import {
   buildRemoteOAuthWsUrl,
@@ -739,6 +740,11 @@ async function startLocalDashboard(
     : compat.error
       ? `${compat.detail}: ${compat.error}`
       : compat.detail;
+
+  // The engine's own identity constants are rewritten before the engine
+  // starts, so a session with no persona file still answers as Koda. The
+  // engine is replaced by its updater, so this is re-applied every launch.
+  ensureLocalPersonaCompatibility();
 
   const token = randomBytes(24).toString("hex");
   const port = await getFreePort();

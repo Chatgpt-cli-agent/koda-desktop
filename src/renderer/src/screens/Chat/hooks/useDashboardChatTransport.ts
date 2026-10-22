@@ -345,6 +345,34 @@ export function dashboardModelCommand(
   return `/model ${model} --provider ${provider}`;
 }
 
+/**
+ * A turn that targets a loopback provider is served by the local Studio
+ * backend. Koda starts that backend when it is not already running, so the
+ * app works without the standalone Studio desktop being open.
+ */
+async function ensureLocalStudioBackend(
+  baseUrl: string | undefined,
+): Promise<void> {
+  if (!baseUrl) return;
+  let url: URL;
+  try {
+    url = new URL(baseUrl);
+  } catch {
+    return;
+  }
+  const host = url.hostname.toLowerCase();
+  if (host !== "localhost" && host !== "127.0.0.1" && host !== "::1") return;
+  const api = window.hermesAPI?.localStudio;
+  if (!api || typeof api.ensure !== "function") return;
+  const result = await api.ensure(baseUrl);
+  if (!result?.running) {
+    throw new Error(
+      result?.error ||
+        "The local Studio backend is not available for this model.",
+    );
+  }
+}
+
 function normalizeBaseUrl(value: string | undefined): string {
   return (value || "").trim().replace(/\/+$/, "").toLowerCase();
 }
@@ -1856,6 +1884,7 @@ export function useDashboardChatTransport({
       sessionId: string,
       assertCurrent?: () => void,
     ): Promise<string> => {
+      await ensureLocalStudioBackend(modelBaseUrl);
       const command = dashboardModelCommand(provider, model);
       if (!command) return sessionId;
       const resetRuntimeSession = async (

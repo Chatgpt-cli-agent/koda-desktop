@@ -2,7 +2,7 @@
 
 Desktop updates use GitHub releases and expose both a startup upgrade action and a Settings auto-upgrade preference.
 
-The Electron main process configures `electron-updater` against the repository publisher metadata from `electron-builder.yml`, which points at `fathah/hermes-desktop`. [[src/main/app/updater.ts#setupUpdater]] registers update IPC handlers, persists the auto-upgrade preference under Electron `userData`, and applies that preference to `autoUpdater.autoDownload`.
+The Electron main process configures `electron-updater` against the repository publisher metadata from `electron-builder.yml`, which points at Koda's own release repository `Chatgpt-cli-agent/koda-desktop` — never upstream's repository. [[src/main/app/updater.ts#setupUpdater]] registers update IPC handlers, persists the auto-upgrade preference under Electron `userData`, and applies that preference to `autoUpdater.autoDownload`.
 
 When GitHub reports a newer release, [[src/renderer/src/screens/Layout/Layout.tsx#Layout]] shows an upgrade button in the sidebar footer as soon as the app reaches the main layout. The button downloads the update when needed, shows download progress, and changes into a restart action after the update is ready.
 
@@ -43,6 +43,30 @@ Actual About and Settings state retain byte totals and speed, show fractional pr
 ### Unknown and inactive download feedback
 
 Unknown downloads omit fake zero-percent values. An inactive measurement triggers one waiting deadline, hides stale speed, retains bytes and recovers after progress resumes without persistent polling.
+
+## An empty release feed is not a failure
+
+A repository with no published releases is a normal state, and it must not be reported as a broken update.
+
+`electron-updater` raises "No published versions on GitHub" as an error when the publish target carries no releases at all. There is nothing to install and nothing for the user to do, so the error must not raise the red upgrade button — that reads as a broken install when the app is perfectly fine. [[src/main/app/updater.ts#isEmptyReleaseFeed]] classifies that message, and [[src/main/app/updater.ts#setupUpdater]] logs it and returns without emitting `update-error`. Every other updater error still surfaces.
+
+## The engine update releases the venv first
+
+The in-app "Update Engine" action can only succeed if Koda stops holding the engine install's venv before the updater runs.
+
+The engine updater refuses to modify a venv that another process still holds — on Windows the native extensions would be locked mid-write — and exits 2 to say so. Koda's own local dashboard is such a holder, because it runs `hermes dashboard --isolated` from that venv. The engine stops the holders it can positively identify on its own, but a Desktop-owned dashboard is refused rather than killed, so the desktop has to release it. [[src/main/ipc/register.ts#registerIpcHandlers]] therefore stops the local dashboard before the update, and starts it again afterwards. Remote and SSH installs are updated on their own hosts and are left alone. The dashboard is restored whether the update succeeded or failed.
+
+### The dashboard is stopped before the updater runs
+
+The stop happens first, and the restart happens last, so the updater never meets a live holder.
+
+The order is the whole point: an update that starts before the dashboard is stopped fails with exit 2, and a dashboard that is not brought back leaves the app without its engine. The stop awaits the dashboard process actually exiting, so the venv's file handles are already released when the updater begins.
+
+### A dashboard that was not running is not started
+
+An update that finds no dashboard running must not leave one behind.
+
+Stopping a dashboard that was never running and then starting it would replace a deliberately idle engine with a running one. The restore only happens when a dashboard was actually stopped.
 
 ## Agent phases
 
@@ -163,6 +187,24 @@ Electron Builder explicitly unpacks `node_modules/better-sqlite3/prebuilds/*.nod
 Linux packages use the space-free `/opt/Koda` directory while macOS uses the `Koda.app` bundle and the `Koda` executable name. RPM filenames retain the `.rpm` extension expected by release uploads.
 
 The global packaging product name supplies Electron Builder's Linux install-directory component. The explicit macOS `executableName` preserves its bundle path, and platform display labels retain Koda. Linux package setup uses the builder's default hooks. [[tests/packaging-identity.test.ts]] validates the configuration with the installed Electron Builder schema and evaluates its real application metadata and artifact macros.
+
+#### The display name distinguishes the application
+
+`productName` stays space-free, and the display name is a separate field that says "Koda Desktop".
+
+`productName` decides the Linux install path and the macOS bundle name, and whitespace there crashes Chromium's zygote, so it cannot carry the full name. The user-facing name is set through `nsis.shortcutName`, `nsis.uninstallDisplayName`, `linux.desktop.entry.Name` and `mac.extendInfo.CFBundleDisplayName`. It says "Koda Desktop" because the bare product name is also the name of the older Unsloth Studio shell: a shortcut, an Installed Apps entry and a window all called just "Koda" cannot be told apart from it.
+
+#### The window title names the application
+
+The window is titled "Koda Desktop", and the runtime fallback agrees with the HTML shell.
+
+[[src/renderer/index.html]] and [[src/renderer/src/main.tsx]] set the same title. Two windows on one desktop both titled "Koda" cannot be told apart, so the title names the application rather than the product family.
+
+#### The package carries no build caches
+
+The asar holds the runtime and nothing the build left behind.
+
+`npm run build` type-checks before it packages, and `tsc -b` writes an incremental cache next to the sources. The node cache was excluded from the package; the web cache was not, so a build cache shipped inside the archive. `electron-builder.yml` now excludes both, and [[tests/packaging-identity.test.ts]] resolves the package's own exclusion globs to prove it.
 
 ### Linux package sandbox and AppArmor
 

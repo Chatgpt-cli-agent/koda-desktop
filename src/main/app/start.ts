@@ -3,9 +3,15 @@ import { app, BrowserWindow, nativeTheme, session, shell } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../../resources/icon.png?asset";
-import { getPublicConnectionConfig } from "../config";
+import { getPublicConnectionConfig, getModelConfig } from "../config";
 import { stopHealthPolling } from "../hermes";
+import {
+  ensureLocalStudioBackend,
+  localStudioTargetFor,
+  stopLocalStudioBackend,
+} from "../local-studio";
 import { beginDashboardShutdown, stopAllDashboards } from "../dashboard";
+import { ensureAllKodaPersonas } from "../koda-persona";
 import { cleanupTempMediaFiles } from "../media";
 import { closeDbConnection } from "../db";
 import { beginSshTunnelShutdown, stopSshTunnel } from "../ssh-tunnel";
@@ -107,6 +113,11 @@ export function startMainProcess(): void {
 
     createWindow();
     buildMenu({ getMainWindow: () => mainWindow, openExternalUrl });
+    void startLocalStudioIfConfigured();
+    // The engine seeds the assistant's persona file itself, and it seeds the
+    // old product's name into it. Koda re-asserts its own identity before the
+    // renderer can ask for the persona — a persona the user wrote is kept.
+    ensureAllKodaPersonas();
 
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -132,6 +143,9 @@ export function startMainProcess(): void {
         // relaunch leaks another tunnel and the port drifts (18642 → 61799 → …).
         stopSshTunnel();
         closeDbConnection();
+        // The local Studio backend Koda started goes with it. A backend that was
+        // already running belongs to whoever started it and is left alone.
+        await stopLocalStudioBackend();
       }
     },
     () => {
@@ -139,6 +153,32 @@ export function startMainProcess(): void {
       beginSshTunnelShutdown();
     },
   );
+}
+
+/**
+ * The configured model may be served by the local Unsloth Studio backend.
+ * Starting it here means Koda can answer a turn with a local model without the
+ * standalone Studio desktop being open. A backend that is already running is
+ * reused and left alone.
+ */
+async function startLocalStudioIfConfigured(): Promise<void> {
+  try {
+    const { baseUrl } = getModelConfig();
+    const target = localStudioTargetFor(baseUrl);
+    if (!target) return;
+    const result = await ensureLocalStudioBackend(target);
+    if (!result.running) {
+      console.warn(
+        "[LOCAL-STUDIO]",
+        result.error ?? "The local Studio backend is not running.",
+      );
+    }
+  } catch (err) {
+    console.warn(
+      "[LOCAL-STUDIO] Could not start the local Studio backend:",
+      err instanceof Error ? err.message : err,
+    );
+  }
 }
 
 function notifyConnectionConfigChanged(): void {

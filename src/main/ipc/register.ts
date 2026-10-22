@@ -38,6 +38,14 @@ import type { SessionModelOverride } from "../../shared/model-override";
 import type { SessionLocation } from "../../shared/session-location";
 import type { AppLocale } from "../../shared/i18n/types";
 import { normalizeModelEndpointUrl } from "../../shared/model-endpoint";
+import type { LocalStudioBackendStatus } from "../../shared/local-studio";
+import {
+  DEFAULT_LOCAL_STUDIO_PORT,
+  ensureLocalStudioBackend,
+  getLocalStudioBackendStatus,
+  isLocalStudioInstalled,
+  localStudioTargetFor,
+} from "../local-studio";
 import type {
   DesktopSessionContinuationItem,
   DesktopSessionLocalError,
@@ -172,6 +180,7 @@ import {
   freshDashboardWebSocketUrl,
   getDashboardStatus,
   startDashboard,
+  stopAllDashboards,
   stopDashboard,
 } from "../dashboard";
 import {
@@ -865,6 +874,29 @@ export function registerIpcHandlers(context: IpcContext): void {
   });
   ipcMain.handle("relaunch-app", () => relaunchApp());
 
+  // The local Unsloth Studio backend. The renderer asks for it before a turn
+  // that targets a loopback provider, so Koda works without the standalone
+  // Studio desktop being open. A backend that is already running is reused
+  // and left alone.
+  ipcMain.handle("local-studio-status", async (_event, baseUrl?: string) => {
+    const target = localStudioTargetFor(baseUrl);
+    return getLocalStudioBackendStatus(target);
+  });
+  ipcMain.handle("local-studio-ensure", async (_event, baseUrl?: string) => {
+    const target = localStudioTargetFor(baseUrl);
+    if (!target) {
+      return {
+        installed: isLocalStudioInstalled(),
+        running: false,
+        owned: false,
+        baseUrl: "",
+        port: DEFAULT_LOCAL_STUDIO_PORT,
+        error: "The selected provider is not served by a local Studio backend.",
+      } satisfies LocalStudioBackendStatus;
+    }
+    return ensureLocalStudioBackend(target);
+  });
+
   // Hermes engine info
   ipcMain.handle("get-hermes-version", async (_event, profile?: string) => {
     const conn = getConnectionConfig();
@@ -968,10 +1000,38 @@ export function registerIpcHandlers(context: IpcContext): void {
         clearAgentCapabilityEvidence(getActiveConnection().connectionId);
         return { success: true };
       }
-      await runHermesUpdate((progress: InstallProgress) => {
-        updateLog = progress.log;
-        sendProgress(progress);
-      });
+      // The engine updater refuses to run while any process holds the install's
+      // venv, and Koda's own dashboard IS a venv process (`hermes dashboard
+      // --isolated`). The engine stops the holders it can positively identify
+      // on its own, but a Desktop-owned dashboard is deliberately refused
+      // rather than killed — the desktop has to release it and bring it back.
+      // Without this, the in-app button can only ever fail with "exit code 2".
+      let dashboardWasRunning = false;
+      try {
+        const status = await getDashboardStatus();
+        if (status.running) {
+          // Awaiting the stop waits for the process to actually exit, so the
+          // venv's file handles are already released when this returns.
+          await stopAllDashboards();
+          dashboardWasRunning = true;
+        }
+      } catch (err) {
+        console.warn("[UPDATE] Could not release the engine venv:", err);
+      }
+      try {
+        await runHermesUpdate((progress: InstallProgress) => {
+          updateLog = progress.log;
+          sendProgress(progress);
+        });
+      } finally {
+        if (dashboardWasRunning) {
+          try {
+            await startDashboard();
+          } catch (err) {
+            console.warn("[UPDATE] Could not restart the Koda dashboard:", err);
+          }
+        }
+      }
       phase(
         "Checking dashboard compatibility",
         "Validating the updated Agent...",

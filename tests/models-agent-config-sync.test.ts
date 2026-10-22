@@ -73,4 +73,87 @@ describe("agent-config model sync", () => {
     const rows = models.listModels().filter((m) => m.model === "faab-large");
     expect(rows).toHaveLength(1);
   });
+
+  // @lat: [[provider-setup#Provider setup#Agent config sync for named providers#The row is named after the model]]
+  it("names the row after the model, not the provider", async () => {
+    writeFileSync(
+      join(testHome, "config.yaml"),
+      [
+        "custom_providers:",
+        '  - name: "Unsloth Studio"',
+        '    base_url: "http://127.0.0.1:8888/v1"',
+        '    model: "ornith-ai/Ornith-1.5-35B-A3B-GGUF"',
+        "",
+      ].join("\n"),
+    );
+    const models = await freshModels();
+    const row = models
+      .listModels()
+      .find((m) => m.model === "ornith-ai/Ornith-1.5-35B-A3B-GGUF");
+    expect(row).toBeDefined();
+    // The row's own name is the model, the way every other row is named.
+    expect(row?.name).toBe("Ornith-1.5-35B-A3B-GGUF");
+    // The provider's name still groups the row under its provider card.
+    expect(row?.providerLabel).toBe("Unsloth Studio");
+  });
+
+  // @lat: [[provider-setup#Provider setup#Agent config sync for named providers#The row is named after the model]]
+  it("repairs a row that was named after its provider", async () => {
+    writeCustomProviders();
+    // A library written by the older build: the row carries the provider's
+    // name where the model's name belongs.
+    writeFileSync(
+      join(testHome, "models.json"),
+      JSON.stringify(
+        [
+          {
+            id: "studio-row",
+            name: "Faab AI",
+            provider: "custom",
+            model: "faab-large",
+            baseUrl: "https://faab.ai/v1",
+            providerLabel: "Faab AI",
+            createdAt: 1,
+          },
+        ],
+        null,
+        2,
+      ),
+    );
+    const models = await freshModels();
+    const row = models.listModels().find((m) => m.model === "faab-large");
+    expect(row?.name).toBe("faab-large");
+    expect(row?.providerLabel).toBe("Faab AI");
+  });
+
+  // @lat: [[provider-setup#Provider setup#Agent config sync for named providers#The row is named after the model]]
+  it("repairs a row the engine never registered", async () => {
+    // A row the desktop added itself — a second local endpoint, say — is not
+    // in the engine's `custom_providers:` list, so the sync loop never sees
+    // it. It still carries the provider's name where the model's belongs.
+    writeFileSync(
+      join(testHome, "models.json"),
+      JSON.stringify(
+        [
+          {
+            id: "spare-row",
+            name: "Unsloth Studio",
+            provider: "custom",
+            model: "ornith-ai/Ornith-1.5-35B-A3B-GGUF",
+            baseUrl: "http://127.0.0.1:8899/v1",
+            providerLabel: "Unsloth Studio",
+            createdAt: 1,
+          },
+        ],
+        null,
+        2,
+      ),
+    );
+    const models = await freshModels();
+    const row = models
+      .listModels()
+      .find((m) => m.baseUrl === "http://127.0.0.1:8899/v1");
+    expect(row?.name).toBe("Ornith-1.5-35B-A3B-GGUF");
+    expect(row?.providerLabel).toBe("Unsloth Studio");
+  });
 });
