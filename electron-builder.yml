@@ -5,9 +5,13 @@ appId: com.koda.desktop
 # argv[0] containing whitespace is forwarded verbatim into execvp and
 # fails with EINVAL (SIGTRAP). See issue #877.
 #
-# The user-facing display name "Koda" is restored through
-# `linux.desktop.entry.Name`, `nsis.shortcutName`, `nsis.uninstallDisplayName`,
-# and `mac.extendInfo.CFBundleDisplayName` so end users see no change.
+# productName is therefore NOT the display name. The display name is
+# "Koda Desktop", set through `linux.desktop.entry.Name`,
+# `nsis.shortcutName`, `nsis.uninstallDisplayName` and
+# `mac.extendInfo.CFBundleDisplayName`. The bare product name "Koda" is
+# also the name of the older Unsloth Studio shell, so a window, a
+# shortcut and an Installed Apps entry all called just "Koda" cannot be
+# told apart from it.
 productName: Koda
 directories:
   buildResources: build
@@ -18,6 +22,15 @@ files:
   - "!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}"
   - "!{.env,.env.*,.npmrc,pnpm-lock.yaml}"
   - "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
+  # Development-only trees. They are not read at runtime, they roughly double
+  # the packaged size, and they include the maintainer's personal agent
+  # configuration (.claude, .codex, .agents), which has no business shipping
+  # inside a user's install.
+  - "!{.agents,.claude,.codex}/**"
+  - "!{AGENTS,CLAUDE,SECURITY,Development,KANBAN_GAP_REPORT,PROFILE_MODAL_HANDOFF,pr-comment}.md"
+  - "!{CONTRIBUTING,README}*.md"
+  - "!{changelogs,docs,lat.md,previews,tests,scripts}/**"
+  - "!{tsconfig.node.tsbuildinfo,tsconfig.web.tsbuildinfo,vitest.config.ts,.browserslistrc}"
 asarUnpack:
   - resources/**
   - node_modules/better-sqlite3/prebuilds/*.node
@@ -30,10 +43,11 @@ portable:
   artifactName: ${name}-${version}-portable.${ext}
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
-  # Restore user-facing installer / shortcut name now that productName is
-  # space-free.
-  shortcutName: Koda
-  uninstallDisplayName: Koda
+  # The user-facing name, restored here now that productName is space-free.
+  # It says "Koda Desktop" so it cannot be confused with the older
+  # Unsloth Studio shell, which is also called "Koda".
+  shortcutName: Koda Desktop
+  uninstallDisplayName: Koda Desktop
   createDesktopShortcut: always
   oneClick: true
   perMachine: false
@@ -51,7 +65,7 @@ mac:
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-    - CFBundleDisplayName: Koda
+    - CFBundleDisplayName: Koda Desktop
   hardenedRuntime: true
   gatekeeperAssess: false
   notarize: true
@@ -70,12 +84,12 @@ linux:
   description: >-
     Koda is an autonomous AI agent desktop application powered by the Koda Agent
     execution harness.
-  # Override the user-facing .desktop display name (default would now be
-  # "Koda" since productName is space-free). See issue #877.
+  # Override the user-facing .desktop display name (the default would be
+  # "Koda", since productName is space-free). See issue #877.
   desktop:
     entry:
-      Name: Koda
-      Comment: Koda — autonomous AI agent desktop app
+      Name: Koda Desktop
+      Comment: Koda Desktop — autonomous AI agent desktop app
 appImage:
   artifactName: ${name}-${version}-${arch}.${ext}
 # Keep Electron Builder's default DEB/RPM hooks: they install compatible

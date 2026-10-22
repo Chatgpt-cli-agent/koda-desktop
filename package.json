@@ -1,6 +1,6 @@
 {
   "name": "koda-desktop",
-  "version": "0.7.7",
+  "version": "0.7.9",
   "description": "Koda — autonomous AI agent desktop application",
   "main": "./out/main/index.js",
   "author": "Chatgpt-cli-agent",
