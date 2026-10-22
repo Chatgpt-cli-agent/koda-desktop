@@ -3,6 +3,7 @@ export {
   Bot,
   Brain,
   Building,
+  Contact,
   ChevronDown,
   ChevronRight,
   Circle,

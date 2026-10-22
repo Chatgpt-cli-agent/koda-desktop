@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Brain,
+  Contact,
   Database,
   Plug,
   Pencil,
@@ -22,6 +23,7 @@ import Soul from "../../screens/Soul/Soul";
 import { MemoryEntries } from "../../screens/Memory/MemoryEntries";
 import type { MemoryData } from "../../screens/Memory/types";
 import { AppModal, AppModalTitle } from "../modal/AppModal";
+import AboutYouPane from "./AboutYouPane";
 import ProfileWalletPane from "./ProfileWalletPane";
 import ProfileSyncPane from "./ProfileSyncPane";
 import { OrbLoader } from "../OrbLoader";
@@ -79,6 +81,7 @@ const PROFILE_SECTIONS: ReadonlyArray<{
   Icon: React.ComponentType<{ size?: number }>;
 }> = [
   { id: "profile", labelKey: "agents.sectionProfile", Icon: User },
+  { id: "aboutYou", labelKey: "agents.sectionAboutYou", Icon: Contact },
   { id: "persona", labelKey: "agents.sectionPersona", Icon: Drama },
   { id: "agentMemory", labelKey: "agents.sectionAgentMemory", Icon: Database },
   { id: "wallet", labelKey: "agents.sectionWallet", Icon: Wallet },
@@ -280,7 +283,7 @@ function ProfileModalEditor({
 
   useEffect(() => {
     if (
-      section === "agentMemory" &&
+      (section === "agentMemory" || section === "aboutYou") &&
       profile &&
       !memoryData &&
       !memoryLoading &&
@@ -668,6 +671,37 @@ function ProfileModalEditor({
                 </div>
 
                 {error && <div className="agents-create-error">{error}</div>}
+              </div>
+            )}
+
+            {visibleSection === "aboutYou" && (
+              <div className="profile-modal-pane profile-modal-memory-pane">
+                {memoryLoading && !memoryData ? (
+                  <div className="profile-modal-loading">
+                    <OrbLoader state="searching" size={64} />
+                  </div>
+                ) : memoryData?.contentUnavailable ? (
+                  <div role="note" className="memory-error">
+                    {t("agents.aboutYouUnavailable")}
+                  </div>
+                ) : memoryData ? (
+                  <fieldset
+                    disabled={target.mode === "remote" || memoryWriting}
+                    style={{ border: 0, padding: 0 }}
+                  >
+                    <AboutYouPane
+                      content={memoryData.user?.content ?? ""}
+                      charLimit={memoryData.user?.charLimit ?? 0}
+                      profile={profile.id}
+                      target={target}
+                      isCurrent={isCurrent}
+                      onRefresh={loadMemoryData}
+                      onMutationStart={beginMemoryMutation}
+                    />
+                  </fieldset>
+                ) : memoryError ? (
+                  <div className="memory-error">{memoryError}</div>
+                ) : null}
               </div>
             )}
 

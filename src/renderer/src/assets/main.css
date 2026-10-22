@@ -2188,6 +2188,29 @@ body:has(.shell-vibrant),
   margin-bottom: 12px;
 }
 
+/* The "make it yours" block: the assistant's own name and persona. */
+.setup-persona {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.setup-persona-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.setup-persona-textarea {
+  min-height: 84px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
 .setup-continue {
   width: 100%;
   padding: 12px;
@@ -6557,6 +6580,53 @@ body:has(.shell-vibrant),
 .config-health-banner-text {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+/* "Make it yours" — the assistant's persona is still the stock one. */
+.persona-prompt-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12.5px;
+}
+
+.persona-prompt-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.persona-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.persona-prompt-link {
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 2px 4px;
+}
+
+.persona-prompt-dismiss {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
 }
 
 .config-health-banner-actions {

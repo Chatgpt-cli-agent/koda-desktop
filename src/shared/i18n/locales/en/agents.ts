@@ -51,12 +51,22 @@ export default {
   uploadImageFailed: "Couldn't set the profile image",
   appearanceFailed: "Couldn't update the profile appearance",
   sectionProfile: "Profile",
+  sectionAboutYou: "About you",
   sectionPersona: "Persona",
   sectionAgentMemory: "Agent Memory",
   sectionWallet: "Wallet",
   sectionSync: "Sync",
   sectionAdvanced: "Advanced",
   defaultNotDeletable: "The default profile can't be deleted.",
+  aboutYouTitle: "About you",
+  aboutYouHint:
+    "Tell the assistant who you are — your name, how you like to be addressed, and anything it should always keep in mind. The assistant reads this at the start of every conversation.",
+  aboutYouPlaceholder:
+    "e.g. My name is Sam. Call me Sam. I'm a software engineer working on Koda. Keep answers short and concrete.",
+  aboutYouSave: "Save",
+  aboutYouSaveFailed: "Couldn't save your details",
+  aboutYouUnavailable:
+    "Your details are unavailable from this server. View or edit them on the server.",
   comingSoon: "Coming soon",
   walletTitle: "Base wallets",
   walletNetwork: "Network: {{network}}",

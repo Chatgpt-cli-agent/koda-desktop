@@ -53,4 +53,19 @@ export default {
   localLlm: "Local LLM",
   modelBaseUrlPlaceholder: "http://localhost:1234/v1",
   modelNamePlaceholder: "e.g. llama-3.1-8b",
+  makeItYours: "Make it yours",
+  agentName: "Assistant name",
+  agentNamePlaceholder: "Koda",
+  agentNameHint:
+    "What your assistant calls itself. Leave blank to keep the default.",
+  personaLabel: "How should it behave?",
+  personaPlaceholder:
+    "e.g. Concise and technical. Tells you what it changed, never how it felt about it.",
+  personaHint:
+    "This becomes the assistant's persona. You can rewrite it any time from the agent's Persona tab.",
+  aboutYouLabel: "Who are you?",
+  aboutYouPlaceholder:
+    "e.g. My name is Sam. Call me Sam. I work on Koda and prefer short, concrete answers.",
+  aboutYouHint:
+    "The assistant reads this at the start of every conversation. Leave blank if you'd rather not say yet — you can add it any time from the agent's About you tab.",
 } as const;

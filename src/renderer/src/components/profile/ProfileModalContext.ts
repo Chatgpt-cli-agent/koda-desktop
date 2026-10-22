@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 /** Left-nav sections of the profile modal. */
 export type ProfileSection =
   | "profile"
+  | "aboutYou"
   | "persona"
   | "agentMemory"
   | "wallet"

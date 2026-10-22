@@ -15,9 +15,18 @@ vi.mock("../../components/useI18n", () => ({
 vi.mock("../../components/settings/SettingsModalContext", () => ({
   useSettingsModal: () => ({ openSettings: vi.fn() }),
 }));
-vi.mock("../../components/profile/ProfileModalContext", () => ({
-  useProfileModal: () => ({ openProfile: vi.fn() }),
-}));
+// The real module is kept and only the hook is stubbed: the profile modal
+// context itself is read by the persona banner, and a stub module that
+// dropped it would break the render.
+vi.mock(
+  "../../components/profile/ProfileModalContext",
+  async (importOriginal) => ({
+    ...(await importOriginal<
+      typeof import("../../components/profile/ProfileModalContext")
+    >()),
+    useProfileModal: () => ({ openProfile: vi.fn() }),
+  }),
+);
 vi.mock("../Chat/Chat", () => ({
   default: function Chat({
     profile,

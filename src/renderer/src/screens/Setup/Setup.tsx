@@ -5,6 +5,7 @@ import { useI18n } from "../../components/useI18n";
 import VerifyWarningBanner from "../../components/VerifyWarningBanner";
 import BrandLogo from "../../components/common/BrandLogo";
 import { expectedEnvKeyForUrl } from "../../../../shared/url-key-map";
+import { buildKodaPersona } from "../../../../shared/koda-persona";
 
 interface SetupProps {
   onComplete: () => void;
@@ -30,6 +31,13 @@ function Setup({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [showKey, setShowKey] = useState(false);
+  // What the assistant is called, and how the user wants it to behave. Both
+  // are optional: left blank, the persona the app seeds stays as it is.
+  const [agentName, setAgentName] = useState("");
+  const [personaNote, setPersonaNote] = useState("");
+  // Who the *owner* is. The engine keeps this separate from the persona
+  // (`memories/USER.md`), and reads it at the start of every conversation.
+  const [aboutYou, setAboutYou] = useState("");
 
   const provider = PROVIDERS.setup.find((p) => p.id === selectedProvider)!;
   const isLocal = selectedProvider === "local";
@@ -80,6 +88,35 @@ function Setup({
         configBaseUrl,
         profile,
       );
+
+      // The persona is the assistant's own identity. It is written only when
+      // the user named it or described it — so running setup again never
+      // overwrites a persona the user already wrote.
+      if (agentName.trim() || personaNote.trim()) {
+        await window.hermesAPI.writeSoul(
+          buildKodaPersona(
+            agentName.trim() || undefined,
+            personaNote.trim() || undefined,
+          ),
+          profile,
+        );
+      }
+
+      // The owner's own details live in a different file from the persona
+      // (`memories/USER.md`). Same rule as the persona: written only when
+      // the user actually typed something, so re-running setup never wipes
+      // details the user already saved.
+      if (aboutYou.trim()) {
+        const result = await window.hermesAPI.writeUserProfile(
+          aboutYou.trim(),
+          profile,
+        );
+        if (!result.success) {
+          setError(result.error || t("setup.saveFailed"));
+          setSaving(false);
+          return;
+        }
+      }
 
       onComplete();
     } catch {
@@ -331,6 +368,50 @@ function Setup({
               </div>
             </>
           )}
+
+          <div className="setup-persona">
+            <div className="setup-persona-title">{t("setup.makeItYours")}</div>
+
+            <label className="setup-label">{t("setup.agentName")}</label>
+            <input
+              className="input"
+              type="text"
+              placeholder={t("setup.agentNamePlaceholder")}
+              value={agentName}
+              onChange={(e) => setAgentName(e.target.value)}
+            />
+            <div className="setup-field-hint">{t("setup.agentNameHint")}</div>
+
+            <label className="setup-label" style={{ marginTop: 16 }}>
+              {t("setup.personaLabel")}{" "}
+              <span className="setup-label-optional">
+                {t("common.optional")}
+              </span>
+            </label>
+            <textarea
+              className="input setup-persona-textarea"
+              placeholder={t("setup.personaPlaceholder")}
+              value={personaNote}
+              onChange={(e) => setPersonaNote(e.target.value)}
+              rows={3}
+            />
+            <div className="setup-field-hint">{t("setup.personaHint")}</div>
+
+            <label className="setup-label" style={{ marginTop: 16 }}>
+              {t("setup.aboutYouLabel")}{" "}
+              <span className="setup-label-optional">
+                {t("common.optional")}
+              </span>
+            </label>
+            <textarea
+              className="input setup-persona-textarea"
+              placeholder={t("setup.aboutYouPlaceholder")}
+              value={aboutYou}
+              onChange={(e) => setAboutYou(e.target.value)}
+              rows={3}
+            />
+            <div className="setup-field-hint">{t("setup.aboutYouHint")}</div>
+          </div>
 
           {error && <div className="setup-error">{error}</div>}
 
