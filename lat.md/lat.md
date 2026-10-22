@@ -9,7 +9,7 @@ This directory defines the high-level concepts, business logic, and architecture
 - [[chat-experience-preferences]] — user-message Markdown plus persisted completion-sound and native multi-language spell-check preferences.
 - [[shared-pets]] — the official Koda pet gateway contract shared across profiles, gallery selection, sprite rendering, and live activity.
 - [[model-context]] — the per-model context-window override that drives the context gauge and the agent's auto-compaction.
-- [[model-selection]] — the session-scoped in-chat model override that switches the model (and provider) for one conversation without touching the global default.
+- [[model-selection]] — the session-scoped in-chat model override that switches the model (and provider) for one conversation without touching the global default, and the status bar that names the model the open conversation runs on.
 - [[reasoning-effort]] — the composer's Faster⟷Smarter effort control: a draggable `role="slider"` over six ordered levels that stays open until dismissed and commits one `onChange` per real change.
 - [[web-preview]] — the in-app split-screen webview and the `partition`-based gate that lets only it load remote HTTPS while staying sandboxed.
 - [[code-blocks]] — collapsible long code blocks, and why expansion state is keyed on source position to survive react-markdown's streaming remounts.
@@ -28,6 +28,9 @@ This directory defines the high-level concepts, business logic, and architecture
 - [[remote-dashboard-oauth]] — direct Remote dashboard browser authentication, main-process cookie isolation, and single-use WebSocket ticket handling.
 - [[onboarding]] — the shared cinematic first-run chrome (OnboardHero): aurora backdrop, animated Koda emblem with the big-centre → fly-up intro, and the Welcome / Install redesign built on it.
 - [[provider-setup]] — the first-run provider picker; its top grid mirrors the agent's native `CANONICAL_PROVIDERS` while OpenAI-compatible endpoints route through the Local presets.
+- [[local-studio-backend]] — Koda starting, health-checking and stopping its own Unsloth Studio backend so a local model works without the standalone Studio desktop, plus the installed-skill tree contract.
+- [[engine-compat-injection]] — the desktop's self-contained model-library block, injected into whichever engine module declares the model routes and re-applied after every engine update.
+- [[koda-persona]] — Koda owning the assistant's identity: the desktop seeds and repairs the persona file, the engine's own identity constants are rewritten at every launch, first use offers the user a persona of their own, and the owner's own details get an "About you" section of their own.
 - [[koda-account-login]] — desktop sign-in to a Koda account via the RFC 8628 device grant; secure token storage, IPC, and the Providers-screen entry point.
 - [[agent-sync]] — bidirectional sync of desktop profiles with the signed-in account's cloud agents (persona, memory, color, model/provider) via the backend's `/api/agents`; hash-based per-part conflict handling, no deletion propagation.
 - [[kanban]] — the JIRA-style multi-agent board tab; a thin client over the `hermes kanban` CLI with canonical status columns, an archived toggle, and focus/poll refresh.
