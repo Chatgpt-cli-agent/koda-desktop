@@ -129,6 +129,9 @@ interface ChatProps {
   /** Reports token usage (context occupancy + session totals) so the shell's
    *  status bar can show it for the active run. */
   onUsageChange?: (runId: string, usage: SessionUsage | null) => void;
+  /** Reports the model this conversation is actually running on, so the
+   *  status bar can show the live model instead of the profile's default. */
+  onModelChange?: (runId: string, model: string) => void;
   /** Resolved avatar/colour of `profile`, so idle agent avatars in the
    *  transcript show the agent's profile picture instead of the loading gif. */
   agentAppearance?: { color?: string | null; avatar?: string | null };
@@ -148,6 +151,7 @@ function Chat({
   onSessionIdChange,
   onTitleChange,
   onUsageChange,
+  onModelChange,
   agentAppearance,
 }: ChatProps): React.JSX.Element {
   const { t } = useI18n();
@@ -484,6 +488,26 @@ function Chat({
   const chatDisplayModel = sessionModelOverride?.model
     ? sessionModelOverride.model.split("/").pop() || sessionModelOverride.model
     : modelConfig.displayModel;
+
+  // The status bar shows the model this conversation actually runs on. The
+  // chat reports it, so the chip and the composer can never disagree — a
+  // conversation that picked its own model says so, and a fresh one shows the
+  // profile's default.
+  useEffect(() => {
+    onModelChange?.(runId, chatCurrentModel);
+  }, [chatCurrentModel, onModelChange, runId]);
+
+  // A blank conversation can be re-pointed at another agent: the agent
+  // switcher reuses the scratch run instead of minting a new one, so this
+  // same instance keeps its session model override. That override carries a
+  // provider and a base URL, so it belongs to the agent it was made in — the
+  // new agent's own default is used instead.
+  const runProfileRef = useRef(profile);
+  useEffect(() => {
+    if (runProfileRef.current === profile) return;
+    runProfileRef.current = profile;
+    setSessionModelOverride(undefined);
+  }, [profile]);
 
   // Restore the model/provider linked to a resumed session. The saved value is
   // applied only to this chat's local picker state (`persist:false`) so it never

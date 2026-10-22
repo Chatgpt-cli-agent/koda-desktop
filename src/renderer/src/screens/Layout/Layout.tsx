@@ -47,6 +47,7 @@ import RemoteProviders from "../Providers/RemoteProviders";
 import Schedules from "../Schedules/Schedules";
 import Kanban from "../Kanban/Kanban";
 import VerifyWarningBanner from "../../components/VerifyWarningBanner";
+import PersonaPromptBanner from "../../components/PersonaPromptBanner";
 import { useSettingsModal } from "../../components/settings/SettingsModalContext";
 import {
   Compass,
@@ -320,6 +321,12 @@ function Layout({
     },
     [],
   );
+  // The model a conversation is really on, reported by the chat itself. The
+  // status bar shows it, so a chat that picked its own model says so instead
+  // of the status bar contradicting the composer next to it.
+  const handleRunModel = useCallback((runId: string, model: string) => {
+    setRuns((prev) => patchRun(prev, runId, { model }));
+  }, []);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     try {
       return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true";
@@ -1018,6 +1025,7 @@ function Layout({
               onDismiss={onDismissVerifyWarning}
             />
           )}
+          <PersonaPromptBanner profile={activeProfile} />
           <div style={paneStyle("chat")}>
             {runs.map((run) => (
               <div
@@ -1050,6 +1058,7 @@ function Layout({
                   onSessionIdChange={handleRunSessionId}
                   onTitleChange={handleRunTitle}
                   onUsageChange={handleRunUsage}
+                  onModelChange={handleRunModel}
                   agentAppearance={getAppearance(run.profile, run.connectionId)}
                 />
               </div>
@@ -1241,6 +1250,7 @@ function Layout({
             : activeProfile
         }
         sessionUsage={view === "chat" ? (activeRun?.usage ?? null) : null}
+        model={view === "chat" ? (activeRun?.model ?? "") : ""}
       />
     </div>
   );

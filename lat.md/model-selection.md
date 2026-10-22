@@ -100,6 +100,30 @@ The `/model` command is issued at most once per session-and-selection, but the r
 
 The switch is re-issued whenever the live model no longer matches the selection, not only when the cached key differs. The live reply is then re-read and must match before the prompt is submitted; a refused switch raises the existing error and clears the cached key, so no prompt is sent against an unverified model.
 
+## The status bar names the conversation's model
+
+The bottom strip names the model the *open conversation* is running on, so it can never contradict the model picker above the composer.
+
+The chat reports its live model upward ([[src/renderer/src/screens/Chat/Chat.tsx#Chat]] → [[src/renderer/src/screens/Layout/Layout.tsx]] → [[src/renderer/src/screens/Layout/StatusBar.tsx]]). The profile's configured default is only the fallback, used while the chat has not resolved a model; when the two differ the chip's tooltip names both, so the default is still discoverable.
+
+### The chip shows the live chat model
+
+A conversation that picked its own model shows that model in the status bar, not the profile's configured default — the strip and the composer read the same value, so they cannot disagree.
+
+### An unresolved conversation shows the profile default
+
+A conversation that has not resolved a model yet shows the profile's default, which is what a new conversation would run on anyway.
+
+## A model pick does not follow a re-pointed agent
+
+A blank conversation can be re-pointed at another agent, and the pick does not travel with it.
+
+The agent switcher reuses the blank run instead of minting a new one ([[src/renderer/src/screens/Layout/chatRuns.ts#selectProfileRunTransition]]), so the same chat instance keeps its session model override — which carries a provider and a base URL, not just a model name. The chat therefore drops the override when its run's profile changes, and the new agent's own default applies.
+
+### A re-pointed agent drops the previous agent's pick
+
+A run re-pointed at another agent shows that agent's default model, and the previous agent's provider and base URL are not carried into the new agent's turns.
+
 ## Tests
 
 The dashboard transport's model-switch regressions verify that a stale applied-model cache cannot suppress a required `/model`, and that an unverified model never carries a prompt.

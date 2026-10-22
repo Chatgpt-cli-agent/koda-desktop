@@ -22,6 +22,9 @@ export interface ChatRun {
   title?: string;
   /** Token usage reported by the chat, shown in the status bar. */
   usage?: SessionUsage | null;
+  /** Model the chat is running on, reported by the chat, shown in the status
+   *  bar. Empty until the chat has resolved it. */
+  model?: string;
   /** Seed transcript when the run was opened from history. */
   seed?: ChatMessage[];
 }

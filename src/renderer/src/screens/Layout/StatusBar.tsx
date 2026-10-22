@@ -21,11 +21,15 @@ export function StatusBar({
   activeProfile,
   connectionId,
   sessionUsage = null,
+  model = "",
 }: {
   activeProfile: string;
   connectionId?: string;
   /** Token usage of the visible chat session; omitted when not on the chat tab. */
   sessionUsage?: SessionUsage | null;
+  /** Model the visible chat session is running on. Empty when the chat has not
+   *  resolved it yet, in which case the profile's configured default is shown. */
+  model?: string;
 }): React.JSX.Element {
   const [loadedInfo, setInfo] = useState<
     (StatusInfo & { target: ProfileEditorTarget }) | null
@@ -78,6 +82,14 @@ export function StatusBar({
   const isMac = window.electron?.process?.platform === "darwin";
   const mod = isMac ? "⌘" : "Ctrl";
   const usageDisplay = formatSessionUsage(sessionUsage);
+  // The model the open conversation is really on. The profile's configured
+  // default is the fallback — it is what a *new* conversation would use, so it
+  // is only shown when the chat has not picked one of its own.
+  const shownModel = model || info?.model || "";
+  const modelTitle =
+    model && info?.model && model !== info.model
+      ? `This conversation runs on ${model} (the profile's default is ${info.model})`
+      : "The model this conversation runs on";
 
   return (
     <footer className="status-bar" aria-label="Status">
@@ -95,12 +107,14 @@ export function StatusBar({
               &middot;
             </span>
             <span className="status-item">{info.mode}</span>
-            {info.model && (
+            {shownModel && (
               <>
                 <span className="status-sep" aria-hidden="true">
                   &middot;
                 </span>
-                <span className="status-item">{info.model}</span>
+                <span className="status-item" title={modelTitle}>
+                  {shownModel}
+                </span>
               </>
             )}
             <span className="status-sep" aria-hidden="true">
